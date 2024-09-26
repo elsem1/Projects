@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Javascript Yahtzee</title>
+</head>
+<body>
+        <table id="resultsTable">
+        <tr>
+            <td class="diceResult">0</td>
+            <td class="diceResult">0</td>
+            <td class="diceResult">0</td>
+            <td class="diceResult">0</td>
+            <td class="diceResult">0</td>
+            
+            
+        </tr>
+    </table>
+    <button id="throw">Gooi!</button>
+    <table id="upperSection">
+        <tr id="part1">
+            <th>Upper Section</th>
+            <th colspan="2">How to score</th>
+            <th>Game #1</th>
+            <th>Game #2</th>
+            <th>Game #3</th>
+            <th>Game #4</th>
+            <th>Game #5</th>
+        </tr>
+        <tr>
+            <td colspan="3">Enen = 1</td>
+            <td class="game">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Tweeën = 2</td>            
+            <td class="game">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Drieën = 3</td>            
+            <td class="game">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Vieren = 4</td>            
+            <td class="game">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Vijven = 5</td>            
+            <td class="game">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Zessen = 6</td>            
+            <td class="game">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Totaal aantal punten</td>            
+            <td id="totalUp">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>
+        </tr>
+        <tr>
+            <td>Bonus</td>
+            <td>Als puntentotaal 63 of meer is</td>
+            <td>35 punten</td>
+            <td id="bonusUp">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>
+        </tr>
+        <tr>
+            <td>Totaal</td>
+            <td colspan="2">van de bovenste helft</td>            
+            <td class="totalUpTotal">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>
+        </tr>
+    </table>
+    <table id="lowerSection">
+        <tr>
+            <th>Lower Section</th>
+        </tr>
+        <tr>
+            <td>Three of a kind</td>
+            <td>3 dezelfde</td>
+            <td>Totaal v.d. 5 stenen</td>
+            <td id="threeOfAKind">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td>           
+        </tr>
+        <tr>
+            <td>Carré</td>
+            <td>4 dezelfde</td>
+            <td>Totaal v.d. 5 stenen</td>
+            <td id="carre">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td> 
+        </tr>
+        <tr>
+            <td>Full House</td>
+            <td>2 + 3 dezelfde</td>
+            <td>25 punten</td>
+            <td id="fullHouse">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td> 
+        </tr>
+        <tr>
+            <td>Kleine straat</td>
+            <td>4 opeenvolgende nummers</td>
+            <td>30 punten</td>
+            <td id="smallStrait">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td> 
+        </tr>
+        <tr>
+            <td>Grote Straat</td>
+            <td>5 opeenvolgende nummers</td>
+            <td>40 punten</td>
+            <td id="bigStrait">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td> 
+        </tr>
+        <tr>
+            <td>Yahtzee</td>
+            <td>5 dezelfde</td>
+            <td>50 punten</td>
+            <td id="yahtzee">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td> 
+        </tr>
+        <tr>
+            <td>Chance</td>
+            <td>Vrije keus</td>
+            <td>Totaal v.d. 5 stenen</td>
+            <td id="chance">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td> 
+        </tr>
+        <tr>
+            <td>Totaal</td>
+            <td colspan="2">van de onderste helft</td>            
+            <td id="totalLower">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td> 
+        </tr>
+        <tr>
+            <td>Totaal</td>
+            <td colspan="2">van de bovenste helft</td>            
+            <td class="totalUpTotal">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td> 
+        </tr>
+        <tr>
+            <td colspan="3">Totaal Generaal</td>            
+            <td id="generalTotal">0</td>
+            <td class="game2"></td>
+            <td class="game3"></td>
+            <td class="game4"></td>
+            <td class="game5"></td> 
+        </tr>
+
+
+
+
+
+    </table>
+    <script src="script.js"></script>
+    </body>
+</html>
