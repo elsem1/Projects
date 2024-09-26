@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id()->primary();
+            $table->id();
             $table->string('title');
             $table->text('body');
+            $table->foreignId('user_id');
             $table->boolean('premium')->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
