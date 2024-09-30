@@ -20,7 +20,7 @@ class CommentFactory extends Factory
     {
         return [
             'body' => $this->faker->text,
-            'article_id' => Article::inRandomOrder()->limit(rand(0,30))->pluck('id'),
+            'article_id' => Article::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
         ];
     }
