@@ -12,7 +12,7 @@
     </h2>
 
     <div class="mb-4 text-sm text-gray-700">
-        by <a href="#" class="text-gray-700">{{ $article->$user_id->name }}</a> on {{ $article->created_at}}
+        by <a href="#" class="text-gray-700">{{ $article->user->name }}</a> on {{ $article->created_at}}
         <span class="font-bold mx-1"> | </span>
         <a href="#" class="text-gray-700">Uncategorised</a>
         <span class="font-bold mx-1"> | </span>
@@ -22,6 +22,6 @@
     <p class="text-gray-700 leading-normal">
         {{ $article->body }}
     </p>
-
+    @endforeach
 </article>
 @endsection

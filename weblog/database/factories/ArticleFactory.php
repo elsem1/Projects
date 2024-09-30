@@ -21,7 +21,7 @@ class ArticleFactory extends Factory
             'title'=> $this->faker->sentence,
             'body' => $this->faker->paragraph,
             'premium' => $this->faker->boolean(12.5), 
-            'user_id' => User::factory(),
+            'user_id' => rand(1, User::count()),
         ];   
     }
     public function withCategories()
