@@ -1,13 +1,14 @@
-@extends('layouts.app')
+@extends('components/layout')
     <h1>Articles</h1>
 @section('title', 'Page Title')
 
 @section('content')
+
    @foreach($articles as $article)
    <article class="mb-12">
     <h2 class="mb-4">
         <a href="#" class="text-black text-xl md:text-2xl no-underline hover:underline">
-            {{ $article->itle }}
+            {{ $article->title }}
         </a>
     </h2>
 
