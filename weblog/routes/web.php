@@ -5,18 +5,18 @@ use App\Http\Controllers\ArticleController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::get('/articles', function () {
     return view('articles.index');
-})->name('items.index');
+})->name('articles.index');
 
 Route::get('/articles/create', function () {
     return view('articles.create');
 })->name('articles.create');
 
 Route::get('/articles', [ArticleController::class, 'index'])->name('article.index');
-Route::get('/articles/create', [ArticleController::class,'create'])->name('articles.create');
+Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
 
 /*
 Route::get('/articles', function () {})->name('articles'.index');

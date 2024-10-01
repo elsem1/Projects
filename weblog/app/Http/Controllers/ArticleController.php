@@ -14,12 +14,12 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::with('categories', 'user')->get();
-        return view('articles.index', compact('articles'));
+        return view('components.articles.index', compact('articles'));
 
 
     }
 
-   
+
     public function create()
     {
         $categories = Category::all();

@@ -1,8 +1,11 @@
-@extends('components/layout')
-    <h1>Articles</h1>
+
+
+@extends('layouts.app')
+
 @section('title', 'Page Title')
 
-@section('content')
+@section('article.index')
+
 
    @foreach($articles as $article)
    <article class="mb-12">
