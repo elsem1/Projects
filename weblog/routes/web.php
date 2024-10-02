@@ -1,21 +1,24 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
+use App\Models\Article;
 
 Route::get('/', function () {
     return view('home');
-})->name('home');
+    })->name('home');
+    
 
-Route::get('/articles', function () {
-    return view('articles.index');
-})->name('articles.index');
+Route::resource('articles', ArticleController::class);
 
-Route::get('/articles/create', function () {
-    return view('articles.create');
-})->name('articles.create');
+Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 
-Route::get('/articles', [ArticleController::class, 'index'])->name('article.index');
+// Route::get('/articles', function () {
+//     $articles = Article::with('categories')->simplePaginate(10); 
+//     return view('components.articles.index', compact('articles'));
+// })->name('articles.index');
+
 Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
 
 /*

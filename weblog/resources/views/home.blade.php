@@ -1,7 +1,4 @@
-
-<x-slot:heading>
-    Home
-</x-slot:heading>
+@extends('layouts.app')
 
 @section('content')
 <div class="text-center px-6 py-12 mb-6 bg-neutral-950 border-b border-t border-slate-900">

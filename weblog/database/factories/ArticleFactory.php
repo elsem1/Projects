@@ -5,11 +5,13 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\Article;
 
 
 
 class ArticleFactory extends Factory
 {
+    protected $model = Article::class;
     /**
      * Define the model's default state.
      *
@@ -26,7 +28,7 @@ class ArticleFactory extends Factory
     }
     public function withCategories()
     {
-        return $this->afterCreating(function (Category $article) {    
+        return $this->afterCreating(function (Article $article) {    
                 $count = (rand(1,100) <= 70 ) ? 1 : ((rand(1, 100) <= 90) ? 2 : 3);
                 $categories = Category::inRandomOrder()->limit($count)->pluck('id');
                 $article->categories()->attach($categories);

@@ -8,6 +8,7 @@
         </a>
         <div class="w-full md:w-auto text-center md:text-right">									
             <a href="Login" class="px-2 md:pl-0 md:mr-3 md:pr-3 text-stone-400 no-underline md:border-r border-stone-400">Login</a>
+            <a href="Signup" class="px-2 md:pl-0 md:mr-3 md:pr-3 text-stone-400 no-underline md:border-r border-stone-400">Signup</a>
         </div>
     </div>
 </header>
