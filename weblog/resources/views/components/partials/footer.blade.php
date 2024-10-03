@@ -1,7 +1,7 @@
 
 
 
-<footer class="w-full bg-zinc-700 text-stone-400 px-6 border-t">
+<footer class="w-full bg-zinc-700 text-stone-400 px-6 border-t fixed bottom-0">
     <div class="container mx-auto max-w-4xl py-6 flex flex-wrap md:flex-no-wrap justify-between items-center text-sm">
         &copy;2024 Semper Industries. All rights reserved.
         <div class="pt-4 md:p-0 text-center md:text-right text-xs text-stone-400">

@@ -26,7 +26,9 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('articles.create', compact('categories'));
+        return view('components.articles.create', compact('categories'));
+
+
     }
 
     /**
@@ -34,10 +36,14 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validated();
-        Article::create($validated);
+        $article = new Article();
+        $article->user_id = 1; # Moet nog aangepast worden naar de user
+        $article->title = $request->input('title');
+        $article->body = $request->input('body');
+        $article->save();
 
         return redirect()->route('articles.index');
+
     }
 
     /**
