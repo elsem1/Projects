@@ -49,10 +49,12 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Article $article)
     {
-        //
-    }
+        
+        return view('components.articles.show', compact('article'));
+        }
+        
 
     /**
      * Show the form for editing the specified resource.

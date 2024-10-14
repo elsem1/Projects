@@ -13,20 +13,24 @@ Route::get('/', function () {
     return view('home');
     })->name('home');
     
+// Route::post('/articles', function () {
+//     $articles = Article::with('categories'); 
+//     return view('articles.index', compact('articles'));
+//         })->name('articles.index');
 
 Route::resource('articles', ArticleController::class);
 
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
 Route::post('/articles', [ArticleController::class,'store'])->name('articles.store');
+// Route::get('/articles/{id}', [ArticleController::class,'show'])->name('articles.show');
 
+Route::get('/login', function() {
+    return view('/login/index');
+    })->name('login');
 
 Route::resource('user', UserController::class);
 
-// Route::get('/articles', function () {
-//     $articles = Article::with('categories')->simplePaginate(10); 
-//     return view('components.articles.index', compact('articles'));
-// })->name('articles.index');
 
 
 /*
