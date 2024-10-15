@@ -11,7 +11,7 @@
                 </a>
         @endforeach
         <div>
-            {{ $jobs->links() }}
+            {{ $jobs->links() }} <!-- zorgt voor pagination -->
         </div>
     </div>
 </x-layout>

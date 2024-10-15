@@ -10,25 +10,27 @@ use App\Models\Employer;
  */
 class JobFactory extends Factory
 {
-        /**
+    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    
+
     public function definition(): array
     {
         return [
             'title' => fake()->jobTitle(),
             'employer_id' => Employer::factory(),
-            'salary' =>$this->randomSalary(),
+            'salary' => $this->randomSalary(),
+            'job_description' => fake()->text()
         ];
     }
-    function randomSalary() {
+    function randomSalary()
+    {
 
-    $min = 10000;
-    $max = 150000;
-    $salary = 50 * random_int($min / 50, $max /50 );
-    return round($salary);
+        $min = 10000;
+        $max = 150000;
+        $salary = 50 * random_int($min / 50, $max / 50);
+        return round($salary);
     }
 }

@@ -13,16 +13,20 @@ Route::get('/about', function () {
 });
 
 Route::get('/jobs', function () {
-   // $jobs = Job::with('employer')->get();
-    $jobs = Job::with('employer')->cursorPaginate(10);
-    return view('jobs', [
+    // $jobs = Job::with('employer')->get() ipv $jobs = Job::all() Dit is eager loading. Zorgt ervoor dat er niet voor iedere job een nieuwe query wordt gedaan
+    $jobs = Job::with('employer')->simplePaginate(10);
+    return view('jobs.index', [
         'jobs' => $jobs
     ]);
 });
 
+Route::get('/jobs/create', function () {
+    return view('jobs.create');
+});
+
 Route::get('/jobs/{id}', function ($id) {
     $job = Job::find($id);
-    return view('job', ['job' => $job]);
+    return view('jobs.show', ['job' => $job]);
 });
 
 

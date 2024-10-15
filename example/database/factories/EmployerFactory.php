@@ -20,15 +20,17 @@ class EmployerFactory extends Factory
         return [
             'name' => fake()->lastName(),
             'company_name' => fake()->company(),
+            'sector' => fake()->words(1, 3)
 
         ];
     }
-    public function configure()
-{
-    return $this->afterCreating(function (Employer $employer) {
-        Job::factory()->count(rand(0, 10))->create([
-            'employer_id' => $employer->id,
-        ]);
-    });
 }
-}
+//     public function configure()
+// {
+//     return $this->afterCreating(function (Employer $employer) {
+//         Job::factory()->count(rand(0, 10))->create([
+//             'employer_id' => $employer->id,
+//         ]);
+//     });
+// }
+// 
