@@ -10,11 +10,15 @@ class Job extends Authenticatable {
     use HasFactory;
     protected $table = 'job_listings';
 
-    protected $fillable = 
+    protected $fillable =  // Deze velden mogen worden veranderd
     [
         'title',
-        'salary'
+        'salary',
+        'job_description',
+        'employer_id'
         ];
+
+    // Ipv $fillable kan je ook guarded []; gebruiken, dit doet het tegenovergestelde; alleen de velden die je uitgesloten wilt hebben.
 
     public function employer()
     {
