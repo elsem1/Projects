@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Validation\ValidationData;
+use Illuminate\Validation\ValidationException;
 class LoginController extends Controller
 {
     public function create()
@@ -20,7 +22,12 @@ class LoginController extends Controller
             'password' => ['required']
         ]);
         
-        Auth::attempt($attributes);
+        if (! Auth::attempt($attributes)) 
+        {
+            throw ValidationException::withMessages([
+                'email' => 'Sorry, those credentials do not match.'
+            ]);
+        }
 
         request()->session()->regenerate();
 
