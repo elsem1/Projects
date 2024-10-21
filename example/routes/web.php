@@ -1,80 +1,34 @@
 <?php
 
+use App\Http\Controllers\JobController;
+use App\Http\Controllers\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Job;
+use App\Http\Controllers\LoginController;
 
+Route::view('/', 'home');
+Route::view('/about', 'about');
+Route::view('/contact', 'contact');
 
-Route::get('/', function () {
-    return view('home');
+Route::controller(JobController::class)->group(function(){
+    Route::get('/jobs',  'index');
+    Route::get('/jobs/create',  'create');
+    Route::get('/jobs/{job}',  'show');
+    Route::post('/jobs',  'store');
+    Route::get('/jobs/{job}/edit',  'edit');
+    Route::patch('/jobs/{job}',  'update');
+    Route::delete('/jobs/{job}',  'destroy');
 });
 
-Route::get('/about', function () {
-    return view('about');
-});
+// Route::resource('jobs', JobController::class, [ Dit doet hetzelfde als alles hierboven
+//     'only' => ['edit', 'show', 'delete']
+//         of
+//     'except' => ['update']
+// ]); 
 
-Route::get('/jobs', function () {
-    // $jobs = Job::with('employer')->get() ipv $jobs = Job::all() Dit is eager loading. Zorgt ervoor dat er niet voor iedere job een nieuwe query wordt gedaan
-    $jobs = Job::with('employer')->latest()->simplePaginate(10);
-    return view('jobs.index', [
-        'jobs' => $jobs
-    ]);
-});
+// Auth
+Route::get('/register', [RegisteredUserController::class, 'create']);
+Route::post('/register', [RegisteredUserController::class, 'store']);
 
-Route::post('/jobs', function() {
-    request()->validate([
-        'title'=> ['required', 'min:3'],
-        'salary'=> ['required'],
-        'job_description'=> '',
-
-    ]);
-    
-    
-    Job::create([
-        'title' => request('title'),
-        'salary'=> request('salary'),
-        'job_description'=> request('job_description'),
-        'employer_id'=> 1
-    ]);
-    return redirect('/jobs');
-});
-
-Route::get('/jobs/create', function () {
-    return view('jobs.create');
-});
-
-Route::get('/jobs/{id}/edit', function ($id) {
-    $job = Job::find($id);
-    return view('jobs.edit', ['job' => $job]);
-});
-
-Route::get('/jobs/{id}', function ($id) {
-    $job = Job::find($id);
-    return view('jobs.show', ['job' => $job]);
-});
-
-Route::patch('/jobs/{id}', function ($id) {
-    request()->validate([
-        'title'=> ['required', 'min:3'],
-        'salary'=> ['required'],
-        'job_description'=> ['required'],
-        ]);
-
-    $job = Job::findOrFail($id);
-
-    $job->title = request('title');
-    $job->salary = request('salary');
-    $job->job_description = request('job_description');
-    $job->save();
-
-    return redirect('/jobs/' .  $job->id);
-});
-
-Route::delete('/jobs/{id}', function ($id) {
-    $job = Job::find($id);
-    return view('jobs.show', ['job' => $job]);
-});
-
-
-Route::get('/contact', function () {
-    return view('contact');
-});
+Route::get('/login', [LoginController::class, 'create']);
+Route::post('/login', [LoginController::class, 'store']);
+Route::post('/logout', [LoginController::class, 'destroy']);

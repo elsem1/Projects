@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Example site</title>
+    <title>Serious Job Searching Website</title>
     <script src="https://cdn.tailwindcss.com"></script>
     @vite('resources/css/app.css')
 </head>
@@ -30,6 +30,17 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6">
+                        @guest
+                        <x-nav-link href="/login" :active="request()->is('/login')">Log in</x-nav-link>
+                        <x-nav-link href="/register" :active="request()->is('/register')">Register</x-nav-link>
+                        @endguest
+
+                        @auth
+                        <form method="POST" action="/logout">
+                            @csrf
+                            <x-form-button>Log Out</x-form-button>
+                        </form>
+                        @endauth
                         <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span class="absolute -inset-1.5"></span>
                             <span class="sr-only">View notifications</span>
