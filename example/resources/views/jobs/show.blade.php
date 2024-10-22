@@ -11,7 +11,9 @@
     <p>This is what the job is about:<br> {{ $job->job_description }}</p><br>
     <a href="/jobs" class="text-blue-500 hover:underline">Back to listings</a>
 
+    @can('edit', $job) {{-- weergeeft de edit butten alleen wanneer de user geauthoriseerd is, via gate in AppServiceProvider of JobPolicy --}}
     <p class="mt-6">
         <x-button href="/jobs/{{ $job->id }}/edit">Edit Job</x-button>
     </p>
+    @endcan
 </x-layout>

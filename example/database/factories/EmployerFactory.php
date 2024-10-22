@@ -2,8 +2,7 @@
 
 namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Job;
-use App\Models\Employer;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Employer>
@@ -19,18 +18,10 @@ class EmployerFactory extends Factory
     {
         return [
             'name' => fake()->lastName(),
+            'user_id' => User::factory(),
             'company_name' => fake()->company(),
-            'sector' => fake()->words(1, 3)
+            'sector' => fake()->word(),
 
         ];
     }
 }
-//     public function configure()
-// {
-//     return $this->afterCreating(function (Employer $employer) {
-//         Job::factory()->count(rand(0, 10))->create([
-//             'employer_id' => $employer->id,
-//         ]);
-//     });
-// }
-// 

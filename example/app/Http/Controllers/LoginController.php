@@ -14,22 +14,21 @@ class LoginController extends Controller
     {
         return view('auth.login');
     }
-    
+
     public function store()
     {
         $attributes = request()->validate([
             'email' => ['required', 'email'],
             'password' => ['required']
         ]);
-        
-        if (! Auth::attempt($attributes)) 
-        {
+
+        if (!Auth::attempt($attributes)) {
             throw ValidationException::withMessages([
-                'email' => 'Sorry, those credentials do not match.'
+                'email' => 'Log in failed. Email and password do not match.'
             ]);
         }
 
-        request()->session()->regenerate();
+        request()->session()->regenerate(); // regenerate the session token, zorgt ervoor dat de user een unieke token krijgt ter verificatie
 
         return redirect('/jobs');
     }

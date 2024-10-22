@@ -26,7 +26,7 @@
             <x-form-field>
             <x-form-label for="password">Password</x-form-label>
             <div class="mt-2">
-                <x-form-input name="password" id="password" type="password" placeholder="VeryStrongPassword123" required></x-form-input>
+                <x-form-input name="password" id="password" type="password" placeholder="VeryStrongPassword123" :value="old('email')" required></x-form-input>
 
                 <x-form-error name="password"/>
             </div>
