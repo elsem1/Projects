@@ -2,19 +2,19 @@
 
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisteredUserController;
+use App\Jobs\TranslateJob;
 use App\Mail\JobPosted;
+use App\Models\Job;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 
-Route::get('test', function () {
-    return new JobPosted();
-});
+Route::get('test', function()
+{
+    $job = Job::first();
+    TranslateJob::dispatch($job);
 
-Route::get('test', function () {
-    Mail::to('example@mail.com')->send(
-        new JobPosted()
-    );
+
     return 'Done';
 });
 

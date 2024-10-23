@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('components.layout')
 
 @section('content')
 <div class="w-full md:pr-12 mb-12">    

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\UserController;
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
@@ -13,47 +15,44 @@ Route::get('/', function () {
     return view('home');
     })->name('home');
     
-// Route::post('/articles', function () {
-//     $articles = Article::with('categories'); 
-//     return view('articles.index', compact('articles'));
-//         })->name('articles.index');
 
-Route::resource('articles', ArticleController::class);
+Route::controller(ArticleController::class)->group(function(){ 
+    Route::get ('/articles', 'index')->name('articles.index');
+    Route::get('/articles/create', 'create')->name('articles.create');
+    Route::get('/articles/{article}','show')->name('articles.show');
+    Route::post('/articles','store')
+        ->middleware('auth')
+        ->name('articles.store');
 
-Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
-Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
-Route::post('/articles', [ArticleController::class,'store'])->name('articles.store');
-// Route::get('/articles/{id}', [ArticleController::class,'show'])->name('articles.show');
+    Route::get('/articles/{article}/edit','edit')
+        ->middleware('auth')
+        ->can('edit', 'articles')
+        ->name('articles.edit');
 
-Route::get('/login', function() {
-    return view('/login/index');
-    })->name('login');
+    Route::patch('/articles/{article}', 'update')->name('articles.update');
+    Route::delete('/articles/{article}','destroy')->name('articles.destroy');
+    
+    Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
+});
 
-Route::resource('user', UserController::class);
+Route::get('/register', [RegisterController::class, 'create']);
+Route::post('/register', [RegisterController::class, 'store']);
 
+Route::get('/login', [SessionController::class, 'create'])
+    ->name('login');
 
-
-/*
-Route::get('/articles', function () {})->name('articles'.index');
-Route::get('/articles/create', function () {})->name('articles.create');
-Route::get('/articles/{id}', function () {})->name('articles.show');
-Route::get('/articles/{id}/edit', function () {})->name('articles.edit');
-Route::put('/articles/{id}', function () {})->name('articles.update');
-Route::delete('/articles/{id}', function () {})->name('articles.destroy');
-
-Route::get('/articles/{id}/comments/{comment}', function () {})->name('article.comments.index');
-Route::get('/articles/{id}/comments/{comment}/create', function () {})->name('article.comments.create');
-Route::post('/articles/{id}/comments/{comment}', function () {})->name('article.comments.store');
-Route::get('/articles/{id}/comments/{comment}', function () {})->name('articles.comments.show');
-Route::get('/articles/{id}/comments/{comment}/edit', function () {})->name('articles.comments.edit');
-Route::put('/articles/{id}/comments/{comment}', function () {})->name('articles.comments.update');
-Route::delete('/articles/{id}/comments/{comment}', function () {})->name('articles.comments.destroy');
+Route::post('/login', [SessionController::class, 'store']);
+Route::post('/logout', [SessionController::class, 'destroy']);
 
 
-Route::get('/user/create', function () {})->name('user.create');
-Route::post('/user/profile', function () {})->name('user.store');
-Route::get('/user/{id}', function () {})->name('user.show');
-Route::get('/users/{id}/edit', function () {})->name('user.edit');
-Route::put('/user/{id}', function () {})->name('user.update');
-Route::delete('/user/{id}', function () {})->name('users.destroy');
-*/
+
+
+
+// Route::get('/login', function() {
+//     return view('/login/index');
+//     })->name('login');
+
+
+
+
+

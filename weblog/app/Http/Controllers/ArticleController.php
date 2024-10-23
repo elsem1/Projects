@@ -13,20 +13,18 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::with('categories', 'user')
-        ->withCount('comments')
-        ->simplePaginate(10); 
-             
-        return view('components.articles.index', compact('articles'));
-
-
+        $articles = Article::with('categories', 'user', 'comments')
+            ->withCount('comments', 'categories')
+            ->latest()
+            ->simplePaginate(10);             
+        return view('articles.index', compact('articles'));
     }
 
 
     public function create()
     {
         $categories = Category::all();
-        return view('components.articles.create', compact('categories'));
+        return view('articles.create', compact('categories'));
 
 
     }
@@ -52,7 +50,7 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         
-        return view('components.articles.show', compact('article'));
+        return view('articles.show', ['article'=> $article]);
         }
         
 

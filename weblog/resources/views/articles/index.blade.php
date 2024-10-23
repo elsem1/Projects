@@ -1,6 +1,6 @@
 
 
-@extends('layouts.app')
+@extends('components.layout')
 
 
 @section('content')
@@ -19,18 +19,21 @@
         <span class="font-bold mx-1"> | </span>
         
         @if($article->categories->count())
-            <span>Categories: 
+            <span>
+                Categor{{ $article->categories_count !== 1 ? 'ies' : 'y' }}:
                 @foreach ($article->categories as $category)
                     <a href="{{ route('categories.show', $category->id) }}">{{ $category->name }}</a>
                     @if (!$loop->last), @endif 
                 @endforeach
             </span>
+        
         @else
             
         @endif
         
         <span class="font-bold mx-1"> | </span>
-        <a href="#">{{ $article->comments_count }} Comments</a>
+        <a href="#">{{ $article->comments_count }} Comment{{ $article->comments_count !== 1 ? 's' : '' }}</a>
+
     </div>
 
     <p class="text-zinc-400 leading-normal">

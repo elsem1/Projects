@@ -1,9 +1,11 @@
-<x-mail::message>
-<h2>{{ $job->title }}</h2>
-Congratulations, you succesfully created a new job listing!
+<h2>
+    New job listing for {{ $job->title }}
+</h2>
+<p>
+    Congrats! You succesfully posted your new job on our website!
+</p>
 
-<a href="{{ url('/jobs/' . $job->id) }}">View Your Job Listing</a>
+<p>
+    <a href="{{ url('/jobs/' . $job->id) }}">Click here to view your new job listing</a>
+</p>
 
-Thanks,<br>
-{{ config('app.name') }}
-</x-mail::message>

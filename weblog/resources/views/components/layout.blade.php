@@ -12,11 +12,11 @@
 <body class="bg-neutral-950">
     
     <!-- header -->
-    @include('components.partials.header')
+    @include('components.header')
     <!-- /header -->
     
     <!-- nav -->
-    @include('components.partials.nav')
+    @include('components.nav')
     <!-- /nav -->
     
     <div class="w-full h-full">
@@ -30,7 +30,7 @@
 
             <!-- Sidebar -->
             <div class="w-full md:w-1/4 md:sticky md:top-8">
-                @include('components.partials.sidebar')
+                @include('components.sidebar')
             </div>
 
         </div>
@@ -38,7 +38,7 @@
     </div>
     
     <!-- footer -->
-    @include('components.partials.footer')
+    @include('components.footer')
     <!-- /footer -->
 
 </body>
