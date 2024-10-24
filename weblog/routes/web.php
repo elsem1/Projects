@@ -35,6 +35,8 @@ Route::controller(ArticleController::class)->group(function(){
     Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 });
 
+Route::get('/profile', [UserController::class, 'index']);
+
 Route::get('/register', [RegisterController::class, 'create']);
 Route::post('/register', [RegisterController::class, 'store']);
 

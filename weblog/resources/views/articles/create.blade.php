@@ -1,13 +1,11 @@
-@extends('components.layout')
-
-@section('content')
+<x-layout>
     <h1 class="text-xl md:text-4xl pb-6 text-slate-400 text-center">Write a New Article</h1>
     <form action="{{ route('articles.store') }}" method="POST" class="max-w-3xl mx-auto bg-neutral-900 p-6 rounded-lg shadow-lg">
         @csrf
 
         <!--  This part is to add the title to a new article -->
         <div class="mb-6">
-            <label for="title" class="block text-lg md:text-2xl font-semibold text-slate-400 mb-2">Title:</label>
+            <x-form-label for="title">Title:</x-form-label>
             <input type="text" id="title" name="title" required 
                 class="w-full px-4 py-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
         </div>
@@ -37,4 +35,4 @@
             </button>
         </div>
     </form>
-@endsection
+</x-layout>

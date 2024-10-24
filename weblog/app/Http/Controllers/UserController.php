@@ -14,11 +14,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('articles');
-        
-         
-             
-        return view('users.index', compact('users'));
+        $user = User::with('articles')->get();
+        $article = Article::with('categories', 'user', 'comments')->get();
+                    
+        return view('/profile.index', [
+            'user' => $user,
+            'article' => $article
+        ]);
     }
 
     /**

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-neutral-950">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,28 +9,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Blog</title>
 </head>
-<body class="bg-neutral-950">
+<body class="h-full bg-neutral-950">
     
     <!-- header -->
-    @include('components.header')
+    <x-header></x-header>
     <!-- /header -->
     
     <!-- nav -->
-    @include('components.nav')
+    <x-nav></x-nav>
     <!-- /nav -->
     
     <div class="w-full h-full">
         <!-- Blog and Sidebar -->
-        <div class="container max-w-4xl mx-auto md:flex items-start py-8 px-12 md:px-0">
+        <div class="container max-w-6xl mx-auto md:flex items-start py-8 px-12 md:px-0 space-x-8">
 
             <!-- Main content -->
-            <div class="w-full md:w-3/4 md:pr-12 mb-12">
-                @yield('content')
+            <div class="w-full md:w-3/4">
+                {{ $slot }}  <!-- This is where your registration form will go -->
             </div>
 
             <!-- Sidebar -->
             <div class="w-full md:w-1/4 md:sticky md:top-8">
-                @include('components.sidebar')
+                <x-sidebar></x-sidebar>
             </div>
 
         </div>
@@ -38,7 +38,7 @@
     </div>
     
     <!-- footer -->
-    @include('components.footer')
+    <x-footer></x-footer>
     <!-- /footer -->
 
 </body>

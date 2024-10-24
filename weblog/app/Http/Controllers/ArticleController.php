@@ -12,12 +12,14 @@ class ArticleController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+    {        
         $articles = Article::with('categories', 'user', 'comments')
             ->withCount('comments', 'categories')
             ->latest()
             ->simplePaginate(10);             
-        return view('articles.index', compact('articles'));
+        return view('articles.index', compact('articles'), [
+            'articles' => $articles
+        ]);
     }
 
 

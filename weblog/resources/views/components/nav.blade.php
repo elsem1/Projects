@@ -12,11 +12,17 @@
             <a href="search" class="px-2 md:pl-0 md:mr-3 md:pr-3 text-slate-400 no-underline md:border-r border-gray-light">Search</a>
         </div>
     </div>
-    @if (!request()->is('articles/create'))
+    
             <div class="md:w-1/2 text-center md:text-right mt-4 md:mt-0">
-                <x-nav-link href="articles/create" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                    &#10133; New Article
-                </x-nav-link>
-    @endif
+
+                @auth
+                    @if (!request()->is('articles/create'))
+                        <x-nav-link href="{{ route('articles.create') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                            &#10133; New Article
+                        </x-nav-link>
+                @endif
+            @endauth
+
+    
     </div>
 </nav>
