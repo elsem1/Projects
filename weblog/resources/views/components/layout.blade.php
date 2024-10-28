@@ -5,41 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^3/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Blog</title>
 </head>
 <body class="h-full bg-neutral-950">
     
-    <!-- header -->
+    <!-- Header -->
     <x-header></x-header>
-    <!-- /header -->
     
-    <!-- nav -->
+    <!-- Navigation -->
     <x-nav></x-nav>
-    <!-- /nav -->
     
     <div class="w-full h-full">
-        <!-- Blog and Sidebar -->
-        <div class="container max-w-6xl mx-auto md:flex items-start py-8 px-12 md:px-0 space-x-8">
-
-            <!-- Main content -->
-            <div class="w-full md:w-3/4">
-                {{ $slot }}  <!-- This is where your registration form will go -->
+        <!-- Blog and Sidebar Layout -->
+        <div class="container max-w-6xl mx-auto flex flex-col md:flex-row md:items-start py-8 px-4 md:px-0 md:space-x-8">
+            
+            <!-- Main Content (on the left) -->
+            <div class="w-full md:flex-1">
+                {{ $slot }} 
             </div>
-
-            <!-- Sidebar -->
-            <div class="w-full md:w-1/4 md:sticky md:top-8">
+            
+            <!-- Sidebar (on the right) -->
+            <div class="w-full sticky md:w-1/4 md:sticky md:top-8"> <!-- Use a fixed width here -->
                 <x-sidebar></x-sidebar>
             </div>
 
         </div>
-        <!-- /Blog and Sidebar -->
     </div>
     
-    <!-- footer -->
+    <!-- Footer -->
     <x-footer></x-footer>
-    <!-- /footer -->
 
 </body>
 </html>

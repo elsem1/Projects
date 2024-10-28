@@ -31,9 +31,9 @@ class CommentController extends Controller
      */
     public function store(Request $request, Article $article)
     {
-        dd($request);
+        
         request()->validate([
-            'body' => ['required', 'max:1000']
+            'body' => ['required', 'min:1', 'max:1000']
         ]);
 
         // $comment = Comment::create([
@@ -43,9 +43,12 @@ class CommentController extends Controller
         // ]);
 
         $comment = new Comment();
-        $comment->articles_id = $article->id;
+        $comment->article_id = $article->id;
+        $comment->user_id = Auth::id();
         $comment->body = request('body');
         $comment->save();
+
+        return redirect()->route('articles.show',$article->id)->with('success',"Comment posted successfully!");
 
 
 

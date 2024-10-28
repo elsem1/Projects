@@ -10,14 +10,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 
-Route::post('/comments/{article}', [CommentController::class, 'store'])->name('comments.store');
 
-Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
-
-
-// Route::get('/', function () {
-//     return view('home');
-//     })->name('home');
+Route::get('/', function () {
+    return view('home');
+    })->name('home');
     
 
 Route::controller(ArticleController::class)->group(function(){ 
@@ -30,14 +26,15 @@ Route::controller(ArticleController::class)->group(function(){
 
     Route::get('/articles/{article}/edit','edit')
         ->middleware('auth')
-        ->can('edit', 'articles')
+        ->can('edit', 'article')
         ->name('articles.edit');
 
     Route::patch('/articles/{article}', 'update')->name('articles.update');
     Route::delete('/articles/{article}','destroy')->name('articles.destroy');
     
 });
-
+Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
+Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->name('articles.comments.store');
 
 
 Route::get('/profile', [UserController::class, 'index']);

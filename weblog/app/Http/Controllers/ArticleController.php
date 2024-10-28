@@ -6,6 +6,8 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 
 class ArticleController extends Controller
@@ -40,13 +42,25 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $article = new Article();
-        $article->user_id = 1; # Moet nog aangepast worden naar de user
-        $article->title = $request->input('title');
-        $article->body = $request->input('body');
-        $article->save();
+        request()->validate([
+            'title' => ['required', 'min:3', 'max:200'],
+            'category' => '',
+            'body' => ['required', 'min:3', 'max:20000' ]
+        ]);
 
-        // return redirect()->route('articles.index');
+        $article = Article::create([
+            'title' => request('title'),
+            'category' => request('category'),
+            'body' => request('body'),
+            'user_id' => Auth::id()
+        ]);
+
+        // $article->user_id = Auth::id();
+        // $article->title = $request->input('title');
+        // $article->body = $request->input('body');
+        // $article->save();
+
+        return redirect()->route('articles.index');
 
     }
 
@@ -63,21 +77,36 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Article $article)
     {
         $categories = Category::all();
-        return view('articles.edit', compact('article', 'categories'));
+
+        return view('articles.edit', [
+            'article' => $article,
+            'categories' => $categories
+        ]);       
     }
 
-    /**
-     * Update the specified resource in storage.
-     public function update(UpdateArticleRequest $request, Article $article)
+
+
+     public function update(Article $article)
      {
-        $validated = $request->validated();
-        $article->update($validated);
-        return redirect()->route('articles.index');
+        request()->validate([
+            'title' => ['required', 'min:3', 'max:200'],
+            'category' => '',
+            'body' => ['required', 'min:3', 'max:20000' ]
+        ]);
+
+        $article = Article::create([
+            'title' => request('title'),
+            'category' => request('category'),
+            'body' => request('body'),
+            'user_id' => Auth::id()
+        ]);
+
+        return redirect('/articles/' . $article->id);
     }
-    */
+
 
     /**
      * Remove the specified resource from storage.
