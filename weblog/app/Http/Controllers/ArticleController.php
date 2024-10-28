@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Category;
+
 
 class ArticleController extends Controller
 {
@@ -16,9 +18,11 @@ class ArticleController extends Controller
         $articles = Article::with('categories', 'user', 'comments')
             ->withCount('comments', 'categories')
             ->latest()
-            ->simplePaginate(10);             
+            ->simplePaginate(10);
+                    
         return view('articles.index', compact('articles'), [
-            'articles' => $articles
+            'articles' => $articles,
+            
         ]);
     }
 
@@ -42,7 +46,7 @@ class ArticleController extends Controller
         $article->body = $request->input('body');
         $article->save();
 
-        return redirect()->route('articles.index');
+        // return redirect()->route('articles.index');
 
     }
 

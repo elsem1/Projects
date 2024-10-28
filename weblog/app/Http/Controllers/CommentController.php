@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Article;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Comment;
+
 
 class CommentController extends Controller
 {
@@ -25,9 +29,26 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Article $article)
     {
-        //
+        dd($request);
+        request()->validate([
+            'body' => ['required', 'max:1000']
+        ]);
+
+        // $comment = Comment::create([
+        //     'body' => request('body'),
+        //     'user_id' => Auth::id(),
+        //     'article_id' => Article::id()
+        // ]);
+
+        $comment = new Comment();
+        $comment->articles_id = $article->id;
+        $comment->body = request('body');
+        $comment->save();
+
+
+
     }
 
     /**

@@ -1,7 +1,7 @@
 
 
 
-<div class="w-full md:w-64 md:sticky md:top-0 md:float-right">
+<div class="md:w-64 md:sticky md:top-0 md:float-right">
     <aside class="rounded shadow overflow-hidden mb-6 border">
         <h3 class="text-sm bg-slate-300 text-zinc-900 py-3 px-4 font-bold border-b">Categories</h3>
         <div class="p-4">

@@ -8,12 +8,16 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
-use App\Models\Article;
+use App\Http\Controllers\CommentController;
+
+Route::post('/comments/{article}', [CommentController::class, 'store'])->name('comments.store');
+
+Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 
 
-Route::get('/', function () {
-    return view('home');
-    })->name('home');
+// Route::get('/', function () {
+//     return view('home');
+//     })->name('home');
     
 
 Route::controller(ArticleController::class)->group(function(){ 
@@ -32,8 +36,9 @@ Route::controller(ArticleController::class)->group(function(){
     Route::patch('/articles/{article}', 'update')->name('articles.update');
     Route::delete('/articles/{article}','destroy')->name('articles.destroy');
     
-    Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 });
+
+
 
 Route::get('/profile', [UserController::class, 'index']);
 

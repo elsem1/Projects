@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Article;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -14,14 +16,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::with('articles')->get();
-        $article = Article::with('categories', 'user', 'comments')->get();
+        $user_id=Auth::id();
+        $articles = Article::where('user_id', $user_id)
+            ->with('categories', 'user', 'comments')
+            ->withCount('comments', 'categories')
+            ->latest()
+            ->get();
                     
         return view('/profile.index', [
-            'user' => $user,
-            'article' => $article
+            'articles' => $articles
         ]);
-    }
+    } 
 
     /**
      * Show the form for creating a new resource.
