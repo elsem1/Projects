@@ -27,7 +27,7 @@
             </div>
             
             <!-- Sidebar (on the right) -->
-            <div class="w-full sticky md:w-1/4 md:sticky md:top-8"> <!-- Use a fixed width here -->
+            <div class="w-full sticky md:w-1/4 md:sticky md:top-8"> 
                 <x-sidebar></x-sidebar>
             </div>
 

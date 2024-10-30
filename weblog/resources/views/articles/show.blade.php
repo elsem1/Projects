@@ -16,7 +16,7 @@
     </div>
     @can('edit', $article) {{-- weergeeft de edit button alleen wanneer de user geauthoriseerd is, via gate in AppServiceProvider of JobPolicy --}}
     <p class="mt-6">
-        <x-button href="/articles/{{ $article->id }}/edit">Edit Article</x-button>
+        <x-button href="{{ route('articles.edit', $article->id) }}"> Edit Article</x-button>
     </p>
     @endcan
     @include('components.comments-box')

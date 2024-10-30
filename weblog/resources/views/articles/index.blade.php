@@ -13,7 +13,7 @@
             </h2>
 
             <div class="mb-4 text-sm text-blue-100">
-                by <a href="#">{{ $article->user->name }}</a> on {{ $article->created_at }}
+                by <a href="#">{{ $article->user->name }}</a> {{ $article->created_at->diffForHumans() }}
                 <span class="font-bold mx-1"> | </span>
                 
                 @if($article->categories->count())

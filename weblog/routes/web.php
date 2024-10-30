@@ -33,8 +33,16 @@ Route::controller(ArticleController::class)->group(function(){
     Route::delete('/articles/{article}','destroy')->name('articles.destroy');
     
 });
+
+Route::get('/categories', [CategoryController::class, 'index'])->middleware('auth')->name('categories.index');
+Route::post('/categories', [CategoryController::class, 'store'])->name('categories.index');
+Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::patch('/categories/{category}', [CategoryController::class, 'show'])->name('categories.update');
 Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->name('articles.comments.store');
+
 
 
 Route::get('/profile', [UserController::class, 'index']);

@@ -89,15 +89,15 @@ class ArticleController extends Controller
 
 
 
-     public function update(Article $article)
-     {
+    public function update(Article $article)
+    {
         request()->validate([
             'title' => ['required', 'min:3', 'max:200'],
             'category' => '',
             'body' => ['required', 'min:3', 'max:20000' ]
         ]);
 
-        $article = Article::create([
+        $article->update([
             'title' => request('title'),
             'category' => request('category'),
             'body' => request('body'),
@@ -111,8 +111,10 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Article $article)
     {
-        //
+        $article->delete();
+
+        return redirect('/articles');
     }
 }
