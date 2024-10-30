@@ -43,7 +43,7 @@ class CategoryController extends Controller
             'description' => request('description'),            
             
         ]);
-        return view('categories.index', compact('categories'));
+        return redirect('categories.index');
     }
 
     /**
@@ -84,7 +84,7 @@ class CategoryController extends Controller
             'description' => request('description'),            
             
         ]);
-        return view('categories.index', compact('categories'));
+        return redirect('categories/');
     }
 
     /**

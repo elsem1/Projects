@@ -7,7 +7,7 @@
     <div class="max-w-3xl mx-auto py-8 px-4">
         <h1 class="text-2xl md:text-4xl pb-6 text-slate-400 text-center">Create a new Category</h1>
 
-        <form method="POST" action="{{ route('categories.store', $category->id) }}" class="space-y-12">
+        <form action="{{ route('categories.store') }}" method="POST" class="space-y-12">
             @csrf
 
 
@@ -18,7 +18,7 @@
                     <x-form-field>
                         <x-form-label for="name">Name</x-form-label>
                         <div class="mt-2">
-                            <x-form-input type="text" id="name" name="name" value="{{ $category->name }}" required class="w-full" />
+                            <x-form-input type="text" id="name" name="name" required class="w-full" />
                             <x-form-error name="name"/>
                         </div>
                     </x-form-field>
@@ -26,9 +26,10 @@
                     <x-form-field>
                         <x-form-label for="description">Description</x-form-label>
                         <div class="mt-2">
-                            <textarea id="description" name="description" rows="3" class="w-full px-4 py-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                                {{ $category->description }}
+                            <textarea id="description" name="description" rows="3" required class="w-full px-4 py-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                
                             </textarea>
+                            <x-form-error name="name"/>
                         </div>
                 </div>
             </div>
