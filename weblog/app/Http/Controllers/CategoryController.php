@@ -13,7 +13,9 @@ class CategoryController extends Controller
      */
     public function index()
     {  
+        
         $categories = Category::all();
+
 
         return view('categories.index', compact('categories'));
     }
@@ -34,8 +36,8 @@ class CategoryController extends Controller
     {
         request()->validate([
             'name' => ['required', 'min:3', 'max:200'],
-            'description' => ['min:1', 'max:20000'],
-            'body' => ['required', 'min:3', 'max:20000' ]
+            'description' => ['min:1', 'max:20000']
+            
         ]);
 
         $category = Category::create([
@@ -43,7 +45,7 @@ class CategoryController extends Controller
             'description' => request('description'),            
             
         ]);
-        return redirect('categories.index');
+        return redirect('categories/');
     }
 
     /**
@@ -51,9 +53,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $articles = $category->articles(); 
+        $articles = $category->articles()->get(); 
+        $categories = Category::all();
 
-        return view('categories.index', compact('category', 'articles'));
+        return view('categories.show', compact('category', 'articles', 'categories'));
     }
 
     /**

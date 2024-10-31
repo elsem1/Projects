@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use App\Models\Article;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Gate;
+use App\Models\Category;
 
 
 
@@ -25,7 +23,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //Model::preventLazyLoading();
+        View::composer('*', function ($view) {
+            $popularCategories = Category::withCount('articles')
+                ->orderBy('articles_count', 'desc')
+                ->take(4)
+                ->get();
+    
+            $view->with('popularCategories', $popularCategories);
+        });
 
         
     }

@@ -20,7 +20,7 @@ class ArticleController extends Controller
         $articles = Article::with('categories', 'user', 'comments')
             ->withCount('comments', 'categories')
             ->latest()
-            ->simplePaginate(10);
+            ->simplePaginate(4);
                     
         return view('articles.index', compact('articles'), [
             'articles' => $articles,
@@ -44,21 +44,18 @@ class ArticleController extends Controller
     {
         request()->validate([
             'title' => ['required', 'min:3', 'max:200'],
-            'category' => '',
+            'categories' => 'array',
+            'categories.*' => ['integer', 'exists:categories,id'],
             'body' => ['required', 'min:3', 'max:20000' ]
         ]);
 
         $article = Article::create([
-            'title' => request('title'),
-            'category' => request('category'),
+            'title' => request('title'),            
             'body' => request('body'),
             'user_id' => Auth::id()
         ]);
-
-        // $article->user_id = Auth::id();
-        // $article->title = $request->input('title');
-        // $article->body = $request->input('body');
-        // $article->save();
+        
+        $article->categories()->sync($request->input('categories', []));
 
         return redirect()->route('articles.index');
 
@@ -89,23 +86,25 @@ class ArticleController extends Controller
 
 
 
-    public function update(Article $article)
-    {
-        request()->validate([
-            'title' => ['required', 'min:3', 'max:200'],
-            'category' => '',
-            'body' => ['required', 'min:3', 'max:20000' ]
-        ]);
+    public function update(Request $request, Article $article)
+{
+    $request->validate([
+        'title' => ['required', 'min:3', 'max:200'],
+        'categories' => 'array',
+        'categories.*' => ['integer', 'exists:categories,id'],
+        'body' => ['required', 'min:3', 'max:20000']
+    ]);
 
-        $article->update([
-            'title' => request('title'),
-            'category' => request('category'),
-            'body' => request('body'),
-            'user_id' => Auth::id()
-        ]);
+    $article->update([
+        'title' => $request->input('title'),
+        'body' => $request->input('body')
+    ]);
 
-        return redirect('/articles/' . $article->id);
-    }
+    
+    $article->categories()->sync($request->input('categories', []));
+
+    return redirect('/articles/' . $article->id);
+}
 
 
     /**
