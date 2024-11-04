@@ -12,7 +12,16 @@
                             @if (!$loop->last) ,  @endif 
                         @endforeach
         </h6>
-        <p class="mt-10 text-zinc-400 leading-normal">{{ $article->body }}</p>        
+        <p class="mt-10 text-zinc-400 leading-normal">{{ $article->body }}</p>
+
+        
+        <div>            
+            @if ($image && $image->isNotEmpty()) 
+                <img src="{{ asset($image->first()->path) }}" alt="{{ $image->first()->name }}">
+            @endif
+        </div>
+         
+
     </div>
     @can('edit', $article) {{-- weergeeft de edit button alleen wanneer de user geauthoriseerd is, via gate in AppServiceProvider of JobPolicy --}}
     <p class="mt-6">

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Category;
+use App\Models\Article;
 
 
 
@@ -28,8 +29,15 @@ class AppServiceProvider extends ServiceProvider
                 ->orderBy('articles_count', 'desc')
                 ->take(4)
                 ->get();
-    
-            $view->with('popularCategories', $popularCategories);
+
+            $latestArticles = Article::latest()
+                ->take(4)
+                ->get();
+
+                $view->with([
+                    'popularCategories' => $popularCategories,
+                    'latestArticles' => $latestArticles
+                ]);
         });
 
         

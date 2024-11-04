@@ -13,7 +13,7 @@
                 <!-- New Article Button -->
                 @if (!request()->is('articles/create'))
                     <x-nav-link href="{{ route('articles.create') }}" 
-                                class="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg shadow-lg transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400">
+                                class="ml-2 hover:bg-neutral-700 text-white font-medium py-2 px-4 rounded transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-neutral-600">
                         &#10133; New Article
                     </x-nav-link>
                 @endif
@@ -21,19 +21,17 @@
                 <!-- New Category Button -->
                 @if (!request()->is('categories/create'))
                     <x-nav-link href="{{ route('categories.create') }}" 
-                                class="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg shadow-lg transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 ml-2">
+                                class="ml-2  hover:bg-neutral-700 text-white font-medium py-2 px-4 rounded transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-neutral-600">
                         &#10133; New Category                         
                     </x-nav-link>
                 @endif
             @endauth
         </div>
         
-            
-            <!-- Search Link -->
-            <a href="search" 
-               class="inline-block px-2 md:pl-0 md:mr-3 text-slate-400 no-underline md:border-r border-gray-400 ml-10">
-               Search
-            </a>
-        </div>
+        <!-- Search Link -->
+        <a href="search" 
+           class="inline-block px-2 md:pl-0 md:mr-3 text-slate-400 no-underline md:border-r border-gray-400 ml-10">
+           Search
+        </a>
     </div>
 </nav>

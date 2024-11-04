@@ -29,6 +29,7 @@
                             <textarea id="description" name="description" rows="3" class="w-full px-4 py-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                 {{ $category->description }}
                             </textarea>
+                            <x-form-error name="description"/>
                         </div>
                 </div>
             </div>

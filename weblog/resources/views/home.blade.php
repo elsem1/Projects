@@ -3,6 +3,6 @@
         Home
     </x-slot:heading>
 
-
+<x-title></x-title>
         
 </x-layout>   

@@ -8,7 +8,7 @@
             <x-form-button>Post Comment</x-form-button>
         </div>
     </form>
-    
+     
     <div class="mt-5">
         @foreach ($article->comments as $comment)
             <div class="p-4 mb-4 bg-gray-800 rounded">

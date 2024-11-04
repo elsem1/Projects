@@ -27,10 +27,10 @@
             </div>
             
             <!-- Sidebar (on the right) -->
-            <div class="w-full sticky md:w-1/4 md:sticky md:top-8"> 
+            <div class="w-full md:w-1/4 md:sticky md:top-8">
                 <x-sidebar></x-sidebar>
             </div>
-
+            
         </div>
     </div>
     

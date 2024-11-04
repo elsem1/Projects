@@ -27,9 +27,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading();
 
-        // Gate::define('edit-job', function (User $user, Job $job) // Gate is zoals het impliceerd, iets dat je tegen kan houden zonder auth
-        // {
-        //     return $job->employer->user->is($user); // is is een method in models en kijkt of de twee gelijk aan elkaar zijn, isNot is het tegenovergestelde           
-        // });
+        Gate::define('edit-job', function (User $user, Job $job) // Gate is zoals het impliceerd, iets dat je tegen kan houden zonder auth
+        {
+            return $job->employer->user->is($user); // is is een method in models en kijkt of de twee gelijk aan elkaar zijn, isNot is het tegenovergestelde           
+        });
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\UserController;
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
@@ -18,7 +19,7 @@ Route::get('/', function () {
 
 Route::controller(ArticleController::class)->group(function(){ 
     Route::get ('/articles', 'index')->name('articles.index');
-    Route::get('/articles/create', 'create')->name('articles.create');
+    Route::get('/articles/create', 'create')->middleware('auth')->name('articles.create');
     Route::get('/articles/{article}','show')->name('articles.show');
     Route::post('/articles','store')
         ->middleware('auth')
@@ -36,14 +37,13 @@ Route::controller(ArticleController::class)->group(function(){
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::post('/categories', [CategoryController::class, 'store'])->middleware('auth')->name('categories.store');
-Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+Route::get('/categories/create', [CategoryController::class, 'create'])->middleware('auth')->name('categories.create');
 
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('auth')->name('categories.edit');
-Route::patch('/categories/{category}', [CategoryController::class, 'show'])->name('categories.update');
-Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->name('articles.comments.store');
-
-
+Route::patch('/categories/{category}', [CategoryController::class, 'show'])->middleware('auth')->name('categories.update');
+Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->middleware('auth')->name('articles.comments.store');
+Route::post('articles/{article}/images', [Articlecontroller::class, 'store'])->name('articles.images.store');
 
 Route::get('/profile', [UserController::class, 'index']);
 
@@ -55,16 +55,4 @@ Route::get('/login', [SessionController::class, 'create'])
 
 Route::post('/login', [SessionController::class, 'store']);
 Route::post('/logout', [SessionController::class, 'destroy']);
-
-
-
-
-
-// Route::get('/login', function() {
-//     return view('/login/index');
-//     })->name('login');
-
-
-
-
 

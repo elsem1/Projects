@@ -1,7 +1,12 @@
 <x-layout>
-    <x-slot:heading>
-        Profile
+     <x-slot:heading>
+        Articles
     </x-slot:heading>
+        
+        <div class="max-w-3xl mx-auto py-8 px-4">
+            <h1 class="text-3xl md:text-4xl font-semibold text-slate-400 text-center mb-6">My Articles</h1>
+    
+        </div>
 
     <div class="w-full md:w-3/4 md:pr-12 mb-12">
         @foreach($articles as $article)

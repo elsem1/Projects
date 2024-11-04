@@ -35,13 +35,7 @@ class CommentController extends Controller
         request()->validate([
             'body' => ['required', 'min:1', 'max:1000']
         ]);
-
-        // $comment = Comment::create([
-        //     'body' => request('body'),
-        //     'user_id' => Auth::id(),
-        //     'article_id' => Article::id()
-        // ]);
-
+        
         $comment = new Comment();
         $comment->article_id = $article->id;
         $comment->user_id = Auth::id();
