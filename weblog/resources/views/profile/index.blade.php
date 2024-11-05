@@ -1,13 +1,14 @@
 <x-layout>
-     <x-slot:heading>
-        Articles
-    </x-slot:heading>
+    <x-title> 
+        <x-slot:title> 
+            My articles
+        </x-slot:title> 
+        <x-slot:description> 
+            An overview of all the articles you've written!
+        </x-slot:description> 
+    </x-title>
         
-        <div class="max-w-3xl mx-auto py-8 px-4">
-            <h1 class="text-3xl md:text-4xl font-semibold text-slate-400 text-center mb-6">My Articles</h1>
-    
-        </div>
-
+        
     <div class="w-full md:w-3/4 md:pr-12 mb-12">
         @foreach($articles as $article)
         <article class="mb-12 p-4 bg-neutral-900 rounded-lg shadow-lg">

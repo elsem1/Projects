@@ -1,6 +1,6 @@
 <x-layout>
     <!-- Login Form -->
-    <form method="POST" action="/login" class="max-w-md mx-auto bg-neutral-900 p-8 rounded-lg shadow-lg">
+    <form method="POST" action="/login" enctype="multipart/form-data" class="max-w-md mx-auto bg-neutral-950 p-8 rounded-lg shadow-lg border border-slate-300">
         @csrf 
 
         <!-- Form Header -->
@@ -12,7 +12,7 @@
         <!-- Email Field -->
         <div class="mt-8">
             <x-form-field>
-                <x-form-label for="email" class="text-lg text-slate-300">E-mail</x-form-label>
+                <x-form-label for="email" class="text-lg text-slate-400">E-mail</x-form-label>
                 <div class="mt-2">
                     <x-form-input name="email" id="email" placeholder="example@email.com" :value="old('email')" class="w-full px-4 py-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"/>
                     <x-form-error name="email"/>
@@ -23,7 +23,7 @@
         <!-- Password Field -->
         <div class="mt-6">
             <x-form-field>
-                <x-form-label for="password" class="text-lg text-slate-300">Password</x-form-label>
+                <x-form-label for="password" class="text-lg text-slate-400">Password</x-form-label>
                 <div class="mt-2">
                     <x-form-input name="password" id="password" type="password" placeholder="YourPassword123" class="w-full px-4 py-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"/>
                     <x-form-error name="password"/>

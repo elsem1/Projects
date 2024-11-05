@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\UserController;
-
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ImageController;
+use Illuminate\Http\Request;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
@@ -14,25 +13,25 @@ use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return view('home');
-    })->name('home');
-    
+})->name('home');
 
-Route::controller(ArticleController::class)->group(function(){ 
-    Route::get ('/articles', 'index')->name('articles.index');
+
+Route::controller(ArticleController::class)->group(function () {
+    Route::get('/articles', 'index')->name('articles.index');
     Route::get('/articles/create', 'create')->middleware('auth')->name('articles.create');
-    Route::get('/articles/{article}','show')->name('articles.show');
-    Route::post('/articles','store')
+    Route::get('/articles/{article}', 'show')->name('articles.show');
+    Route::post('/articles', 'store')
         ->middleware('auth')
         ->name('articles.store');
 
-    Route::get('/articles/{article}/edit','edit')
+    Route::get('/articles/{article}/edit', 'edit')
         ->middleware('auth')
         ->can('edit', 'article')
         ->name('articles.edit');
 
     Route::patch('/articles/{article}', 'update')->name('articles.update');
-    Route::delete('/articles/{article}','destroy')->name('articles.destroy');
-    
+    Route::delete('/articles/{article}', 'destroy')->name('articles.destroy');
+
 });
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
@@ -44,6 +43,17 @@ Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->
 Route::patch('/categories/{category}', [CategoryController::class, 'show'])->middleware('auth')->name('categories.update');
 Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->middleware('auth')->name('articles.comments.store');
 Route::post('articles/{article}/images', [Articlecontroller::class, 'store'])->name('articles.images.store');
+
+
+Route::get('/premium-articles', function (Request $request, ArticleController $controller) {
+    $request->query->set('type', 'premium');
+    return $controller->index($request);
+})->name('articles.premium');
+
+
+Route::get('/premium', [RegisterController::class, 'show'])->name('subscription');
+
+
 
 Route::get('/profile', [UserController::class, 'index']);
 
