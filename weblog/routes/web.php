@@ -51,7 +51,8 @@ Route::get('/premium-articles', function (Request $request, ArticleController $c
 })->name('articles.premium');
 
 
-Route::get('/premium', [RegisterController::class, 'show'])->name('subscription');
+Route::get('/premium', [RegisterController::class, 'show'])->name('premium');
+
 
 
 

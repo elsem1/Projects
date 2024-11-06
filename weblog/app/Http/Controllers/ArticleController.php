@@ -16,15 +16,22 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // In ArticleController.php
-    // In ArticleController.php
+    
+    
     public function index(Request $request)
     {
         $type = $request->query('type', 'all');
 
-        if ($type === 'premium' && (!auth()->check() || !auth()->user()->is_premium)) {
-            return redirect()->route('subscription.page');
+        if ($type === 'premium' && (!auth()->check() || !auth()->user()->premium)) {
+            $title = 'Premium Articles Preview';
+            $description = 'Preview of our special premium articles.<br>Subscribe to our website to see our best content!';
+            return redirect()->route('premium', [
+                'title' => $title,
+                'description' => $description,
+            ]);
+            
         }
+        
 
         if ($type === 'premium') {
             $articles = Article::where('premium', 1)

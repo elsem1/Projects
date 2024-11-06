@@ -9,6 +9,23 @@ use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
+
+    public function show(Request $request)
+{
+    \Log::info('Title from query: ' . $request->query('title'));
+    \Log::info('Description from query: ' . $request->query('description'));
+
+    $title = $request->query('title', 'Default Title');
+    $description = $request->query('description', 'Default Description');
+
+    return view('auth.premium', compact('title', 'description'));
+}
+
+
+
+
+
+
     public function create()
     {
         return view('auth.register');
