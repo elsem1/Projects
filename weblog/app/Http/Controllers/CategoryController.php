@@ -13,9 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {  
-        
-        $categories = Category::all();
-
+        $categories = Category::all();            
 
         return view('categories.index', compact('categories'));
     }
@@ -53,7 +51,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $articles = $category->articles()->get(); 
+        $articles = $category->articles()
+            ->simplePaginate(5); 
         $categories = Category::all();
 
         return view('categories.show', compact('category', 'articles', 'categories'));

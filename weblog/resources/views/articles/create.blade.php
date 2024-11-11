@@ -7,9 +7,9 @@
         @csrf
         
         <h1 class="text-2xl md:text-4xl text-slate-400 font-semibold text-center mb-8">Write a New Article</h1>
-        
+      
         <div class="mb-6">
-            <x-form-label for="title" class="block text-lg md:text-xl font-semibold text-slate-400">Title:</x-form-label>
+            <x-form-label for="title" class="inline-flex items-center text-lg md:text-xl font-semibold text-slate-400">Title:</x-form-label>
             <input type="text" id="title" name="title" required 
                 class="w-full px-4 py-2 mt-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
         </div>
@@ -30,8 +30,11 @@
                 class="w-full px-4 py-2 mt-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
             </textarea>
         </div>
-
+        <div>
         <x-add-image></x-add-image>
+        <x-form-label for="premium" class="block text-lg md:text-xl font-semibold text-slate-400">Is this premium content?</x-form-label>
+            <input type="checkbox" id="premium" name="premium" value="1">
+        </div>
 
         <div class="flex items-center justify-between mt-8">
             <a href="{{ route('articles.index') }}" 

@@ -42,7 +42,7 @@ Route::get('/categories/{category}', [CategoryController::class, 'show'])->name(
 Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('auth')->name('categories.edit');
 Route::patch('/categories/{category}', [CategoryController::class, 'show'])->middleware('auth')->name('categories.update');
 Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->middleware('auth')->name('articles.comments.store');
-Route::post('articles/{article}/images', [Articlecontroller::class, 'store'])->name('articles.images.store');
+Route::post('articles/{article}/images', [ArticleController::class, 'store'])->name('articles.images.store');
 
 
 Route::get('/premium-articles', function (Request $request, ArticleController $controller) {
@@ -54,12 +54,13 @@ Route::get('/premium-articles', function (Request $request, ArticleController $c
 Route::get('/premium', [RegisterController::class, 'show'])->name('premium');
 
 
-
-
 Route::get('/profile', [UserController::class, 'index']);
 
 Route::get('/register', [RegisterController::class, 'create']);
 Route::post('/register', [RegisterController::class, 'store']);
+
+Route::get('/subscribe', [RegisterController::class, 'create']);
+Route::post('/subscribe', [RegisterController::class, 'store']);
 
 Route::get('/login', [SessionController::class, 'create'])
     ->name('login');

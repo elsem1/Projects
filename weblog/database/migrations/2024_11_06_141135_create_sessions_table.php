@@ -13,6 +13,10 @@ class CreateSessionsTable extends Migration
      */
     public function up()
     {
+        // Drop the table if it exists
+        Schema::dropIfExists('sessions');
+
+        // Create the sessions table
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->unique();
             $table->foreignId('user_id')->nullable()->index();
@@ -33,3 +37,4 @@ class CreateSessionsTable extends Migration
         Schema::dropIfExists('sessions');
     }
 }
+

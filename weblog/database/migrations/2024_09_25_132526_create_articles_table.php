@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('body');
             $table->foreignId('user_id');
-            $table->boolean('premium')->nullable();
+            $table->boolean('premium')->default(false);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

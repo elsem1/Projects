@@ -28,7 +28,7 @@ class SessionController extends Controller
 
     request()->session()->regenerate();
 
-    return redirect('/articles');
+    return redirect('/profile');
     }
 
     public function destroy()

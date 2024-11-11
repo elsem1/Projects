@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Category;
 use App\Models\Article;
+use Illuminate\Support\Facades\Blade;
 
 
 
@@ -24,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Blade::if('nonpremium', function () {
+            return !auth()->check() || !auth()->user()->premium;
+        });
+
         View::composer('*', function ($view) {
             $popularCategories = Category::withCount('articles')
                 ->orderBy('articles_count', 'desc')

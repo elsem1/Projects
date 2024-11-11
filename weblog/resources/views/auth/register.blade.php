@@ -22,8 +22,8 @@
 
             
             <div class="space-y-2"> 
-                <label for="email" class="block text-lg text-slate-300">E-mail</label> 
-                <input type="email_confirmation" name="email_confirmation" id="email" placeholder="johndoe@example.com" required class="w-full px-4 py-2 rounded-lg bg-neutral-900 border border-slate-500 text-slate-200 focus:outline-none focus:ring-2 focus:ring-green-500"/> 
+                <label for="email" class="block text-lg text-slate-300">Confirm E-mail</label> 
+                <input type="email" name="email_confirmation" id="email" placeholder="johndoe@example.com" required class="w-full px-4 py-2 rounded-lg bg-neutral-900 border border-slate-500 text-slate-200 focus:outline-none focus:ring-2 focus:ring-green-500"/> 
                 <x-form-error name="email_confirmation"/> 
             </div>            
             
@@ -35,8 +35,8 @@
             </div>
             
             <div class="space-y-2"> 
-                <label for="password" class="block text-lg text-slate-300">Password</label> 
-                <input type="password_confirmation" name="password_confirmation" id="password_confirmation" placeholder="YourPassword123" required class="w-full px-4 py-2 rounded-lg bg-neutral-900 border border-slate-500 text-slate-200 focus:outline-none focus:ring-2 focus:ring-green-500"/> 
+                <label for="password" class="block text-lg text-slate-300">Confirm Password</label> 
+                <input type="password" name="password_confirmation" id="password_confirmation" placeholder="YourPassword123" required class="w-full px-4 py-2 rounded-lg bg-neutral-900 border border-slate-500 text-slate-200 focus:outline-none focus:ring-2 focus:ring-green-500"/> 
                 <x-form-error name="password_confirmation"/> 
             </div>
 

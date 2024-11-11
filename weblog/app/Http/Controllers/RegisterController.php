@@ -6,19 +6,23 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
+use App\Models\Article;
 
 class RegisterController extends Controller
 {
 
     public function show(Request $request)
 {
-    \Log::info('Title from query: ' . $request->query('title'));
-    \Log::info('Description from query: ' . $request->query('description'));
-
+    $type = $request->query('type', 'all');
+    $articles = Article::where('premium', 1)
+    ->withCount(['comments', 'categories'])
+    ->latest()
+    ->take(2)
+    ->get();
     $title = $request->query('title', 'Default Title');
     $description = $request->query('description', 'Default Description');
 
-    return view('auth.premium', compact('title', 'description'));
+    return view('auth.premium', compact('title', 'description', 'articles', 'type'));
 }
 
 
@@ -44,6 +48,6 @@ class RegisterController extends Controller
 
             Auth::login($user);
 
-            return redirect('/');
+            return redirect('/articles');
     }
 }

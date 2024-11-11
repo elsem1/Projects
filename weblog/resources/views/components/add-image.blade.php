@@ -24,7 +24,7 @@
         <div class="mb-6">
             <x-form-label for="image" class="block text-lg md:text-xl font-semibold text-slate-400">Image:</x-form-label>
             <input type="file" id="image" name="image"
-                class="w-full px-4 py-2 mt-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                class="bg-neutral-800 text-slate-200 ">
         </div>
     </div>
 </div>

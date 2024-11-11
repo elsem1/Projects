@@ -23,8 +23,9 @@ class ArticleController extends Controller
         $type = $request->query('type', 'all');
 
         if ($type === 'premium' && (!auth()->check() || !auth()->user()->premium)) {
+            
             $title = 'Premium Articles Preview';
-            $description = 'Preview of our special premium articles.<br>Subscribe to our website to see our best content!';
+            $description = 'Preview of our special premium articles.\nSubscribe to our website to see our best content!';
             return redirect()->route('premium', [
                 'title' => $title,
                 'description' => $description,
@@ -82,6 +83,7 @@ class ArticleController extends Controller
             'title' => $request->input('title'),
             'body' => $request->input('body'),
             'user_id' => Auth::id(),
+            'premium' => $request->input('premium', 0)
         ]);
 
 

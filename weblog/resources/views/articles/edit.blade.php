@@ -37,9 +37,11 @@
             <textarea id="body" name="body" rows="8" required 
                 class="w-full px-4 py-2 mt-2 rounded-lg bg-neutral-800 text-slate-200 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">{{ $article->body }}</textarea>
         </div>
-        
+        <span>
         <x-add-image></x-add-image>
-       
+        <x-form-label for="premium" class="block text-lg md:text-xl font-semibold text-slate-400">Is this premium content?</x-form-label>
+            <input type="checkbox" id="premium" name="premium" value="1">
+        </span>
         
         <div class="mt-8 flex items-center justify-between gap-x-6">
             

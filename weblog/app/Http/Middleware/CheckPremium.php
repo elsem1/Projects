@@ -18,9 +18,9 @@ class CheckPremium
      */
     public function handle(Request $request, Closure $next)
     {
-        // Assuming you have a `is_premium` field on your User model
+        
         if (!auth()->check() || !auth()->user()->premium) {
-            // Redirect to subscription page if user is not premium
+            
             return redirect()->route('premium');
         }
 
