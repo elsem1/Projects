@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 
 class ArticleController extends Controller
@@ -16,61 +16,78 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    
-    
+
+    public function premiumArticles(Request $request)
+    {
+        $request->query->set('type', 'premium');
+        return $this->index($request);
+    }
+
     public function index(Request $request)
     {
         $type = $request->query('type', 'all');
 
-        if ($type === 'premium' && (!auth()->check() || !auth()->user()->premium)) {
-            
-            $title = 'Premium Articles Preview';
-            $description = 'Preview of our special premium articles.\nSubscribe to our website to see our best content!';
-            return redirect()->route('premium', [
-                'title' => $title,
-                'description' => $description,
-            ]);
-            
-        }
-        
 
-        if ($type === 'premium') {
-            $articles = Article::where('premium', 1)
-                ->withCount(['comments', 'categories'])
-                ->latest()
-                ->simplePaginate(5);
-            $title = 'Premium Articles';
-            $description = 'Overview of our special premium articles, just for you!';
-        } else {
-            $articles = Article::withCount(['comments', 'categories'])
-                ->latest()
-                ->simplePaginate(5);
-            $title = 'All Articles';
-            $description = 'Overview of all our articles. Enjoy!';
+        if ($type === 'premium' && (!auth()->check() || !auth()->user()->premium)) {
+            $title = 'Premium Articles Preview';
+            $description = 'Preview of our special premium articles.<br>Subscribe to our website to see our best content!';
+            return $this->premiumPreview($title, $description);
         }
+
+        if ($type === 'premium' && auth()->user()->premium) {
+            return $this->premium();
+        }
+
+        $articles = Article::withCount(['comments', 'categories'])
+            ->latest()
+            ->simplePaginate(5);
+        $title = 'All Articles';
+        $description = 'Overview of all our articles. Enjoy!';
 
         return view('articles.index', compact('articles', 'title', 'description'));
     }
 
+    public function premium()
+    {
+        $title = 'Premium Articles';
+        $description = 'Overview of our special premium articles, just for you!';
+        $articles = Article::where('premium', 1)
+            ->withCount(['comments', 'categories'])
+            ->latest()
+            ->simplePaginate(5);
 
+        return view('articles.index', compact('articles', 'title', 'description'));
+    }
+
+    public function premiumPreview($title, $description)
+    {
+        $articles = Article::where('premium', 1)
+            ->withCount(['comments', 'categories'])
+            ->latest()
+            ->take(2)
+            ->get();
+
+        return view('auth.premium', compact('articles', 'title', 'description'));
+    }
 
 
     public function create()
     {
         $categories = Category::all();
         return view('articles.create', compact('categories'));
-
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-
         $request->validate([
-            'title' => ['required', 'min:3', 'max:200'],
+            'title' => [
+                'required',
+                'min:3',
+                'max:200',
+                Rule::unique('articles')->where(function ($query) {
+                    return $query->where('user_id', Auth::id());
+                })
+            ],
             'categories' => 'array',
             'categories.*' => ['integer', 'exists:categories,id'],
             'body' => ['required', 'min:3', 'max:20000'],
@@ -85,7 +102,6 @@ class ArticleController extends Controller
             'user_id' => Auth::id(),
             'premium' => $request->input('premium', 0)
         ]);
-
 
         $article->categories()->sync($request->input('categories', []));
 
@@ -102,15 +118,11 @@ class ArticleController extends Controller
             $image->user_id = Auth::id();
             $image->path = 'images/' . $imageName;
             $image->save();
-
-            return redirect()->route('articles.index')->with('success', 'Article created successfully!');
         }
+
+        return redirect()->route('articles.index')->with('success', 'Article created successfully!');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Article $article)
     {
         $image = $article->images()->get();
@@ -121,10 +133,6 @@ class ArticleController extends Controller
         ]);
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Article $article)
     {
         $categories = Category::all();
@@ -159,6 +167,7 @@ class ArticleController extends Controller
         $article->update([
             'title' => $request->input('title'),
             'body' => $request->input('body'),
+            'premium' => $request->input('premium', 0)
         ]);
 
         $article->categories()->sync($request->input('categories', []));

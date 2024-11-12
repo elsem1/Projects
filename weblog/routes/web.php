@@ -31,6 +31,8 @@ Route::controller(ArticleController::class)->group(function () {
 
     Route::patch('/articles/{article}', 'update')->name('articles.update');
     Route::delete('/articles/{article}', 'destroy')->name('articles.destroy');
+    Route::get('/premium-articles', [ArticleController::class, 'premiumArticles'])->name('articles.premium');
+
 
 });
 
@@ -45,22 +47,15 @@ Route::post('/articles/{article}/comments', [CommentController::class, 'store'])
 Route::post('articles/{article}/images', [ArticleController::class, 'store'])->name('articles.images.store');
 
 
-Route::get('/premium-articles', function (Request $request, ArticleController $controller) {
-    $request->query->set('type', 'premium');
-    return $controller->index($request);
-})->name('articles.premium');
-
-
 Route::get('/premium', [RegisterController::class, 'show'])->name('premium');
-
 
 Route::get('/profile', [UserController::class, 'index']);
 
 Route::get('/register', [RegisterController::class, 'create']);
 Route::post('/register', [RegisterController::class, 'store']);
 
-Route::get('/subscribe', [RegisterController::class, 'create']);
-Route::post('/subscribe', [RegisterController::class, 'store']);
+Route::get('/subscribe', [RegisterController::class, 'subscribeCreate'])->middleware('auth')->name('subscribe.create');
+Route::post('/subscribe', [RegisterController::class, 'subscribeStore'])->middleware('auth')->name('subscribe.store');
 
 Route::get('/login', [SessionController::class, 'create'])
     ->name('login');

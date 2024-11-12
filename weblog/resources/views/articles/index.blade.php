@@ -59,8 +59,8 @@
                     <a href="#" class="text-blue-400 hover:underline">{{ $article->comments_count }} Comment{{ $article->comments_count !== 1 ? 's' : '' }}</a>
                 </div>
 
-                <p class="text-zinc-400 leading-normal">
-                    {{ Str::limit($article->body, 500) }}
+                <p class="text-zinc-400 leading-normal break-words">
+                    {{ Str::limit($article->body, 500, '...') }}
                 </p>
             </article>
             @endforeach

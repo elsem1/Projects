@@ -12,21 +12,18 @@ class RegisterController extends Controller
 {
 
     public function show(Request $request)
-{
-    $type = $request->query('type', 'all');
-    $articles = Article::where('premium', 1)
-    ->withCount(['comments', 'categories'])
-    ->latest()
-    ->take(2)
-    ->get();
-    $title = $request->query('title', 'Default Title');
-    $description = $request->query('description', 'Default Description');
+    {
+        $type = $request->query('type', 'all');
+        $articles = Article::where('premium', 1)
+            ->withCount(['comments', 'categories'])
+            ->latest()
+            ->take(2)
+            ->get();
+        $title = $request->query('title', 'Default Title');
+        $description = $request->query('description', 'Default Description');
 
-    return view('auth.premium', compact('title', 'description', 'articles', 'type'));
-}
-
-
-
+        return view('auth.premium', compact('title', 'description', 'articles', 'type'));
+    }
 
 
 
@@ -35,19 +32,37 @@ class RegisterController extends Controller
         return view('auth.register');
     }
 
+    public function subscribeCreate()
+    {
+        return view('auth.subscribe');
+    }
+
     public function store()
     {
         //validatie
         $attributes = request()->validate([
             'name' => ['required'],
-            'email'=> ['required', 'email', 'confirmed'],
-            'password'=> ['required', Password::min(7)->max(20)->letters()->numbers()->symbols()->mixedCase(),'confirmed']
-            ]);
+            'email' => ['required', 'email', 'confirmed'],
+            'password' => ['required', Password::min(7)->max(20)->letters()->numbers()->symbols()->mixedCase(), 'confirmed']
+        ]);
 
-            $user = User::create($attributes);
+        $user = User::create($attributes);
 
-            Auth::login($user);
+        Auth::login($user);
 
-            return redirect('/articles');
+        return redirect('/articles');
+    }
+
+    public function subscribeStore(Request $request, User $user)
+    {
+        $request->validate([
+            'premium' => 'required|boolean'
+        ]);
+
+        Auth::user()->update([
+            'premium' => $request->input('premium', 0)
+        ]);
+
+        return redirect()->route('articles.premium')->with('success', 'You are now subscribed to premium content!');
     }
 }
