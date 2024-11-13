@@ -39,25 +39,6 @@ class AdFactory extends Factory
                 $ad->categories()->attach($categories);
         });
     }
-
-    public function withBids()
-    {
-        return $this->afterCreating(function (Ad $ad)
-        {
-            $rand = rand(1, 100);
-            if ($rand <= 70) {
-                $count = rand(0, 5);
-            } elseif ($rand <= 90) {
-                $count = rand(5, 10);
-            } else {
-                $count = rand(10, 30);
-            }
-            $bids = Category::inRandomOrder()->limit($count)->pluck('id');
-            $ad->bids()->attach($bids);
-        });
-    }
-
-
     function randomAskPrice()
     {
 
