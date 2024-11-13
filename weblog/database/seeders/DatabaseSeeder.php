@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CommentSeeder::class,
         ]);
 
+        // TODO: naar user seeder verplaatsen
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',

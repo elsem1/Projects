@@ -17,6 +17,8 @@ class UserController extends Controller
     public function index()
     {
         $user_id=Auth::id();
+
+        // TODO: vanuit model queryen, dus bijv.: Auth::user()->articles 
         $articles = Article::where('user_id', $user_id)
             ->with('categories', 'user', 'comments')
             ->withCount('comments', 'categories')

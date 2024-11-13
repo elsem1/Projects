@@ -12,6 +12,8 @@ class ArticleCategorySeeder extends Seeder
     /**
      * Run the database seeds.
      */
+
+    //  TODO: ongebruikte bestanden verwijderen
     public function run(): void
     {
         //

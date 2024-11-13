@@ -11,6 +11,7 @@ use App\Models\Article;
 class RegisterController extends Controller
 {
 
+    // TODO: onderstaande fucntie past beter bij de ArticleController
     public function show(Request $request)
     {
         $type = $request->query('type', 'all');

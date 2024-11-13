@@ -27,6 +27,8 @@ class ArticleController extends Controller
     {
         $type = $request->query('type', 'all');
 
+        // TODO: onderstaande logica had evt. ook via query scopes gekund:
+        // https://laravel-news.com/query-scopes
 
         if ($type === 'premium' && (!auth()->check() || !auth()->user()->premium)) {
             $title = 'Premium Articles Preview';
@@ -79,6 +81,8 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
+        // TODO: maak aparte request form validation class aan voor betere
+        // leesbaarheid van je code
         $request->validate([
             'title' => [
                 'required',
@@ -95,6 +99,10 @@ class ArticleController extends Controller
             'description' => ['nullable', 'string', 'max:1000'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ]);
+
+
+        // TODO: stop gevalideerde data in $validated variable en gebuik
+        // alleen deze data voor opslaan naar database ivm veiligheid
 
         $article = Article::create([
             'title' => $request->input('title'),
