@@ -5,28 +5,26 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 use App\Models\Ad;
+use App\Models\Bid;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Bid>
- */
 class BidFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Bid::class;
+
     public function definition(): array
     {
         return [
-            'bid' => $this->randomBid(),
+            'bid' => $this->faker->randomFloat(2, 1, 100),
             'user_id' => User::factory(),
             'ad_id' => Ad::factory(),
         ];
     }
 
-    public function randomBid()
+    public function randomBid(float $previousBid)
     {
-        $min = $this->Ad::
+        $increment = rand(1, 10) / 100;
+        $newBid = $previousBid * (1 + $increment);
+        return round($newBid, 2);
     }
 }
+
