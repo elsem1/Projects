@@ -7,11 +7,11 @@ use App\Http\Controllers\SessionController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
-Route::get('/profile', [UserController::class, 'index']);
-Route::get('/login', [SessionController::class, 'create'])
-    ->name('login');
+Route::get('/profile', [UserController::class, 'index'])->name('profile')->middleware('auth');
 
-
+Route::get('/login', function() {
+    return view('auth.login');
+})->name('login');
     
