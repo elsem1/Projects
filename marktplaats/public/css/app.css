@@ -15,25 +15,28 @@
     background-size: cover;
     position: absolute;
 }
+
 .form-box {
     width: 380px;
-    min-height: 480px; 
+    height: 600px;
     position: relative;
     margin: 6% auto;
     background: #fff;
     padding: 5px;
     overflow: hidden;
     border-radius: 10px;
-    transition: height 0.5s; /* Smooth transition for height change */
 }
 
-.button-box{
+.button-box {
     width: 220px;
     margin: 35px auto;
     position: relative;
     box-shadow: 0 0 20px 9px #ff61241f;
-    border-radius: 30px; 
+    border-radius: 30px;
+    display: flex; 
+    justify-content: space-between;  
 }
+
 .toggle-btn{
     padding: 10px 30px;
     cursor: pointer;
@@ -54,10 +57,12 @@
     border-radius: 30px;
     transition: .5s;
 }
+
 .social-icons{
     margin: 30px auto;
     text-align: center;
 }
+
 .social-icons img{
     width: 30px;
     margin: 0 12px;
@@ -65,13 +70,15 @@
     cursor: pointer;
     border-radius: 50%;
 }
-.input-group{
+
+.input-group {
     top: 180px;
     position: absolute;
     width: 280px;
     transition: .5s;
 }
-.input-field{
+
+.input-field {
     width: 100%;
     padding: 10px 0;
     margin: 5px 0;
@@ -81,8 +88,8 @@
     border-bottom: 1px solid #999;
     outline: none;
     background: transparent;
-
 }
+
 .submit-btn {
     width: 85%;
     padding: 10px 30px;
@@ -98,19 +105,20 @@
 .check-box{
     margin: 30px 10px 30px 0;
 }
-span{
+
+span {
     color: #777;
     font-size: 12px;
     bottom: 68px;
     position: absolute;
-
 }
 
-#login{
-    left: 50px;
+#login {
+	left: 50px;
 }
-#register{ 
-    left: 450px;
+
+#register {
+	left: 450px;
 }
 
 .work-sans {

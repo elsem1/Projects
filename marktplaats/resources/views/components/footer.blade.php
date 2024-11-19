@@ -1,9 +1,11 @@
+
+
 <footer class="bg-white py-8 border-t border-gray-400">
   <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
     <div class="flex flex-col md:flex-row w-full items-center">
       <div class="flex-grow">
         <div class="text-sm text-gray-600 mb-4 md:mb-0">
-          &copy; <span id="currentYear"></span> Semper Industries. All rights reserved.
+          &copy; 2024 Semper Agora. All rights reserved.
         </div>
         <div class="text-xs text-stone-400 space-x-4">
           <a href="/privacy" class="hover:underline">Privacy Policy</a>
@@ -37,8 +39,5 @@
       </div>
     </div>
   </div>
+  
 </footer>
-
-<script>
-  document.getElementById('currentYear').textContent = new Date().getFullYear();
-</script>
