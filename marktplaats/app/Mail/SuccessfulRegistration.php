@@ -10,16 +10,17 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class SuccesfullRegistration extends Mailable
+class SuccessfulRegistration extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public $user;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -28,19 +29,21 @@ class SuccesfullRegistration extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('info@semperagora', 'The Semper Agora Team'),
-            subject: 'Succesfull Registration',
+            from: new Address('info@semperagora.com', 'The Semper Agora Team'),
+            subject: 'Successful Registration',
         );
     }
 
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
+    public function content(): Content 
+    { 
+        return new Content( 
+            view: 'emails.successfulregistration', 
+                with: [ 'user' => $this->user, 
+            ], 
+        ); 
     }
 
     /**

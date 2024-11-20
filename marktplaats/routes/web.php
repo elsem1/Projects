@@ -4,11 +4,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use App\Events\SuccessfulRegistration;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
-
+ 
 // Profile route
 Route::get('/profile', [UserController::class, 'index'])
     ->name('profile')
@@ -22,7 +23,7 @@ Route::get('/login', [SessionController::class, 'create'])
 Route::post('/login', [SessionController::class, 'store'])
     ->middleware('guest');
 
-// Registration route
+// Registratie route
 Route::post('/register', [UserController::class, 'store'])
     ->middleware('guest')
     ->name('register');
@@ -33,21 +34,22 @@ Route::post('/logout', [SessionController::class, 'destroy'])
     ->middleware('auth');
 
 
+// Email verificatie routes
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
 
-    Route::get('/email/verify', function () {
-        return view('auth.verify-email');
-    })->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
 
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
+    SuccessfulRegistration::dispatch($request->user());
 
-        return redirect('/home');
-    })->middleware(['auth', 'signed'])->name('verification.verify');
-
-
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
 
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+

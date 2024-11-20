@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function index()
     {
-            return view('/user.profile');
+            return view('/');
 
         }
 
@@ -38,7 +38,7 @@ class UserController extends Controller
         event(new Registered($user));
         Auth::login($user);
 
-        return redirect('/user.profile');
+        return redirect('/');
     }
 
 

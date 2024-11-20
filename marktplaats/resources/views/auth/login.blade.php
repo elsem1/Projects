@@ -22,9 +22,13 @@
                         <form id="login" class="input-group" method="POST" action="{{ route('login') }}" enctype="multipart/form-data">
                             @csrf
                             <input type="email" name="email" class="input-field" placeholder="Email" required>
+                            <x-form-error name="email"/>
+
                             <input type="password" name="password" class="input-field" placeholder="Enter Password" required>
+                            <x-form-error name="password"/>
                             <input type="checkbox" class="check-box"><span>Remember Password</span>
                             <button type="submit" class="submit-btn">Log in</button>
+
                         </form>
 
                         <form id="register" class="input-group" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
