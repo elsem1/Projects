@@ -1,4 +1,4 @@
-<section class="bg-white py-8">
+<section>
 
     <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
 

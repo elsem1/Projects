@@ -12,7 +12,7 @@ Route::get('/', function () {
  
 // Profile route
 Route::get('/profile', [UserController::class, 'index'])
-    ->name('profile')
+    ->name('user.profile')
     ->middleware('auth');
 
 // Login routes
@@ -39,17 +39,23 @@ Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
+Route::get('/email/verify/{id}/{hash}', [UserController::class, 'verifyEmail'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
 
-    SuccessfulRegistration::dispatch($request->user());
+Route::post('/email/verification-notification', [UserController::class, 'notification'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
 
-    return redirect('/');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+// Reset email routes
+Route::post('/forgot-password', [UserController::class, 'forgotPassword'])
+    ->middleware('guest')
+    ->name('password.email');
 
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
+Route::get('/reset-password/{token}', function (string $token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
 
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
+Route::post('/reset-password', [UserController::class, 'resetpassword'])
+    ->middleware('guest')
+    ->name('password.update');

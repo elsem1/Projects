@@ -13,7 +13,7 @@
 
 </head>
 
-<body class="bg-stone-600 text-zinc-200 work-sans leading-normal text-base tracking-normal flex flex-col min-h-screen">
+<body  class="bg text-zinc-200 work-sans leading-normal text-base tracking-normal flex flex-col min-h-screen">
     <x-nav></x-nav>  
 
     <div class="flex-grow">
@@ -22,6 +22,10 @@
 
     <x-footer></x-footer>
    
-
+    <script src="{{ asset('js/app.js') }}"></script>
+   
 </body>
 </html>
+
+
+

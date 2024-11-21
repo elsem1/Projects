@@ -30,7 +30,7 @@
 
         <div class="order-2 md:order-3 flex items-center" id="nav-content">
 
-            <a class="inline-block no-underline hover:text-black" href="{{ route('profile') }}">
+            <a class="inline-block no-underline hover:text-black" href="{{ route('user.profile') }}">
                 <svg class="fill-current hover:text-black" width="24" height="24" viewBox="0 0 24 24">
                     <circle fill="none" cx="12" cy="7" r="3" />
                     <path d="M12 2C9.243 2 7 4.243 7 7s2.243 5 5 5 5-2.243 5-5S14.757 2 12 2zM12 10c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3S13.654 10 12 10zM21 21v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h2v-1c0-2.757 2.243-5 5-5h4c2.757 0 5 2.243 5 5v1H21z" />
@@ -40,7 +40,7 @@
             @auth
             <form method="POST" action="{{ route('logout') }}" class="inline-block">
                 @csrf
-                <button type="submit" class="inline-block no-underline hover:text-black">
+                <button type="submit" class="inline-block no-underline hover:text-black tooltip-btn" data-tooltip="Logout">
                     <svg class="fill-current hover:text-black" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M16 13v-2H7V8l-5 4 5 4v-3z"/>
                         <path d="M20 3h-9c-1.103 0-2 .897-2 2v4h2V5h9v14h-9v-4H9v4c0 1.103.897 2 2 2h9c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2z"/>
