@@ -5,10 +5,10 @@ use App\Http\Controllers\SessionController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Events\SuccessfulRegistration;
+use App\Http\Controllers\AdController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [AdController::class, 'slideShow'])
+->name('welcome');
  
 // Profile route
 Route::get('/profile', [UserController::class, 'index'])
@@ -59,3 +59,9 @@ Route::get('/reset-password/{token}', function (string $token) {
 Route::post('/reset-password', [UserController::class, 'resetpassword'])
     ->middleware('guest')
     ->name('password.update');
+
+Route::get('/ads/{ad}', [AdController::class, 'show'])->name('ads.show');
+
+Route::get('/ads/create', [AdController::class, 'create'])
+    ->middleware('auth')
+    ->name('ads.create');

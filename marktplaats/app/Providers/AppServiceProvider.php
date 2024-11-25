@@ -9,6 +9,8 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Blade;
+use App\View\Components\CarouselSlide;
 
 use function Illuminate\Events\queueable;
 
@@ -40,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
             ->action('Verify Email Address', $url);
     });
 
+    Blade::component('carousel-slide', CarouselSlide::class);
     
     }    
 

@@ -29,7 +29,9 @@
         </div>
 
         <div class="order-2 md:order-3 flex items-center" id="nav-content">
-
+            <button class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:underline transition duration-200">
+                + Post New Ad
+            </button>
             <a class="inline-block no-underline hover:text-black" href="{{ route('user.profile') }}">
                 <svg class="fill-current hover:text-black" width="24" height="24" viewBox="0 0 24 24">
                     <circle fill="none" cx="12" cy="7" r="3" />

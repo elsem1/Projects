@@ -7,10 +7,12 @@
     padding: 0;
     font-family: sans-serif;
 }
-.bg{
+
+.bg {
     background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
 }
-#header{
+
+#header {
     background-image: linear-gradient(-225deg, #E3FDF5 40%, #FFE6FA 100%);
 }
 
@@ -19,10 +21,10 @@ nav#header .inline-block {
     align-items: center;
     justify-content: center;
     padding: 0 10px;
-    height: 100%;  
+    height: 100%;
 }
 
-.section{
+.section {
     height: 100%;
     width: 100%;
     background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),url(/banner.jpg);
@@ -39,7 +41,7 @@ nav#header .inline-block {
 
 .tooltip-btn::after {
     content: attr(data-tooltip);
-    position: absolute;       
+    position: absolute;
     background-color: #333;
     color: #fff;
     text-align: center;
@@ -57,25 +59,25 @@ nav#header .inline-block {
 }
 
 .tooltip-btn.tooltip-top::after {
-    bottom: 100%; 
+    bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .tooltip-btn.tooltip-bottom::after {
-    top: 100%; 
+    top: 100%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .tooltip-btn.tooltip-left::after {
-    right: 100%; 
+    right: 100%;
     top: 50%;
     transform: translateY(-50%);
 }
 
 .tooltip-btn.tooltip-right::after {
-    left: 100%; 
+    left: 100%;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -97,21 +99,20 @@ nav#header .inline-block {
     position: relative;
     box-shadow: 0 0 20px 9px #92c2e979;
     border-radius: 30px;
-    display: flex; 
-    justify-content: space-between;  
+    display: flex;
+    justify-content: space-between;
 }
 
-.toggle-btn{
+.toggle-btn {
     padding: 10px 30px;
     cursor: pointer;
     background: transparent;
     border: 0;
     outline: none;
     position: relative;
-    
 }
 
-#btn{
+#btn {
     top: 0;
     left: 0;
     position: absolute;
@@ -122,7 +123,7 @@ nav#header .inline-block {
     transition: .5s;
 }
 
-#insta:hover{    
+#insta:hover {
     background: linear-gradient(150deg, #515BD4, #8134AF, #DD2a7B, #FEDA77, #F58529);
     color: rgba(255, 255, 255, 0.658);
     border-radius: 25px;
@@ -157,9 +158,9 @@ nav#header .inline-block {
     border: 0;
     outline: none;
     border-radius: 30px;
-
 }
-.check-box{
+
+.check-box {
     margin: 30px 10px 30px 0;
 }
 
@@ -171,17 +172,17 @@ span {
 }
 
 #login {
-	left: 50px;
+    left: 50px;
 }
 
 #register {
-	left: 450px;
+    left: 450px;
 }
 
 .work-sans {
     font-family: 'Work Sans', sans-serif;
 }
-        
+
 #menu-toggle:checked + #menu {
     display: block;
 }
@@ -195,6 +196,7 @@ span {
     transform: scale(1.02);
 }
 
+/* Carousel specific CSS */
 .carousel-open:checked + .carousel-item {
     position: static;
     opacity: 100;
@@ -203,11 +205,17 @@ span {
 .carousel-item {
     -webkit-transition: opacity 0.6s ease-out;
     transition: opacity 0.6s ease-out;
+    background-size: cover;
+    background-position: center center;
+    width: 100%;
+    height: auto; /* Ensure image scales properly */
 }
 
-#carousel-1:checked ~ .control-1,
-#carousel-2:checked ~ .control-2,
-#carousel-3:checked ~ .control-3 {
+.control {
+    display: none; /* Initially hidden */
+}
+
+.carousel-open:checked + .carousel-item ~ .control {
     display: block;
 }
 
@@ -223,11 +231,15 @@ span {
     z-index: 10;
 }
 
-#carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
-#carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
-#carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet {
+.carousel-bullet {
+    cursor: pointer;
+    display: block;
+    font-size: 2rem; /* Ensure correct size */
+    color: #ccc; /* Corrected color */
+}
+
+.carousel-bullet:hover {
     color: #000;
-    
 }
 
 .checkbox-wrapper {
@@ -235,8 +247,8 @@ span {
     align-items: center;
 }
 
-.form-hidden { 
-    display: none; 
+.form-hidden {
+    display: none;
 }
 
 .checkbox-wrapper input {
@@ -248,27 +260,25 @@ span {
 }
 
 .center-text {
-    text-align: center;    
+    text-align: center;
     color: #333;
     margin-bottom: 20px;
 }
 
-.alert { 
-    text-align: center; 
-    padding: 10px; 
-    margin-bottom: 20px; 
-    border: 1px solid transparent; 
-    border-radius: 4px; 
-} 
-
-.alert-success { 
-    color: #155724; 
-    background-color: #d4edda; 
-    border-color: #c3e6cb; 
+.alert {
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
 }
 
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
 
-
-
-
-
+.logo-adjust {
+    transform: translateX(-10px);
+}
