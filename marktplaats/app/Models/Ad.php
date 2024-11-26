@@ -14,6 +14,7 @@ class Ad extends Model
         'title',
         'body',
         'ask',
+        'views',
         'bought_premium',
 
     ];

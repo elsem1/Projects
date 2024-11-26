@@ -196,19 +196,41 @@ span {
     transform: scale(1.02);
 }
 
-/* Carousel specific CSS */
-.carousel-open:checked + .carousel-item {
-    position: static;
-    opacity: 100;
+.carousel {
+    width: 80%; /* Ensure carousel width is contained */
+    margin: 0 auto; /* Center carousel */
 }
 
 .carousel-item {
-    -webkit-transition: opacity 0.6s ease-out;
-    transition: opacity 0.6s ease-out;
-    background-size: cover;
-    background-position: center center;
+    display: none;
     width: 100%;
-    height: auto; /* Ensure image scales properly */
+    height: auto;
+    overflow: hidden;
+    position: relative; /* Ensure controls and indicators are inside */
+}
+
+.carousel-item img {
+    width: 100%; /* Ensure images fit within carousel */
+    max-height: 500px;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+.carousel-item.active {
+    display: block; /* Make sure the active item is visible */
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 10px; /* Position at the top */
+    left: 10px; /* Position to the left */
+    color: #fff; /* Text color for readability */
+    z-index: 2; /* Ensure caption is above image */
+    background: rgba(0, 0, 0, 0.5); /* Background for better readability */
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    width: auto; /* Automatically adjust to content size */
+    text-align: left; /* Align text to the left */
 }
 
 .control {
@@ -219,28 +241,85 @@ span {
     display: block;
 }
 
+/* Controls */
+.carousel-control-prev, .carousel-control-next {
+    position: absolute;
+    top: 40%; /* Center vertically */
+    transform: translateY(-50%);
+    background: none;
+    color: #fff;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10; /* Ensure controls are on top of images */
+    padding: 10px; /* Add padding to move them inside the image */
+}
+
+.carousel-control-prev {
+    left: 11%; /* Slightly inside the image */
+}
+
+.carousel-control-next {
+    right: 11%; /* Slightly inside the image */
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-size: 100%, 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="%23ffffff" viewBox="0 0 8 8"%3E%3Cpath d="M5.5 0l-4 4 4 4 1.5-1.5L4.5 4l2.5-2.5L5.5 0z"/%3E%3C/svg%3E');
+}
+
+.carousel-control-next-icon {
+    background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="%23ffffff" viewBox="0 0 8 8"%3E%3Cpath d="M2.5 0l-1.5 1.5L3.5 4l-2.5 2.5L2.5 8l4-4-4-4z"/%3E%3C/svg%3E');
+}
+
+/* Indicators */
 .carousel-indicators {
     list-style: none;
     margin: 0;
     padding: 0;
-    position: absolute;
-    bottom: 2%;
-    left: 0;
-    right: 0;
+    position:fixed;
+    bottom: 40%; /* Position indicators at the bottom inside the image */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
     text-align: center;
     z-index: 10;
+}
+
+.carousel-indicators li {
+    cursor: pointer;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 1px;
+    background-color: rgba(255, 255, 255, 0.178);
+    border-radius: 50%;
+}
+
+.carousel-indicators .active {
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .carousel-bullet {
     cursor: pointer;
     display: block;
-    font-size: 2rem; /* Ensure correct size */
+    font-size: 1rem; /* Adjust size */
     color: #ccc; /* Corrected color */
 }
 
 .carousel-bullet:hover {
     color: #000;
 }
+
+
+
 
 .checkbox-wrapper {
     display: flex;
@@ -255,9 +334,7 @@ span {
     margin-right: 10px;
 }
 
-.small-text {
-    margin-top: 2rem;
-}
+
 
 .center-text {
     text-align: center;

@@ -17,6 +17,7 @@ class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
     protected $fillable = [
         'name',
         'username',
+        'residence',
         'email',
         'password',
     ];

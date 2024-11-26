@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Ad;
+use App\Models\Category;
+use App\Models\Image;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AdController extends Controller
 {
     public function index()
     {
-        $ads = Ad::withCount('views')->laterst()->simplePaginate();
+        $ads = Ad::withCount('views')->latest()->simplePaginate();
 
-        return view('ads.index', compact('ads', 'title', 'img', 'price'));
+        return view('ads.index', compact('ads'));
     }
+
     public function slideShow()
     {
         $slides = [
@@ -35,19 +41,71 @@ class AdController extends Controller
                 'link' => "#"
             ]
         ];
-    
+
         return view('welcome', compact('slides'));
     }
-    
 
-    public function show()
+    public function show($id)
     {
-        return view('/ads.show');
-    }
-    public function create() 
-    {
-        return view('/ads.create');
+        $ad = Ad::with(['bids' => function ($query) {
+            $query->orderBy('created_at', 'asc')->take(5);
+        }])->findOrFail($id);
+
+        $ad->increment('views');
+
+        $slides = collect(range(1, 5))->map(function ($i) {
+            return [
+                'id' => $i,
+                'image' => "https://picsum.photos/400/400?random={$i}",
+                'title' => "Random Image {$i}",
+                'description' => "This is a description for Random Image {$i}",
+                'link' => '#',
+                'checked' => $i === 1  // Mark the first slide as active
+            ];
+        });
+
+        return view('ads.show', compact('ad', 'slides'));
     }
 
-    
+    public function create()
+    {
+        return view('ads.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => ['required', 'min:3', 'max:255'],
+            'categories' => 'array',
+            'categories.*' => ['integer', 'exists:categories,id'],
+            'description' => ['required', 'min:3', 'max:255'],
+            'ask' => ['required', 'min:3', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
+
+        $ad = Ad::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'ask' => $request->ask,
+            'user_id' => auth()->id(),
+        ]);
+
+        $ad->categories()->sync($request->input('categories', []));
+
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $imageName = time() . '.' . $imageFile->getClientOriginalExtension();
+            $imageFile->move(public_path('images'), $imageName);
+
+            $image = new Image();
+            $image->ad_id = $ad->id;
+            $image->name = $request->input('name');
+            $image->description = $request->input('description');
+            $image->user_id = Auth::id();
+            $image->path = 'images/' . $imageName;
+            $image->save();
+        }
+
+        return redirect()->route('ads.show', ['id' => $ad->id])->with('success', 'Ad created successfully.');
+    }
 }

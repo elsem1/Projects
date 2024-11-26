@@ -1,27 +1,71 @@
-<!-- resources/views/components/carousel.blade.php -->
-<div class="carousel relative container mx-auto" style="max-width:1600px;">
-    <div class="carousel-inner relative overflow-hidden w-full">
-        {{ $slot }}
+<div id="carousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        @foreach($slides as $index => $slide)
+            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                <img src="{{ $slide['image_url'] }}" class="d-block w-100" alt="{{ $slide['title'] }}">
+                <div class="carousel-caption">
+                    @if($slide['title'])
+                        <h5>{{ $slide['title'] }}</h5>
+                    @endif
+                    @if($slide['description'])
+                        <p>{{ $slide['description'] }}</p>
+                    @endif
+                    @if(!empty($slide['link']))
+                        <a href="{{ $slide['link'] }}" class="btn btn-primary">View Product</a>
+                    @endif
+                </div>
+            </div>
+        @endforeach
     </div>
-    
-    <!-- Controls -->
-    @foreach ($slides as $index => $slide)
-        <label for="carousel-{{ ($index - 1 + count($slides)) % count($slides) }}" 
-               class="prev control control-{{ $index }} w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden text-3xl font-bold text-black hover:text-white rounded-full bg-white hover:bg-gray-900 leading-tight text-center z-10 inset-y-0 left-0 my-auto">
-            ‹
-        </label>
-        <label for="carousel-{{ ($index + 1) % count($slides) }}" 
-               class="next control control-{{ $index }} w-10 h-10 mr-2 md:mr-10 absolute cursor-pointer hidden text-3xl font-bold text-black hover:text-white rounded-full bg-white hover:bg-gray-900 leading-tight text-center z-10 inset-y-0 right-0 my-auto">
-            ›
-        </label>
-    @endforeach
 
-    <!-- Indicators -->
+    @if(count($slides) > 1)
+        <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    @endif
+
     <ol class="carousel-indicators">
-        @foreach ($slides as $index => $slide)
-            <li class="inline-block mr-3">
-                <label for="carousel-{{ $index }}" class="carousel-bullet cursor-pointer block font-size-2rem text-gray-400 hover:text-gray-900">•</label>
-            </li>
+        @foreach($slides as $index => $slide)
+            <li data-target="#carousel" data-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"></li>
         @endforeach
     </ol>
 </div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let activeSlide = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        const totalSlides = slides.length;
+
+        const updateSlide = (newIndex) => {
+            slides[activeSlide].classList.remove('active');
+            activeSlide = newIndex;
+            slides[activeSlide].classList.add('active');
+        };
+
+        document.querySelector('.carousel-control-prev').addEventListener('click', (e) => {
+            e.preventDefault();
+            updateSlide((activeSlide - 1 + totalSlides) % totalSlides);
+        });
+
+        document.querySelector('.carousel-control-next').addEventListener('click', (e) => {
+            e.preventDefault();
+            updateSlide((activeSlide + 1) % totalSlides);
+        });
+
+        document.querySelectorAll('.carousel-indicators li').forEach((bullet, index) => {
+            bullet.addEventListener('click', (e) => {
+                e.preventDefault();
+                updateSlide(index);
+            });
+        });
+    });
+</script>
+

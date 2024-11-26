@@ -25,6 +25,7 @@ class AdFactory extends Factory
             'body' => $this->faker->paragraph(3,10),
             'user_id' => rand(1, User::count()),
             'ask' => $this->randomAskPrice(),
+            'views' => 0
 
 
         ];
@@ -32,8 +33,8 @@ class AdFactory extends Factory
 
     public function withCategories()
     {
-        return $this->afterCreating(function (Ad $ad) 
-        {    
+        return $this->afterCreating(function (Ad $ad)
+        {
                 $count = (rand(1,100) <= 70 ) ? 1 : ((rand(1, 100) <= 90) ? 2 : 3);
                 $categories = Category::inRandomOrder()->limit($count)->pluck('id');
                 $ad->categories()->attach($categories);

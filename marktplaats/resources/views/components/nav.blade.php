@@ -27,10 +27,10 @@
                 Semper Agora
             </a>
         </div>
-
+        @auth
         <div class="order-2 md:order-3 flex items-center" id="nav-content">
             <button class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:underline transition duration-200">
-                + Post New Ad
+                <a href="{{ route('ads.create') }}">+ Post New Ad</a>
             </button>
             <a class="inline-block no-underline hover:text-black" href="{{ route('user.profile') }}">
                 <svg class="fill-current hover:text-black" width="24" height="24" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@
                 </svg>
             </a>
 
-            @auth
+
             <form method="POST" action="{{ route('logout') }}" class="inline-block">
                 @csrf
                 <button type="submit" class="inline-block no-underline hover:text-black tooltip-btn" data-tooltip="Logout">

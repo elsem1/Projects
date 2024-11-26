@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->text('body');
             $table->foreignId('user_id');
             $table->float('ask');
+            $table->integer('views')->nullable();
             $table->timestamp('bought_premium')->nullable();
             $table->timestamps();
         });
