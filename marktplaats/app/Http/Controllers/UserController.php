@@ -14,6 +14,8 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Events\SuccessfulRegistration;
+use App\Models\Ad;
+
 
 
 
@@ -22,7 +24,9 @@ class UserController extends Controller
 {
     public function index()
     {
-            return view('/user.profile');
+        $ads = Auth::user()->ads()->get();
+
+        return view('user.profile', compact('ads'));
     }
 
     public function store()

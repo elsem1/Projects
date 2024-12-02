@@ -38,8 +38,12 @@ Route::get('/reset-password/{token}', function (string $token) {
 Route::post('/reset-password', [UserController::class, 'resetPassword'])->middleware('guest')->name('password.update');
 
 // Ad routes
-Route::get('/ads/{id}', [AdController::class, 'show'])->name('ads.show');
 Route::get('/ads/create', [AdController::class, 'create'])->middleware('auth')->name('ads.create');
-
-
-Route::get('/test', function() { return 'Route works!'; });
+Route::post('/ads', [Adcontroller::class, 'store'])->middleware('auth')->name('ads.store');
+Route::get('/ads/{ad}', [AdController::class, 'show'])->name('ads.show');
+Route::get('/ads/{ad}/edit,', [AdController::class, 'edit'])
+    ->middleware('auth')
+    ->can('edit', 'ad')
+    ->name('ads.edit');
+Route::patch('/ads/{ad}', [ Adcontroller::class, 'update'])->name('ads.upate');
+Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');

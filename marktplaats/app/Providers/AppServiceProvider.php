@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
     });
 
     Blade::component('carousel-slide', CarouselSlide::class);
-    
+    Blade::component('ads.ad-form', 'adForm');
     }    
 
 }

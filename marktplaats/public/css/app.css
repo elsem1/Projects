@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 * {
     margin: 0;
     padding: 0;
@@ -358,4 +360,16 @@ span {
 
 .logo-adjust {
     transform: translateX(-10px);
+}
+
+body {
+    padding-bottom: 50px; /* Adjust this value as needed */
+}
+
+#laravel-debugbar {
+    z-index: 9999 !important;
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
