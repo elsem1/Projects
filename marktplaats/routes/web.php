@@ -39,11 +39,12 @@ Route::post('/reset-password', [UserController::class, 'resetPassword'])->middle
 
 // Ad routes
 Route::get('/ads/create', [AdController::class, 'create'])->middleware('auth')->name('ads.create');
+Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
 Route::post('/ads', [Adcontroller::class, 'store'])->middleware('auth')->name('ads.store');
 Route::get('/ads/{ad}', [AdController::class, 'show'])->name('ads.show');
 Route::get('/ads/{ad}/edit,', [AdController::class, 'edit'])
     ->middleware('auth')
     ->can('edit', 'ad')
     ->name('ads.edit');
-Route::patch('/ads/{ad}', [ Adcontroller::class, 'update'])->name('ads.upate');
+Route::patch('/ads/{ad}', [ Adcontroller::class, 'update'])->name('ads.update');
 Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');

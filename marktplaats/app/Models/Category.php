@@ -13,6 +13,7 @@ class Category extends Model
         'name',
         'description',
     ];
+    protected $table = 'categories';
     public function ads()
     {
         return $this->belongsToMany(Ad::class, 'ad_category');

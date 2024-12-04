@@ -3,11 +3,11 @@
 <x-layout>
 
     <div class="ad-page container mx-auto my-8 px-4">
-        <!-- Main Section -->
+       
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Product Details -->
+           
             <div class="lg:col-span-2 bg-white shadow-md rounded-lg p-6">
-                <!-- Title and Meta -->
+               
                 <div class="mb-4">
                     <h1 class="text-2xl font-bold text-gray-800">{{ $ad->title }}</h1>
                     <div class="text-sm text-gray-500 flex justify-between mt-2">
@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                <!-- Images -->
+                
                 <div class="mb-6">
                    <div id="carouselExample" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">

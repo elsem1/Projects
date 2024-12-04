@@ -13,11 +13,12 @@ use Illuminate\Validation\Rule;
 class AdController extends Controller
 {
     public function index()
-    {
-        $ads = Ad::withCount('views')->latest()->simplePaginate();
+{
+    $ads = Ad::orderBy('views', 'desc')->latest()->simplePaginate(5);
 
-        return view('ads.index', compact('ads'));
-    }
+    return view('ads.index', compact('ads'));
+}
+
 
     
     public function show(Ad $ad)
@@ -26,25 +27,15 @@ class AdController extends Controller
             $query->orderBy('created_at', 'asc')->take(5);
         }])->findOrFail($ad->id);
 
-        $ad->increment('views');
+        $ad->increment('views');        
         
-        $slides = collect(range(1, 5))->map(function ($i) {
-            return [
-                'id' => $i,
-                'image' => "https://picsum.photos/400/400?random={$i}",
-                'title' => "Random Image {$i}",
-                'description' => "This is a description for Random Image {$i}",
-                'link' => '#',
-                'checked' => $i === 1  
-            ];
-        });
-        
-        return view('ads.show', compact('ad', 'slides'));
+        return view('ads.show', compact('ad'));
     }
     
     public function create()
     {
         $categories = Category::all();
+        
         return view('ads.create', compact('categories'));
     }
     
@@ -89,33 +80,40 @@ class AdController extends Controller
     {
         $slides = [
             [
-                'image_url' => "https://images.unsplash.com/photo-1422190441165-ec2956dc9ecc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
+                'image' => "https://images.unsplash.com/photo-1422190441165-ec2956dc9ecc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
                 'title' => "Stripy Zig Zag Jigsaw Pillow and Duvet Set",
                 'description' => "A modern set to update your bedroom",
-                'link' => "#"
+                'link' => "#",
+                'checked' => true,
             ],
             [
-                'image_url' => "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
+                'image' => "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
                 'title' => "Real Bamboo Wall Clock",
                 'description' => "Eco-friendly bamboo wall clock for your home",
-                'link' => "#"
+                'link' => "#",
+                'checked' => true,
             ],
             [
-                'image_url' => "https://images.unsplash.com/photo-1519327232521-1ea2c736d34d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
+                'image' => "https://images.unsplash.com/photo-1519327232521-1ea2c736d34d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
                 'title' => "Brown and blue hardbound book",
                 'description' => "A great read for book lovers",
-                'link' => "#"
+                'link' => "#",
+                'checked' => true,
             ]
         ];
     
         return view('welcome', compact('slides'));
     }
 
-    public function edit(Ad $ad, $id)
+    public function edit(Ad $ad)
     {
-        $categories = Category::all();
-        $ad = Ad::find($id);
+        $categories = Category::all();        
         $images = $ad->images;
+
+        if (!Auth::user()->can('edit', $ad)) 
+        { 
+            abort(403, 'Unauthorized action.'); 
+        }
 
         return view('ads.edit', [
             'ad' => $ad,
@@ -176,3 +174,16 @@ class AdController extends Controller
         return redirect('ads');
     }
 }
+
+// public function buyPremium(Ad $ad)
+// {
+//     $ad->premiumHistory()->create([
+//         'purchased_at' => now(),
+//         'duration_days' => 30, // Premium duration in days
+        
+//         $premiumAds = Ad::whereHas('premiumHistory', function($query) {
+//                 $query->where('purchased_at', '>', now()->subDays(30)); // Get ads that have been premium in the last 30 days
+//             })->orderByDesc('premium_history.purchased_at')
+//               ->get();
+//         ]);
+//     }

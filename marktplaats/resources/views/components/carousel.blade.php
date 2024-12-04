@@ -1,22 +1,28 @@
+
+
 <div id="carousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
-        @foreach($slides as $index => $slide)
-            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                <img src="{{ $slide['image_url'] }}" class="d-block w-100" alt="{{ $slide['title'] }}">
-                <div class="carousel-caption">
-                    @if($slide['title'])
-                        <h5>{{ $slide['title'] }}</h5>
-                    @endif
-                    @if($slide['description'])
-                        <p>{{ $slide['description'] }}</p>
-                    @endif
-                    @if(!empty($slide['link']))
-                        <a href="{{ $slide['link'] }}" class="btn btn-primary">View Product</a>
-                    @endif
+        @if(isset($slides) && count($slides) > 0)
+        @php dd($slides); @endphp
+            @foreach($slides as $index => $slide)
+                <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                    <img src="{{ $slide['image'] class="d-block w-100" alt="{{ $slide['title'] }}">
+                    <div class="carousel-caption">
+                        @if($slide['title'])
+                            <h5>{{ $slide['title'] }}</h5>
+                        @endif
+                        @if($slide['description'])
+                            <p>{{ $slide['description'] }}</p>
+                        @endif
+                        @if(!empty($slide['link']))
+                            <a href="{{ $slide['link'] }}" class="btn btn-primary">View Product</a>
+                        @endif
+                    </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
+</div>
 
     @if(count($slides) > 1)
         <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
@@ -35,6 +41,7 @@
         @endforeach
     </ol>
 </div>
+
 
 
 
