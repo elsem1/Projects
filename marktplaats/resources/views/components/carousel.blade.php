@@ -1,43 +1,35 @@
-
-
-<div id="carousel" class="carousel slide" data-ride="carousel">
+<div id="carousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-        @if(isset($slides) && count($slides) > 0)
-        @php dd($slides); @endphp
-            @foreach($slides as $index => $slide)
-                <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                    <img src="{{ $slide['image'] class="d-block w-100" alt="{{ $slide['title'] }}">
-                    <div class="carousel-caption">
-                        @if($slide['title'])
-                            <h5>{{ $slide['title'] }}</h5>
-                        @endif
-                        @if($slide['description'])
-                            <p>{{ $slide['description'] }}</p>
-                        @endif
-                        @if(!empty($slide['link']))
-                            <a href="{{ $slide['link'] }}" class="btn btn-primary">View Product</a>
-                        @endif
-                    </div>
+        @foreach($slides as $index => $slide)
+            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                <img src="{{ $slide['image'] }}" class="d-block w-100" alt="{{ $slide['title'] }}">
+                <div class="carousel-caption">
+                    @if($slide['title'])
+                        <h5>{{ $slide['title'] }}</h5>
+                    @endif
+                    @if($slide['description'])
+                        <p>{{ $slide['description'] }}</p>
+                    @endif
+                    @if(!empty($slide['link']))
+                        <a href="{{ $slide['link'] }}" class="btn btn-primary">View Product</a>
+                    @endif
                 </div>
-            @endforeach
-        @endif
+            </div>
+        @endforeach
     </div>
-</div>
-
     @if(count($slides) > 1)
-        <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+        <a class="carousel-control-prev" href="#carousel" role="button" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+        <a class="carousel-control-next" href="#carousel" role="button" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
     @endif
-
     <ol class="carousel-indicators">
         @foreach($slides as $index => $slide)
-            <li data-target="#carousel" data-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"></li>
+            <li data-bs-target="#carousel" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}"></li>
         @endforeach
     </ol>
 </div>

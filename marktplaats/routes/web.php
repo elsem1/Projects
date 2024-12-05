@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Events\SuccessfulRegistration;
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\BidController;
 
 Route::get('/', [AdController::class, 'slideShow'])->name('welcome');
 
@@ -46,5 +47,8 @@ Route::get('/ads/{ad}/edit,', [AdController::class, 'edit'])
     ->middleware('auth')
     ->can('edit', 'ad')
     ->name('ads.edit');
+Route::post('/ads/{ad}/bids', [BidController::class, 'store'])
+    ->middleware('auth')
+    ->name('ads.bids.store');
 Route::patch('/ads/{ad}', [ Adcontroller::class, 'update'])->name('ads.update');
 Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');

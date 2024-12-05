@@ -166,13 +166,6 @@ nav#header .inline-block {
     margin: 30px 10px 30px 0;
 }
 
-span {
-    color: #777;
-    font-size: 12px;
-    bottom: 68px;
-    position: absolute;
-}
-
 #login {
     left: 50px;
 }
@@ -366,10 +359,3 @@ body {
     padding-bottom: 50px; /* Adjust this value as needed */
 }
 
-#laravel-debugbar {
-    z-index: 9999 !important;
-    position: fixed !important;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-}

@@ -37,9 +37,9 @@
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">
                             Save Changes
                         </button>
-                        <button form="delete-form" class="ml-5 bg-red-700 text-white px-4 py-2 rounded-lg shadow hover:bg-red-500">
+                        <button type="button" class="ml-5 bg-red-700 text-white px-4 py-2 rounded-lg shadow hover:bg-red-500 btn-delete">
                             Delete Ad
-                         </button>
+                        </button>
                     </div>
                     
                 </form>
@@ -54,5 +54,27 @@
         @csrf
         @method('DELETE')
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector(".btn-delete").addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById("delete-form").submit();
+                    }
+                });
+            });
+        });
+        </script>
 
 </x-layout>

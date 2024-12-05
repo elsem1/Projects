@@ -19,12 +19,13 @@ use App\Models\Ad;
 class UserController extends Controller
 {
     public function index()
-    {
-        $ads = Auth::user()->ads()->get();    
-       
+{
+    
+    $ads = Auth::user()->ads()->simplePaginate(5);    
+    
+    return view('user.profile', compact('ads'));
+}
 
-        return view('user.profile', compact('ads'));
-    }
 
     public function store()
     {

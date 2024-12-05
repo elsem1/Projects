@@ -27,11 +27,11 @@ class AdController extends Controller
             $query->orderBy('created_at', 'asc')->take(5);
         }])->findOrFail($ad->id);
 
-        $ad->increment('views');        
+        $ad->increment('views');           
         
-        return view('ads.show', compact('ad'));
-    }
-    
+
+    return view('ads.show', compact('ad'));
+    }      
     public function create()
     {
         $categories = Category::all();
@@ -84,21 +84,21 @@ class AdController extends Controller
                 'title' => "Stripy Zig Zag Jigsaw Pillow and Duvet Set",
                 'description' => "A modern set to update your bedroom",
                 'link' => "#",
-                'checked' => true,
+                
             ],
             [
                 'image' => "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
                 'title' => "Real Bamboo Wall Clock",
                 'description' => "Eco-friendly bamboo wall clock for your home",
                 'link' => "#",
-                'checked' => true,
+                
             ],
             [
                 'image' => "https://images.unsplash.com/photo-1519327232521-1ea2c736d34d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
                 'title' => "Brown and blue hardbound book",
                 'description' => "A great read for book lovers",
                 'link' => "#",
-                'checked' => true,
+                
             ]
         ];
     
@@ -171,7 +171,7 @@ class AdController extends Controller
     {
         $ad->delete();
 
-        return redirect('ads');
+        return redirect('profile');
     }
 }
 

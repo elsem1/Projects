@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\SuccessfulRegistration;
-use App\Listeners\SendSuccessfulRegistration;
-use App\View\Components\AdForm;
+use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -52,26 +50,28 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Ad::class, AdPolicy::class);
 
 
-    // view()->composer('*', function ($view) 
-    // { 
-    //     $currentViewName = $view->getName();
+        view()->composer(['ads.*', 'user.profile'], function ($view) {
+            $slide = [];
+            $usedImages = [];
         
-    //     if (in_array($currentViewName, ['welcome', '/', 'homepage']))
-    //     {       
-    //         return; 
-    //     }
+            while (count($slide) < 5) {
+                $randomImageUrl = "https://picsum.photos/400/400?random=" . Str::random(5);
+                
+                if (!in_array($randomImageUrl, $usedImages)) {
+                    $slide[] = [
+                        'id' => count($slide) + 1,
+                        'image' => $randomImageUrl,
+                        'title' => "Nice picture " . (count($slide) + 1),
+                        'description' => "A picture for this nice product " . (count($slide) + 1),
+                        'link' => '#',
+                    ];
+                    $usedImages[] = $randomImageUrl;
+                }
+            }
+        
+            $view->with('slide', $slide);
+        });
 
-
-    //     $slides = collect(range(1, 3))->map(function ($i) { 
-    //         return [ 
-    //             'id' => $i, 
-    //             'image' => "https://picsum.photos/400/400?random={$i}", 
-    //             'title' => "Random Image {$i}", 
-    //             'description' => "This is a description for Random Image {$i}", 
-    //             'link' => '#', 'checked' => $i === 1 ]; 
-    //         });
-    //         $view->with('slides', $slides);
-    //     });
 
     }    
 
