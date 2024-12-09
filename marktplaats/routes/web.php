@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Events\SuccessfulRegistration;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MessageController;
 
 Route::get('/', [AdController::class, 'slideShow'])->name('welcome');
 
@@ -52,3 +54,15 @@ Route::post('/ads/{ad}/bids', [BidController::class, 'store'])
     ->name('ads.bids.store');
 Route::patch('/ads/{ad}', [ Adcontroller::class, 'update'])->name('ads.update');
 Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
+
+// message routes
+Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+
+// // Category routes
+// Route::get('/ads/categories/{category}', [AdController::class, 'categories'])->name('ads.categories');
+// Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+// Route::post('/categories', [CategoryController::class, 'store'])->middleware('auth')->name('categories.store');
+// Route::get('/categories/create', [CategoryController::class, 'create'])->middleware('auth')->name('categories.create');
+// Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
+// Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('auth')->name('categories.edit');
+// Route::patch('/categories/{category}', [CategoryController::class, 'show'])->middleware('auth')->name('categories.update');

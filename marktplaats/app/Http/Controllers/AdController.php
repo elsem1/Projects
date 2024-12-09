@@ -12,21 +12,55 @@ use Illuminate\Validation\Rule;
 
 class AdController extends Controller
 {
-    public function index()
-{
-    $ads = Ad::orderBy('views', 'desc')->latest()->simplePaginate(5);
+    public function index(Request $request)
+{      
+    // krijg de specifieke category input wanneer deze gevraagd wordt, zelfde voor search
+    $categoryId = $request->input('category_id');
+    $query = $request->input('query');
 
-    return view('ads.index', compact('ads'));
+    // start de query
+    $adsQuery = Ad::query();
+
+    // als er een search gedaan wordt, wordt er gezocht in titel en body
+    if ($query) {
+        $adsQuery->where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('title', 'like', "%{$query}%")
+                         ->orWhere('body', 'like', "%{$query}%");
+        });
+    }
+    
+
+    // Als er een specifieke categorie gevraagd wordt, wordt deze hier toegepast
+    if ($categoryId) {
+        $adsQuery->whereHas('categories', function ($query) use ($categoryId) {
+            $query->where('categories.id', $categoryId);
+        });
+    }
+
+    // De ads met de meeste vieuws worden als eerst getoont
+    $adsQuery->orderBy('views', 'desc')
+             ->latest();
+
+    
+    $ads = $adsQuery->paginate(10);
+
+    // Categorieen voor de dropdown
+    $categories = Category::all();
+
+    
+    return view('ads.index', compact('ads', 'categories', 'categoryId', 'query'));
 }
 
-
+    
     
     public function show(Ad $ad)
     {
-        $ad = Ad::with(['bids' => function ($query) {
+        //laad de biedingen bij iedere ad
+        $ad = Ad::with([ 'bids' => function ($query) {
             $query->orderBy('created_at', 'asc')->take(5);
         }])->findOrFail($ad->id);
 
+        // verhoogd de view counter
         $ad->increment('views');           
         
 
@@ -173,16 +207,18 @@ class AdController extends Controller
 
         return redirect('profile');
     }
+    
 }
+
 
 // public function buyPremium(Ad $ad)
 // {
 //     $ad->premiumHistory()->create([
 //         'purchased_at' => now(),
-//         'duration_days' => 30, // Premium duration in days
+//         'duration_days' => 30, // De duratie die je premium wilt geven
         
 //         $premiumAds = Ad::whereHas('premiumHistory', function($query) {
-//                 $query->where('purchased_at', '>', now()->subDays(30)); // Get ads that have been premium in the last 30 days
+//                 $query->where('purchased_at', '>', now()->subDays(30)); 
 //             })->orderByDesc('premium_history.purchased_at')
 //               ->get();
 //         ]);

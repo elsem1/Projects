@@ -54,8 +54,8 @@ class AppServiceProvider extends ServiceProvider
             $slide = [];
             $usedImages = [];
         
-            while (count($slide) < 5) {
-                $randomImageUrl = "https://picsum.photos/400/400?random=" . Str::random(5);
+            while (count($slide) < 16) {
+                $randomImageUrl = "https://picsum.photos/400/400?random=" . Str::random(16);
                 
                 if (!in_array($randomImageUrl, $usedImages)) {
                     $slide[] = [

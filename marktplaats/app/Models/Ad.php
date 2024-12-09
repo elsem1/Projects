@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+
  
 
 class Ad extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'user_id',
@@ -54,6 +56,15 @@ class Ad extends Model
         }
         return false;
     }
+
+    public function toSearchableArray()
+{
+    return [
+        'title' => $this->title,
+        'body' => $this->body,
+        'ask' => $this->ask,
+    ];
+}
 }
 
 
