@@ -14,6 +14,7 @@ class Message extends Model
         'receiver_id',
         'subject',
         'message',
+        'is_read',
     ];
 
     public function sender()
@@ -27,4 +28,15 @@ class Message extends Model
         return $this->belongsTo(User::class, 'receiver_id');
 
     }
+
+    public function scopePreviousMessages($query, $senderId, $receiverId)
+{
+    return $query->where(function ($query) use ($senderId, $receiverId) {
+        $query->whereIn('sender_id', [$senderId, $receiverId])
+              ->whereIn('receiver_id', [$senderId, $receiverId]);
+    })->orderBy('created_at', 'desc');
+}
+
+
+
 }

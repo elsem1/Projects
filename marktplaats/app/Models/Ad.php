@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
- 
+
+
 
 class Ad extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
 
     protected $fillable = [
         'user_id',
@@ -18,7 +18,7 @@ class Ad extends Model
         'body',
         'ask',
         'views',
-       
+
 
     ];
 
@@ -37,9 +37,9 @@ class Ad extends Model
         return $this->belongsToMany(Category::class, 'ad_category');
     }
 
-    public function views() 
-    { 
-        return $this->hasMany(View::class); 
+    public function views()
+    {
+        return $this->hasMany(View::class);
     }
 
     public function premiumHistory()
@@ -52,7 +52,7 @@ class Ad extends Model
         $lastPremiumPurchase = $this->premiumHistory()->latest()->first();
         if ($lastPremiumPurchase) {
             $expiryDate = $lastPremiumPurchase->purchased_at->addDays($lastPremiumPurchase->duration_days);
-            return $expiryDate > now(); 
+            return $expiryDate > now();
         }
         return false;
     }

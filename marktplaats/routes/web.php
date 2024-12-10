@@ -56,7 +56,20 @@ Route::patch('/ads/{ad}', [ Adcontroller::class, 'update'])->name('ads.update');
 Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
 
 // message routes
-Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+// Message routes
+Route::middleware('auth')->group(function() {
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+    Route::post('/messages/reply', [MessageController::class, 'reply'])->name('messages.reply');
+    Route::get('messages/{message}/reply', [MessageController::class, 'createReply'])->name('messages.createReply');
+    Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/messages/reply', [MessageController::class, 'reply'])->name('messages.reply');
+    Route::get('/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+});
+
 
 // // Category routes
 // Route::get('/ads/categories/{category}', [AdController::class, 'categories'])->name('ads.categories');

@@ -32,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+       
     
         if (config('app.env') === 'local') 
         { 
@@ -48,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('carousel-slide', CarouselSlide::class);  
         Blade::component('carousel', Carousel::class);
         Gate::policy(Ad::class, AdPolicy::class);
+        Gate::policy(Message::class, MessagePolicy::class);
 
 
         view()->composer(['ads.*', 'user.profile'], function ($view) {

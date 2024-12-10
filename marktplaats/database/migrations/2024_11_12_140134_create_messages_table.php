@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreignId('receiver_id');
             $table->text('subject');
             $table->text('message');
+            $table->boolean('is_read')->default(0);
             $table->timestamps();
 
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');

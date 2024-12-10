@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 class AdController extends Controller
 {
     public function index(Request $request)
-{      
+{
     // krijg de specifieke category input wanneer deze gevraagd wordt, zelfde voor search
     $categoryId = $request->input('category_id');
     $query = $request->input('query');
@@ -28,7 +28,7 @@ class AdController extends Controller
                          ->orWhere('body', 'like', "%{$query}%");
         });
     }
-    
+
 
     // Als er een specifieke categorie gevraagd wordt, wordt deze hier toegepast
     if ($categoryId) {
@@ -41,18 +41,18 @@ class AdController extends Controller
     $adsQuery->orderBy('views', 'desc')
              ->latest();
 
-    
+
     $ads = $adsQuery->paginate(10);
 
     // Categorieen voor de dropdown
     $categories = Category::all();
 
-    
+
     return view('ads.index', compact('ads', 'categories', 'categoryId', 'query'));
 }
 
-    
-    
+
+
     public function show(Ad $ad)
     {
         //laad de biedingen bij iedere ad
@@ -61,18 +61,18 @@ class AdController extends Controller
         }])->findOrFail($ad->id);
 
         // verhoogd de view counter
-        $ad->increment('views');           
-        
+        $ad->increment('views');
+
 
     return view('ads.show', compact('ad'));
-    }      
+    }
     public function create()
     {
         $categories = Category::all();
-        
+
         return view('ads.create', compact('categories'));
     }
-    
+
     public function store(Request $request)
 {
     $request->validate([
@@ -118,35 +118,35 @@ class AdController extends Controller
                 'title' => "Stripy Zig Zag Jigsaw Pillow and Duvet Set",
                 'description' => "A modern set to update your bedroom",
                 'link' => "#",
-                
+
             ],
             [
                 'image' => "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
                 'title' => "Real Bamboo Wall Clock",
                 'description' => "Eco-friendly bamboo wall clock for your home",
                 'link' => "#",
-                
+
             ],
             [
                 'image' => "https://images.unsplash.com/photo-1519327232521-1ea2c736d34d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
                 'title' => "Brown and blue hardbound book",
                 'description' => "A great read for book lovers",
                 'link' => "#",
-                
+
             ]
         ];
-    
+
         return view('welcome', compact('slides'));
     }
 
     public function edit(Ad $ad)
     {
-        $categories = Category::all();        
+        $categories = Category::all();
         $images = $ad->images;
 
-        if (!Auth::user()->can('edit', $ad)) 
-        { 
-            abort(403, 'Unauthorized action.'); 
+        if (!Auth::user()->can('edit', $ad))
+        {
+            abort(403, 'Unauthorized action.');
         }
 
         return view('ads.edit', [
@@ -205,9 +205,9 @@ class AdController extends Controller
     {
         $ad->delete();
 
-        return redirect('profile');
+        return redirect()->route('profile');
     }
-    
+
 }
 
 
@@ -216,9 +216,9 @@ class AdController extends Controller
 //     $ad->premiumHistory()->create([
 //         'purchased_at' => now(),
 //         'duration_days' => 30, // De duratie die je premium wilt geven
-        
+
 //         $premiumAds = Ad::whereHas('premiumHistory', function($query) {
-//                 $query->where('purchased_at', '>', now()->subDays(30)); 
+//                 $query->where('purchased_at', '>', now()->subDays(30));
 //             })->orderByDesc('premium_history.purchased_at')
 //               ->get();
 //         ]);
