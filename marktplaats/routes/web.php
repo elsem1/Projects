@@ -55,20 +55,18 @@ Route::post('/ads/{ad}/bids', [BidController::class, 'store'])
 Route::patch('/ads/{ad}', [ Adcontroller::class, 'update'])->name('ads.update');
 Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
 
-// message routes
+
 // Message routes
-Route::middleware('auth')->group(function() {
+Route::middleware('auth')->group(function () {
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
-    Route::post('/messages/reply', [MessageController::class, 'reply'])->name('messages.reply');
+    Route::get('messages/{ad}/create', [MessageController::class, 'create'])->name('messages.create');
+    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
     Route::get('messages/{message}/reply', [MessageController::class, 'createReply'])->name('messages.createReply');
+    Route::post('/messages/reply', [MessageController::class, 'reply'])->name('messages.reply');
     Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::post('/messages/reply', [MessageController::class, 'reply'])->name('messages.reply');
-    Route::get('/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
-});
 
 
 // // Category routes

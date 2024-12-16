@@ -14,6 +14,10 @@ use App\View\Components\Carousel;
 use Illuminate\Support\Facades\Gate;
 use App\Policies\AdPolicy;
 use App\Models\Ad;
+use App\Models\Message;
+use App\Policies\MessagePolicy;
+use App\Events\NewMessage; 
+use App\Listeners\SendNewMessage;
 
 use function Illuminate\Events\queueable;
 
@@ -51,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('carousel', Carousel::class);
         Gate::policy(Ad::class, AdPolicy::class);
         Gate::policy(Message::class, MessagePolicy::class);
+        Event::listen(NewMessage::class, SendNewMessage::class);
 
 
         view()->composer(['ads.*', 'user.profile'], function ($view) {

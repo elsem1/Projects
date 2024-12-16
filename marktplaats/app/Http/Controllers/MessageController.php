@@ -6,46 +6,72 @@ use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Ad;
+use App\Events\NewMessage;
+
 
 class MessageController extends Controller
 {
 
-    public function index(Message $message)
+    public function index()
     {
-        $messages = Message::where(function ($query) {
-            $query->where('receiver_id', Auth::user()->id)
-                  ->orWhere('sender_id', Auth::user()->id);
-        })->get();
-
-        return view('messages.index', compact( 'messages'));
+        $userId = Auth::user()->id;
+        // Haal alle berichten op waarin de gebruiker betrokken is
+        $conversations = Message::where(function ($query) use ($userId) {
+            $query->where('receiver_id', $userId)
+                ->orWhere('sender_id', $userId);
+        })->orderBy('created_at', 'desc')
+        ->get()
+        ->groupBy('subject'); // Groepeer op onderwerp
+    
+        return view('messages.index', compact('conversations'));
     }
+    
+
 
     public function show(Message $message)
-    {
-        $message = Message::findOrFail($message->id);
+{
+    $message = Message::findOrFail($message->id);
 
-        $message->update([
-            'is_read' => true
-        ]);
+    $message->update([
+        'is_read' => true
+    ]);
 
-        $previousMessages = $message->previousMessages($message->sender_id, $message->receiver_id)->get();
+    // Haal alle vorige berichten op met dezelfde zender en ontvanger, en hetzelfde onderwerp
+    $previousMessages = Message::where(function ($query) use ($message) {
+        $query->where('subject', $message->subject)
+            ->where(function ($subQuery) use ($message) {
+                $subQuery->where('sender_id', $message->sender_id)
+                        ->where('receiver_id', $message->receiver_id);
+            })
+            ->orWhere(function ($subQuery) use ($message) {
+                $subQuery->where('sender_id', $message->receiver_id)
+                        ->where('receiver_id', $message->sender_id);
+            });
+    })
+    ->orderBy('created_at', 'desc')
+    ->get();
 
+    $originalSender = $previousMessages->first();
 
-        $originalSender = $previousMessages->last();
+    return view('messages.show', [
+        'message' => $message,
+        'previousMessages' => $previousMessages,
+        'originalSender' => $originalSender,
+    ]);
+}
 
+public function create(Ad $ad)
+{
+    $receiver = $ad->user;
+    $subject = $ad->title;
 
-        return view('messages.show', [
-            'message' => $message,
-            'previousMessages' => $previousMessages,
-            'originalSender' => $originalSender,
-        ]);
-
-    }
-
-    public function create()
-    {
-            return view('messages.create');
-    }
+    return view('messages.create', [
+        'receiver' => $receiver,
+        'subject' => $subject,
+        'ad' => $ad 
+    ]);
+}
 
 
     public function createReply(Message $message)
@@ -59,28 +85,56 @@ class MessageController extends Controller
 
     public function reply(Request $request)
 {
-    // Validate the incoming request
+    // Validatie
     $request->validate([
         'message' => ['required', 'min:3', 'max:5000'],
+        
+
     ]);
-    dd(auth()->id());
-    // Create a new message record
+    
+    // Maakt een nieuw bericht aan
     $message = Message::create([
-        'subject' => $request->subject,  // Get the subject from the form
-        'message' => $request->message,  // Get the reply message from the form
-        'sender_id' => auth()->id(),     // Sender is the authenticated user
-        'receiver_id' => $request->receiver_id,  // Receiver is the original sender
+        'subject' => $request->subject,  
+        'message' => $request->message, 
+        'sender_id' => Auth::user()->id,     
+        'receiver_id' => $request->receiver_id,  
     ]);
 
-    // Optionally, you can retrieve the previous messages if you need to pass them to the view
-    $previousMessages = $message->previousMessages($request->receiver_id, auth()->id())->get();
+    // Eerdere berichten uit zelfde gesprek worden in de view geladen
+    $previousMessages = $message->previousMessages($request->receiver_id, Auth::user()->id)->get();
 
-    // Redirect the user back to the message view page after sending the reply
-    return redirect()->route('messages.show', ['message' => $message->id])  // Use correct syntax for passing parameters
-                     ->with('Success', 'Message sent successfully.');
+    
+    return redirect()->route('messages.show', ['message' => $message->id])  
+                    ->with('Success', 'Message sent successfully.');
 }
 
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'receiver_id' => 'required|exists:users,id',
+        'subject' => 'required|string|max:255',
+        'message' => 'required|string',
+    ]);
 
+    $message = new Message;
+    $message->sender_id = Auth::id();
+    $message->receiver_id = $validated['receiver_id'];
+    $message->subject = $validated['subject'];
+    $message->message = $validated['message'];
+
+    // Markeer het bericht als gelezen voor de zender, maar niet voor de ontvanger
+    $message->is_read = true;
+
+    $message->save();
+
+    // Haal de ontvanger gebruiker op
+    $user = User::where('id', $validated['receiver_id'])->first();
+
+    // Aansturen van het event met de juiste parameters
+    event(new NewMessage($message, $user));
+
+    return redirect()->route('messages.index')->with('success', 'Message sent successfully!');
+}
 
 
     public function destroy(Message $message)
