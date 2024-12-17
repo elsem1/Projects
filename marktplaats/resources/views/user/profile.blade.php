@@ -67,8 +67,18 @@
 
 
             <!-- Additional Section -->
-            <div class="lg:col-span-1 bg-white shadow-md rounded-lg p-6">
-                <h2 class="text-xl font-bold text-gray-800">Settings</h2>
+            <div>
+                <form action="{{ route('user.updateNotifications') }}" method="POST">
+                    @csrf
+                    <div class="lg:col-span-1 bg-white shadow-md rounded-lg p-6">
+                        <h2 class="text-xl font-bold text-gray-800">Settings</h2>
+                        <label for="notifications">Receive Notifications</label>
+                        <input type="checkbox" name="receive_notifications" id="notifications"
+                            {{ Auth::user()->receive_notifications ? 'checked' : '' }}>
+
+                        <button type="submit" class="mt-4 p-2 bg-blue-500 text-white rounded">Save</button>
+                    </div>
+                </form>
 
             </div>
         </div>

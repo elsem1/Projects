@@ -37,13 +37,14 @@ class SuccessfulRegistration extends Mailable implements ShouldQueue
     /**
      * Get the message content definition.
      */
-    public function content(): Content 
-    { 
-        return new Content( 
-            view: 'emails.successfulregistration', 
-                with: [ 'user' => $this->user, 
-            ], 
-        ); 
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.successfulregistration',
+            with: [
+                'user' => $this->user,
+            ],
+        );
     }
 
     /**

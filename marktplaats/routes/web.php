@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
@@ -14,6 +15,7 @@ Route::get('/', [AdController::class, 'slideShow'])->name('welcome');
 
 // Profile route
 Route::get('/profile', [UserController::class, 'index'])->name('user.profile')->middleware('auth');
+Route::post('/user/update-notifications', [UserController::class, 'updateNotifications'])->name('user.updateNotifications');
 
 // Login routes
 Route::get('/login', [SessionController::class, 'create'])->name('login')->middleware('guest');
@@ -52,7 +54,7 @@ Route::get('/ads/{ad}/edit,', [AdController::class, 'edit'])
 Route::post('/ads/{ad}/bids', [BidController::class, 'store'])
     ->middleware('auth')
     ->name('ads.bids.store');
-Route::patch('/ads/{ad}', [ Adcontroller::class, 'update'])->name('ads.update');
+Route::patch('/ads/{ad}', [Adcontroller::class, 'update'])->name('ads.update');
 Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
 
 

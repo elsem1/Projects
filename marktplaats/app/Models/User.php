@@ -20,6 +20,7 @@ class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
         'residence',
         'email',
         'password',
+        'receive_notifications',
     ];
 
     /**
