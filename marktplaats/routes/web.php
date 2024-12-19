@@ -47,6 +47,7 @@ Route::get('/ads/create', [AdController::class, 'create'])->middleware('auth')->
 Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
 Route::post('/ads', [Adcontroller::class, 'store'])->middleware('auth')->name('ads.store');
 Route::get('/ads/{ad}', [AdController::class, 'show'])->name('ads.show');
+Route::post('ads/premium', [AdController::class, 'buyPremium'])->middleware('auth')->name('ads.buyPremium');
 Route::get('/ads/{ad}/edit,', [AdController::class, 'edit'])
     ->middleware('auth')
     ->can('edit', 'ad')

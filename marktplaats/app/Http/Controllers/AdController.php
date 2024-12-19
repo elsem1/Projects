@@ -13,58 +13,57 @@ use Illuminate\Validation\Rule;
 class AdController extends Controller
 {
     public function index(Request $request)
-{
-    // krijg de specifieke category input wanneer deze gevraagd wordt, zelfde voor search
-    $categoryId = $request->input('category_id');
-    $query = $request->input('query');
+    {
+        $categoryId = $request->input('category_id');
+        $query = $request->input('query');
+        $adsQuery = Ad::query();
 
-    // start de query
-    $adsQuery = Ad::query();
+        if ($query) { // Query voor search, zoekt in title en body
+            $adsQuery->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('title', 'like', "%{$query}%")
+                    ->orWhere('body', 'like', "%{$query}%");
+            });
+        }
+        if ($categoryId) { // Query voor category, waarna alleen die category getoond wordt
+            $adsQuery->whereHas('categories', function ($query) use ($categoryId) {
+                $query->where('categories.id', $categoryId);
+            });
+        }
+        // Query voor alle ads waar premium als eerst getoont wordt
+        $adsQuery->leftJoin('premium_history', 'ads.id', '=', 'premium_history.ad_id')
+            ->select('ads.*')
+            ->orderByRaw(
+                "CASE 
+                WHEN premium_history.purchased_at IS NOT NULL 
+                    AND premium_history.purchased_at > NOW() - INTERVAL premium_history.duration_days DAY 
+                THEN 0 
+                ELSE 1
+            END, ads.views DESC, 
+            ads.created_at DESC"
+            );
 
-    // als er een search gedaan wordt, wordt er gezocht in titel en body
-    if ($query) {
-        $adsQuery->where(function ($queryBuilder) use ($query) {
-            $queryBuilder->where('title', 'like', "%{$query}%")
-                         ->orWhere('body', 'like', "%{$query}%");
-        });
+        $ads = $adsQuery->paginate(10);
+
+        $categories = Category::all();
+
+        return view('ads.index', compact('ads', 'categories', 'categoryId', 'query'));
     }
-
-
-    // Als er een specifieke categorie gevraagd wordt, wordt deze hier toegepast
-    if ($categoryId) {
-        $adsQuery->whereHas('categories', function ($query) use ($categoryId) {
-            $query->where('categories.id', $categoryId);
-        });
-    }
-
-    // De ads met de meeste vieuws worden als eerst getoont
-    $adsQuery->orderBy('views', 'desc')
-             ->latest();
-
-
-    $ads = $adsQuery->paginate(10);
-
-    // Categorieen voor de dropdown
-    $categories = Category::all();
-
-
-    return view('ads.index', compact('ads', 'categories', 'categoryId', 'query'));
-}
-
 
 
     public function show(Ad $ad)
     {
-        //laad de biedingen bij iedere ad
-        $ad = Ad::with([ 'bids' => function ($query) {
-            $query->orderBy('created_at', 'asc')->take(5);
-        }])->findOrFail($ad->id);
+        // Laad de biedingen bij iedere ad
+        $ad = Ad::with([
+            'bids' => function ($query) {
+                $query->orderBy('created_at', 'asc')->take(5);
+            }
+        ])->findOrFail($ad->id);
 
         // verhoogd de view counter
         $ad->increment('views');
 
 
-    return view('ads.show', compact('ad'));
+        return view('ads.show', compact('ad'));
     }
     public function create()
     {
@@ -74,41 +73,41 @@ class AdController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'title' => ['required', 'min:3', 'max:255'],
-        'categories' => 'array',
-        'categories.*' => ['integer', 'exists:categories,id'],
-        'body' => ['required', 'min:3', 'max:255'],
-        'ask' => ['required', 'min:0', 'numeric'],
-        'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-    ]);
+    {
+        $request->validate([
+            'title' => ['required', 'min:3', 'max:255'],
+            'categories' => 'array',
+            'categories.*' => ['integer', 'exists:categories,id'],
+            'body' => ['required', 'min:3', 'max:255'],
+            'ask' => ['required', 'min:0', 'numeric'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
 
-    $ad = Ad::create([
-        'title' => $request->title,
-        'body' => $request->body,
-        'ask' => $request->ask,
-        'user_id' => auth()->id(),
-    ]);
+        $ad = Ad::create([
+            'title' => $request->title,
+            'body' => $request->body,
+            'ask' => $request->ask,
+            'user_id' => auth()->id(),
+        ]);
 
-    $ad->categories()->sync($request->input('categories', []));
+        $ad->categories()->sync($request->input('categories', []));
 
-    if ($request->hasFile('image')) {
-        $imageFile = $request->file('image');
-        $imageName = time() . '.' . $imageFile->getClientOriginalExtension();
-        $imageFile->move(public_path('images'), $imageName);
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $imageName = time() . '.' . $imageFile->getClientOriginalExtension();
+            $imageFile->move(public_path('images'), $imageName);
 
-        $image = new Image();
-        $image->ad_id = $ad->id;
-        $image->name = $request->input('name');
-        $image->description = $request->input('description');
-        $image->user_id = Auth::id();
-        $image->path = 'images/' . $imageName;
-        $image->save();
+            $image = new Image();
+            $image->ad_id = $ad->id;
+            $image->name = $request->input('name');
+            $image->description = $request->input('description');
+            $image->user_id = Auth::id();
+            $image->path = 'images/' . $imageName;
+            $image->save();
+        }
+
+        return redirect()->route('ads.show', ['ad' => $ad->id])->with('success', 'Ad created successfully.');
     }
-
-    return redirect()->route('ads.show', ['ad' => $ad->id])->with('success', 'Ad created successfully.');
-}
 
     public function slideShow()
     {
@@ -144,8 +143,7 @@ class AdController extends Controller
         $categories = Category::all();
         $images = $ad->images;
 
-        if (!Auth::user()->can('edit', $ad))
-        {
+        if (!Auth::user()->can('edit', $ad)) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -184,8 +182,7 @@ class AdController extends Controller
 
         $ad->categories()->sync($request->input('categories', []));
 
-        if ($request->hasFile('image'))
-        {
+        if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images'), $imageName);
 
@@ -201,6 +198,31 @@ class AdController extends Controller
         return redirect()->route('ads.show', ['ad' => $ad->id])->with('success', 'Ad updated successfully.');
     }
 
+    public function buyPremium(Request $request)
+    {
+        $adId = $request->input('ad_id');
+        $ad = Ad::findOrFail($adId);
+        // Maakt een nieuwe record in de premium_history tabel
+        $ad->premiumHistory()->create([
+            'purchased_at' => now(),
+            'duration_days' => 1,
+        ]);
+
+        // Haalt alle premium ads op
+        $premiumAds = Ad::whereHas('premiumHistory', function ($query) {
+            $query->where('purchased_at', '>', now()->subDays(1));
+        })->orderByDesc(function ($query) {
+            $query->select('purchased_at')
+                ->from('premium_history')
+                ->whereColumn('ad_id', 'ads.id')
+                ->orderByDesc('purchased_at')
+                ->limit(1);
+        })->get();
+
+        return redirect()->route('ads.show', ['ad' => $ad->id])->with('success', 'Premium purchased successfully.');
+    }
+
+
     public function destroy(Ad $ad)
     {
         $ad->delete();
@@ -211,15 +233,4 @@ class AdController extends Controller
 }
 
 
-// public function buyPremium(Ad $ad)
-// {
-//     $ad->premiumHistory()->create([
-//         'purchased_at' => now(),
-//         'duration_days' => 30, // De duratie die je premium wilt geven
 
-//         $premiumAds = Ad::whereHas('premiumHistory', function($query) {
-//                 $query->where('purchased_at', '>', now()->subDays(30));
-//             })->orderByDesc('premium_history.purchased_at')
-//               ->get();
-//         ]);
-//     }

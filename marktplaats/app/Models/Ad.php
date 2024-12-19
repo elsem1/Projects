@@ -47,24 +47,42 @@ class Ad extends Model
         return $this->hasMany(PremiumHistory::class);
     }
 
+
     public function isPremium()
     {
-        $lastPremiumPurchase = $this->premiumHistory()->latest()->first();
-        if ($lastPremiumPurchase) {
-            $expiryDate = $lastPremiumPurchase->purchased_at->addDays($lastPremiumPurchase->duration_days);
-            return $expiryDate > now();
-        }
-        return false;
+        return $this->premiumHistory() // Kijkt of een ad premium heeft
+            ->where('purchased_at', '<=', now())
+            ->where(function ($query) {
+                $query->whereRaw('DATE_ADD(purchased_at, INTERVAL duration_days DAY) > ?', [now()]);
+            })
+            ->exists();
     }
 
+    public function scopePremium($query) // Filter dat kijkt welke ads premium zijn door te kijken wanneer de premium verloopt
+    {
+        return $query->whereHas('premiumHistory', function ($query) {
+            $query->where('purchased_at', '<=', now())
+                ->whereRaw('DATE_ADD(purchased_at, INTERVAL duration_days DAY) > ?', [now()]);
+        })
+            ->orderBy('latest_premium_date', 'desc')
+            ->withExpression('latest_premium_date', function ($query) {
+                return $query->select('purchased_at')
+                    ->from('premium_history')
+                    ->whereColumn('ad_id', 'ads.id')
+                    ->latest()
+                    ->limit(1);
+            });
+    }
+
+
     public function toSearchableArray()
-{
-    return [
-        'title' => $this->title,
-        'body' => $this->body,
-        'ask' => $this->ask,
-    ];
-}
+    {
+        return [
+            'title' => $this->title,
+            'body' => $this->body,
+            'ask' => $this->ask,
+        ];
+    }
 }
 
 

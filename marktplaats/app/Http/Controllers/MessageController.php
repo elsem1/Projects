@@ -7,18 +7,15 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Ad;
-// use App\Events\NewMessage;
 use App\Mail\NewMessage;
 use Illuminate\Support\Facades\Mail;
 
-
 class MessageController extends Controller
 {
-
+    // Haal alle gesprekken op waarin de gebruiker betrokken is
     public function index()
     {
         $userId = Auth::user()->id;
-        // Haal alle berichten op waarin de gebruiker betrokken is
         $conversations = Message::where(function ($query) use ($userId) {
             $query->where('receiver_id', $userId)
                 ->orWhere('sender_id', $userId);
@@ -29,17 +26,12 @@ class MessageController extends Controller
         return view('messages.index', compact('conversations'));
     }
 
-
-
+    // Toon een specifiek bericht en bijbehorende vorige berichten
     public function show(Message $message)
     {
         $message = Message::findOrFail($message->id);
+        $message->update(['is_read' => true]); // Markeer bericht als gelezen
 
-        $message->update([
-            'is_read' => true
-        ]);
-
-        // Haal alle vorige berichten op met dezelfde zender en ontvanger, en hetzelfde onderwerp
         $previousMessages = Message::where(function ($query) use ($message) {
             $query->where('subject', $message->subject)
                 ->where(function ($subQuery) use ($message) {
@@ -54,7 +46,7 @@ class MessageController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $originalSender = $previousMessages->first();
+        $originalSender = $previousMessages->first(); // Haal de oorspronkelijke afzender op
 
         return view('messages.show', [
             'message' => $message,
@@ -63,6 +55,7 @@ class MessageController extends Controller
         ]);
     }
 
+    // Maak een nieuw bericht aan gerelateerd aan een advertentie
     public function create(Ad $ad)
     {
         $receiver = $ad->user;
@@ -75,7 +68,7 @@ class MessageController extends Controller
         ]);
     }
 
-
+    // Maak een nieuw reply aan
     public function createReply(Message $message)
     {
         return view('messages.reply', [
@@ -84,17 +77,13 @@ class MessageController extends Controller
         ]);
     }
 
-
+    // Verwerk een antwoordbericht
     public function reply(Request $request)
     {
         // Validatie
-        $request->validate([
-            'message' => ['required', 'min:3', 'max:5000'],
+        $request->validate(['message' => ['required', 'min:3', 'max:5000']]);
 
-
-        ]);
-
-        // Maakt een nieuw bericht aan
+        // Maak een nieuw bericht aan
         $message = Message::create([
             'subject' => $request->subject,
             'message' => $request->message,
@@ -102,14 +91,23 @@ class MessageController extends Controller
             'receiver_id' => $request->receiver_id,
         ]);
 
-        // Eerdere berichten uit zelfde gesprek worden in de view geladen
+        // Haal eerdere berichten uit hetzelfde gesprek op
         $previousMessages = $message->previousMessages($request->receiver_id, Auth::user()->id)->get();
 
+        // Haal de ontvangende gebruiker op
+        $user = User::where('id', $request->receiver_id)->first();
 
+        // Controleer of de gebruiker notificaties wil ontvangen 
+        if ($user->receive_notifications) {
+            // Stuur een e-mail naar de ontvanger wanneer een antwoord wordt verzonden
+            Mail::to($user)->send(new NewMessage($message->message, $user));
+        }
         return redirect()->route('messages.show', ['message' => $message->id])
             ->with('Success', 'Message sent successfully.');
     }
 
+
+    // Sla een nieuw bericht op
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -118,32 +116,30 @@ class MessageController extends Controller
             'message' => 'required|string',
         ]);
 
+        // Maak een nieuw bericht aan
         $message = new Message;
         $message->sender_id = Auth::id();
         $message->receiver_id = $validated['receiver_id'];
         $message->subject = $validated['subject'];
         $message->message = $validated['message'];
-
-        // Markeer het bericht als gelezen voor de zender, maar niet voor de ontvanger
-        $message->is_read = true;
-
+        $message->is_read = true; // Markeer het bericht als gelezen voor de zender en niet de ontvanger
         $message->save();
 
-        // Haal de ontvanger gebruiker op
+        // Haal de ontvangende gebruiker op
         $user = User::where('id', $validated['receiver_id'])->first();
 
-        // Aanroepen van het event
-        // event(new NewMessage($message, $user));
-        Mail::to($request->user())->send(new NewMessage($message->message, $user));
-
+        // Controleer of de gebruiker notificaties wil ontvangen 
+        if ($user->receive_notifications) {
+            // Stuur een e-mail naar de ontvanger wanneer er een nieuwe conversatie gestart wordt
+            Mail::to($user)->send(new NewMessage($message->message, $user));
+        }
         return redirect()->route('messages.index')->with('success', 'Message sent successfully!');
     }
 
-
+    // Verwijder een bericht
     public function destroy(Message $message)
     {
         $message->delete();
-
         return redirect()->route('messages.index');
     }
 }

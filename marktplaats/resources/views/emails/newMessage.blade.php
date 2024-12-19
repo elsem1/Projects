@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Message</title>
+    <title>New Message on Semper Agora</title>
     <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css');
     </style>
@@ -17,11 +17,11 @@
         </div>
         <div class="mt-4 text-gray-600">
             <p class="mb-4">Hi {{ $user->name }},</p>
-            <p class="mb-4">You have a new message:</p>
+            <p class="mb-4">You have a new message on our platform:</p>
             <p class="mb-4">{{ $messageContent }}</p>
 
             <p class="mb-4">
-                Check your <a href="{{ url('#') }}" class="text-blue-500 underline">inbox</a> for more details.
+                Check your <a href="{{ url('/messages') }}" class="text-blue-500 underline">inbox</a> for more details.
             </p>
             <p>Best regards,<br>The Semper Agora Team</p>
         </div>
