@@ -29,6 +29,7 @@ class AdController extends Controller
                 $query->where('categories.id', $categoryId);
             });
         }
+        // TODO: vraag: zijn de raw queries noodzakelijk?
         // Query voor alle ads waar premium als eerst getoont wordt
         $adsQuery->leftJoin('premium_history', 'ads.id', '=', 'premium_history.ad_id')
             ->select('ads.*')
@@ -74,6 +75,7 @@ class AdController extends Controller
 
     public function store(Request $request)
     {
+        // TODO: validation rules in aparte form request validator class zetten
         $request->validate([
             'title' => ['required', 'min:3', 'max:255'],
             'categories' => 'array',
@@ -83,6 +85,7 @@ class AdController extends Controller
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
+        // TODO: data die je in een insert query gebruikt nooit uit de ongesanitisde request data halen
         $ad = Ad::create([
             'title' => $request->title,
             'body' => $request->body,

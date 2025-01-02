@@ -29,6 +29,7 @@ class MessageController extends Controller
     // Toon een specifiek bericht en bijbehorende vorige berichten
     public function show(Message $message)
     {
+        // TODO: vraag: waarom query je opnieuw de message als deze al via route-model-binding geladen is?
         $message = Message::findOrFail($message->id);
         $message->update(['is_read' => true]); // Markeer bericht als gelezen
 
