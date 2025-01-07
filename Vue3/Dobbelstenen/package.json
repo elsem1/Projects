@@ -1,5 +1,5 @@
 {
-  "name": "opdracht-6",
+  "name": "dobbelstenen",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -13,7 +13,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
-    "prettier": "3.4.2",
     "vite": "^6.0.5",
     "vite-plugin-vue-devtools": "^7.6.8"
   }
