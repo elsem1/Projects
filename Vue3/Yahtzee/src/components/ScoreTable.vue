@@ -78,19 +78,19 @@
 
 <script setup>
 defineProps({
-    dices: Array,
+    dices: Object,
 });
 
 const upperSectionLabels = ['Enen = 1', 'Tweeën = 2', 'Drieën = 3', 'Vieren = 4', 'Vijven = 5', 'Zessen = 6'];
 
 const lowerSectionLabels = [
-    {name: 'Three of a kind', condition: '3 dezelfde', points: 'Totaal v.d. 5 stenen'},
-    {name: 'Carré', condition: '4 dezelfde', points: 'Totaal v.d. 5 stenen'},
-    {name: 'Full House', condition: '2 + 3 dezelfde', points: '25 punten'},
-    {name: 'Kleine straat', condition: '4 opeenvolgende nummers', points: '30 punten'},
-    {name: 'Grote Straat', condition: '5 opeenvolgende nummers', points: '40 punten'},
-    {name: 'Yahtzee', condition: '5 dezelfde', points: '50 punten'},
-    {name: 'Chance', condition: 'Vrije keus', points: 'Totaal v.d. 5 stenen'},
+    { name: 'Three of a kind', condition: '3 dezelfde', points: 'Totaal v.d. 5 stenen' },
+    { name: 'Carré', condition: '4 dezelfde', points: 'Totaal v.d. 5 stenen' },
+    { name: 'Full House', condition: '2 + 3 dezelfde', points: '25 punten' },
+    { name: 'Kleine straat', condition: '4 opeenvolgende nummers', points: '30 punten' },
+    { name: 'Grote Straat', condition: '5 opeenvolgende nummers', points: '40 punten' },
+    { name: 'Yahtzee', condition: '5 dezelfde', points: '50 punten' },
+    { name: 'Chance', condition: 'Vrije keus', points: 'Totaal v.d. 5 stenen' },
 ];
 
 const scores = [];
