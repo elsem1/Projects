@@ -1,55 +1,67 @@
 <template>
     <div class="thrown-dices-container">
         <div class="dice-row">
-            <DiceRender v-for="(_, index) in numberOfDice" :key="index" :ref="el => diceRefs[index] = el" :class="{
-                'throwing': isRolling,
-
-            }" />
+            <DiceRender
+                v-for="i in 5"
+                :key="i"
+                :ref="el => setDiceRef(el, i - 1)"
+                :class="{throwing: isRolling, [`dice-delay-${i}`]: isRolling}"
+            />
         </div>
 
         <div class="controls">
-            <button @click="rollDice" :disabled="isRolling">
-                Roll Dice
-            </button>
+            <button @click="rollDice" :disabled="isRolling">Roll Dice</button>
         </div>
     </div>
-
 </template>
 
-
 <script setup>
-import { ref, } from 'vue';
+import {ref} from 'vue';
 import DiceRender from './DiceRender.vue';
 
+const emit = defineEmits(['dice-rolled']);
 const diceRefs = ref([]);
 const isRolling = ref(false);
 
-
-const numberOfDice = 5;
-diceRefs.value = Array(numberOfDice).fill(null);
+const setDiceRef = (el, index) => {
+    if (el) {
+        diceRefs.value[index] = el;
+    }
+};
 
 const rollDice = () => {
     if (isRolling.value) return;
-
     isRolling.value = true;
 
-    // Reset zodat je pas weer kan rollen als de vorige roll voorbij is
+    let rolledValues = [];
+    let completedRolls = 0;
+
+    diceRefs.value.forEach((diceRef, index) => {
+        if (diceRef && diceRef.rollDice) {
+            setTimeout(() => {
+                const newValue = Math.floor(Math.random() * 6) + 1;
+                rolledValues[index] = newValue;
+                diceRef.rollDice(newValue);
+
+                completedRolls++;
+                if (completedRolls === 5) {
+                    // Emit pas wanneer alle dobbels zijn gegooid
+                    rolledValues.value = rolledValues.sort();
+                    emit('dice-rolled', rolledValues);
+                    console.log(rolledValues);
+                }
+            }, index * 200);
+        }
+    });
+
     setTimeout(() => {
         isRolling.value = false;
     }, 3000);
-
-    for (let i = 0; i < diceRefs.value.length; i++) {
-        const diceRef = diceRefs.value[i];
-
-        diceRef.rollDice();
-    }
-}
-
+};
 </script>
 
 <style scoped>
 .throwing {
-
     animation: throwingAnimation 0.5s ease-in-out;
 }
 

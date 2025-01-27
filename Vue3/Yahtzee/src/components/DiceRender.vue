@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 const currentValue = ref(1);
 const diceStyle = ref({});
@@ -42,38 +42,38 @@ const animateDice = value => {
     };
 };
 
-const toggleHold = () => { // Zorgt ervoor dat een dobbelsteen vastgezet kan worden of weer mee kan draaien
+// const toggleHold = () => {
+//     // Zorgt ervoor dat een dobbelsteen vastgezet kan worden of weer mee kan draaien
 
-    isHeld.value = !isHeld.value;
-    const rotations = {
-        1: 'rotateX(0deg) rotateY(0deg)',
-        2: 'rotateX(0deg) rotateY(180deg)',
-        3: 'rotateX(0deg) rotateY(-90deg)',
-        4: 'rotateX(0deg) rotateY(90deg)',
-        5: 'rotateX(-90deg) rotateY(0deg)',
-        6: 'rotateX(90deg) rotateY(0deg)',
-    };
+//     isHeld.value = !isHeld.value;
+//     const rotations = {
+//         1: 'rotateX(0deg) rotateY(0deg)',
+//         2: 'rotateX(0deg) rotateY(180deg)',
+//         3: 'rotateX(0deg) rotateY(-90deg)',
+//         4: 'rotateX(0deg) rotateY(90deg)',
+//         5: 'rotateX(-90deg) rotateY(0deg)',
+//         6: 'rotateX(90deg) rotateY(0deg)',
+//     };
 
-    if (isHeld.value) {
-
-        diceStyle.value = {
-            transition: 'none',
-            transform: rotations[currentValue.value],
-        };
-    }
-};
+//     if (isHeld.value) {
+//         diceStyle.value = {
+//             transition: 'none',
+//             transform: rotations[currentValue.value],
+//         };
+//     }
+// };
 
 defineExpose({
     rollDice,
-    toggleHold,
-    currentValue
+    //toggleHold,
+    currentValue,
 });
 </script>
 
 <template>
     <div>
-        <section class="container" @click="toggleHold">
-            <div id="cube" :class="{ held: isHeld }" :style="diceStyle.value">
+        <section class="container" @click="rollDice">
+            <div id="cube" :style="diceStyle">
                 <div class="face front">
                     <span class="dot dot1"></span>
                 </div>
@@ -109,7 +109,6 @@ defineExpose({
                 </div>
             </div>
         </section>
-
     </div>
 </template>
 
