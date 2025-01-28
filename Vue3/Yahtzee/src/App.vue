@@ -1,10 +1,10 @@
 <template>
-    <ThrownDices :dice-object="diceObject" @dice-rolled="updateDices" />
+    <ThrownDices @dice-rolled="updateDices" />
     <Scoretable :dices="diceArray" />
 </template>
 
 <script setup>
-import {ref, reactive, computed} from 'vue';
+import { reactive, computed } from 'vue';
 import Scoretable from './components/ScoreTable.vue';
 import ThrownDices from './components/ThrownDices.vue';
 

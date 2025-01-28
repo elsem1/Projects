@@ -1,20 +1,21 @@
 <script setup>
-import {ref} from 'vue';
+import { ref, watch } from 'vue';
 
-const currentValue = ref(1);
+
+const props = defineProps({
+    value: {
+        type: Number,
+        required: true,
+    },
+    isHeld: {
+        type: Boolean,
+        default: false,
+    },
+});
+
 const diceStyle = ref({});
-const isHeld = ref(false);
 
-const rollDice = () => {
-    if (isHeld.value) return; // Zorgt ervoor dat dobbel niet rolt wanneer deze is vastgehouden
-
-    const newValue = Math.floor(Math.random() * 6) + 1; // Random getal tussen 1 en 6 welke naar de dobbelanimatie gaat
-    console.log(`New Dice Value: ${newValue}`);
-    currentValue.value = newValue;
-    animateDice(newValue);
-};
-
-const animateDice = value => {
+const animateDice = (value) => {
     // Coordinaten voor elke zijde van de dobbel
     const rotations = {
         1: 'rotateX(0deg) rotateY(0deg)', // Voorkant
@@ -42,37 +43,21 @@ const animateDice = value => {
     };
 };
 
-// const toggleHold = () => {
-//     // Zorgt ervoor dat een dobbelsteen vastgezet kan worden of weer mee kan draaien
-
-//     isHeld.value = !isHeld.value;
-//     const rotations = {
-//         1: 'rotateX(0deg) rotateY(0deg)',
-//         2: 'rotateX(0deg) rotateY(180deg)',
-//         3: 'rotateX(0deg) rotateY(-90deg)',
-//         4: 'rotateX(0deg) rotateY(90deg)',
-//         5: 'rotateX(-90deg) rotateY(0deg)',
-//         6: 'rotateX(90deg) rotateY(0deg)',
-//     };
-
-//     if (isHeld.value) {
-//         diceStyle.value = {
-//             transition: 'none',
-//             transform: rotations[currentValue.value],
-//         };
-//     }
-// };
+// watch(() => props.value, (Value) => {
+//     animateDice(Value);
+// }, { immediate: true });
 
 defineExpose({
-    rollDice,
-    //toggleHold,
-    currentValue,
+    rollDice: (value) => {
+        animateDice(value);
+    },
 });
+
 </script>
 
 <template>
     <div>
-        <section class="container" @click="rollDice">
+        <section class="container" :class="{ held: isHeld }">
             <div id="cube" :style="diceStyle">
                 <div class="face front">
                     <span class="dot dot1"></span>
@@ -131,9 +116,10 @@ defineExpose({
     transition: transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-#cube.held {
-    border: 2px solid #ff5733;
-    background-color: #ffe6e6;
+.held {
+    border: 7px solid #e2d40c;
+    border-radius: 10px;
+
 }
 
 .face {
