@@ -1,6 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
-
+import {ref, watch} from 'vue';
 
 const props = defineProps({
     value: {
@@ -15,7 +14,7 @@ const props = defineProps({
 
 const diceStyle = ref({});
 
-const animateDice = (value) => {
+const animateDice = (value, isReset = false) => {
     // Coordinaten voor elke zijde van de dobbel
     const rotations = {
         1: 'rotateX(0deg) rotateY(0deg)', // Voorkant
@@ -27,37 +26,41 @@ const animateDice = (value) => {
     };
 
     const selectedRotation = rotations[value];
-    // Zorgt ervoor dat de dobbel in ieder geval 1x ronddraait en maximaal 3x
-    const randomRotationX = 360 * (Math.floor(Math.random() * 3) + 1);
-    const randomRotationY = 360 * (Math.floor(Math.random() * 3) + 1);
-    const totalRotation = randomRotationX + randomRotationY;
-    const maxRotation = 2160;
 
-    // Berekent hoelang de dobbelsteel draait, afhankellijk van de hoeveelheid rotatie
-    const duration = Math.min(3, (totalRotation / maxRotation) * 3);
+    if (isReset) {
+        // Zorgt voor instant animatie als de dobbelsteen worden gereset
+        diceStyle.value = {
+            transition: 'none',
+            transform: 'rotateX(0deg) rotateY(0deg)',
+        };
+    } else {
+        // Zorgt ervoor dat de dobbel in ieder geval 1x ronddraait en maximaal 3x
+        const randomRotationX = 360 * (Math.floor(Math.random() * 3) + 1);
+        const randomRotationY = 360 * (Math.floor(Math.random() * 3) + 1);
+        const totalRotation = randomRotationX + randomRotationY;
+        const maxRotation = 2160;
 
-    // Zorgt voor de draaianimatie en lengte van de worp
-    diceStyle.value = {
-        transition: `transform ${duration}s ease-in-out`,
-        transform: `rotateX(${randomRotationX}deg) rotateY(${randomRotationY}deg) ${selectedRotation}`,
-    };
+        // Berekent hoelang de dobbelsteel draait, afhankellijk van de hoeveelheid rotatie
+        const duration = Math.min(3, (totalRotation / maxRotation) * 3);
+
+        // Zorgt voor de draaianimatie en lengte van de worp
+        diceStyle.value = {
+            transition: `transform ${duration}s ease-in-out`,
+            transform: `rotateX(${randomRotationX}deg) rotateY(${randomRotationY}deg) ${selectedRotation}`,
+        };
+    }
 };
 
-// watch(() => props.value, (Value) => {
-//     animateDice(Value);
-// }, { immediate: true });
-
 defineExpose({
-    rollDice: (value) => {
-        animateDice(value);
+    rollDice: (value, isReset = false) => {
+        animateDice(value, isReset);
     },
 });
-
 </script>
 
 <template>
     <div>
-        <section class="container" :class="{ held: isHeld }">
+        <section class="container" :class="{held: isHeld}">
             <div id="cube" :style="diceStyle">
                 <div class="face front">
                     <span class="dot dot1"></span>
@@ -119,7 +122,6 @@ defineExpose({
 .held {
     border: 7px solid #e2d40c;
     border-radius: 10px;
-
 }
 
 .face {

@@ -1,10 +1,15 @@
 <template>
-    <ThrownDices @dice-rolled="updateDices" />
-    <Scoretable :dices="diceArray" />
+    <ThrownDices
+        :dices="diceObject"
+        @dice-rolled="updateDices"
+        @score-selected="handleScoreSelected"
+        @activate-score-selection="activateScoreSelection"
+    />
+    <Scoretable :dices="diceObject" :is-selecting-score="isSelectingScore" @score-selected="handleScoreSelected" />
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
+import {reactive, computed, ref} from 'vue';
 import Scoretable from './components/ScoreTable.vue';
 import ThrownDices from './components/ThrownDices.vue';
 
@@ -18,17 +23,25 @@ const diceObject = reactive({
 });
 
 const diceArray = computed(() => Object.values(diceObject));
+const isSelectingScore = ref(false);
 
 const updateDices = rolledDice => {
-    // Reset de waarde van de count
     Object.keys(diceObject).forEach(key => {
         diceObject[key] = 0;
     });
-    // Telt de nieuwe waarde van de gegooide dobbels
     rolledDice.forEach(value => {
         diceObject[value]++;
     });
     console.log(diceArray.value);
+};
+
+const handleScoreSelected = index => {
+    isSelectingScore.value = false;
+    console.log(`Score selected`);
+};
+
+const activateScoreSelection = () => {
+    isSelectingScore.value = true;
 };
 </script>
 

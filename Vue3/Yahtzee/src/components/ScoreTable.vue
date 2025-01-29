@@ -7,31 +7,44 @@
                 <tr id="part1">
                     <th>Upper Section</th>
                     <th colspan="2">How to score</th>
-                    <th v-for="n in 5" :key="n">Game #{{ n }}</th>
+                    <th>Game #1</th>
+                    <th v-for="n in 4" :key="n + 1">Game #{{ n + 1 }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(label, index) in upperSectionLabels" :key="index">
                     <td colspan="3">{{ label }}</td>
-                    <td v-for="n in 5" :key="n" class="game">{{ upperSectionScores[index] || 0 }}</td>
+                    <td
+                        class="game"
+                        :class="{
+                            selectable: isSelectingScore && !usedScores.has(index),
+                            used: usedScores.has(index),
+                        }"
+                        min="0"
+                        :disabled="!isGameActive(0)"
+                        @click="handleScoreClick(index)"
+                    >
+                        {{ upperSectionScores[index] }}
+                    </td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td colspan="3">Totaal aantal punten</td>
                     <td id="totalUp">{{ totalUpper }}</td>
-                    <td v-for="n in 4" :key="n" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td>Bonus</td>
                     <td>Als puntentotaal 63 of meer is</td>
                     <td>35 punten</td>
                     <td id="bonusUp">{{ bonus }}</td>
-                    <td v-for="n in 4" :key="n" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td>Totaal</td>
                     <td colspan="2">van de bovenste helft</td>
                     <td class="totalUpTotal">{{ totalUpper + bonus }}</td>
-                    <td v-for="n in 4" :key="n" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
             </tbody>
         </table>
@@ -41,7 +54,8 @@
                 <tr>
                     <th>Lower Section</th>
                     <th colspan="2"></th>
-                    <th v-for="n in 5" :key="n"></th>
+                    <th></th>
+                    <th v-for="n in 4" :key="n + 1"></th>
                 </tr>
             </thead>
             <tbody>
@@ -49,19 +63,30 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.condition }}</td>
                     <td>{{ item.points }}</td>
-                    <td class="game">{{ lowerSectionScores[index] || 0 }}</td>
-                    <td v-for="n in 4" :key="n" class="game"></td>
+                    <td
+                        class="game"
+                        :class="{
+                            selectable: isSelectingScore && !usedScores.has(index),
+                            used: usedScores.has(index),
+                        }"
+                        min="0"
+                        :disabled="!isGameActive(0)"
+                        @click="handleScoreClick(index)"
+                    >
+                        {{ lowerSectionScores[index] }}
+                    </td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td>Totaal</td>
                     <td colspan="2">van de onderste helft</td>
                     <td class="totalLowerTotal">{{ totalLower }}</td>
-                    <td v-for="n in 4" :key="n" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td colspan="3">Totaal Generaal</td>
                     <td id="generalTotal">{{ totalUpper + bonus + totalLower }}</td>
-                    <td v-for="n in 4" :key="n" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
             </tbody>
         </table>
@@ -69,22 +94,32 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import {ref, computed} from 'vue';
 
 const props = defineProps({
     dices: Object,
+    isSelectingScore: Boolean,
 });
+const emit = defineEmits(['score-selected']);
+const usedScores = ref(new Set());
+
+const handleScoreClick = index => {
+    if (props.isSelectingScore && !usedScores.value.has(index)) {
+        usedScores.value.add(index);
+        emit('score-selected', index);
+    }
+};
 
 const upperSectionLabels = ['Enen = 1', 'Tweeën = 2', 'Drieën = 3', 'Vieren = 4', 'Vijven = 5', 'Zessen = 6'];
 
 const lowerSectionLabels = [
-    { name: 'Three of a kind', condition: '3 dezelfde', points: 'Totaal v.d. 5 stenen' },
-    { name: 'Carré', condition: '4 dezelfde', points: 'Totaal v.d. 5 stenen' },
-    { name: 'Full House', condition: '2 + 3 dezelfde', points: '25 punten' },
-    { name: 'Kleine straat', condition: '4 opeenvolgende nummers', points: '30 punten' },
-    { name: 'Grote Straat', condition: '5 opeenvolgende nummers', points: '40 punten' },
-    { name: 'Yahtzee', condition: '5 dezelfde', points: '50 punten' },
-    { name: 'Chance', condition: 'Vrije keus', points: 'Totaal v.d. 5 stenen' },
+    {name: 'Three of a kind', condition: '3 dezelfde', points: 'Totaal v.d. 5 stenen'},
+    {name: 'Carré', condition: '4 dezelfde', points: 'Totaal v.d. 5 stenen'},
+    {name: 'Full House', condition: '2 + 3 dezelfde', points: '25 punten'},
+    {name: 'Kleine straat', condition: '4 opeenvolgende nummers', points: '30 punten'},
+    {name: 'Grote Straat', condition: '5 opeenvolgende nummers', points: '40 punten'},
+    {name: 'Yahtzee', condition: '5 dezelfde', points: '50 punten'},
+    {name: 'Chance', condition: 'Vrije keus', points: 'Totaal v.d. 5 stenen'},
 ];
 
 const upperSectionScores = computed(() => {
@@ -143,9 +178,21 @@ const hasStraight = (counts, length) => {
     }
     return false;
 };
+
+const isGameActive = gameIndex => {
+    return gameIndex === 0;
+};
 </script>
 
-<style scoped>
+<style>
+.selectable {
+    cursor: pointer;
+    background-color: #eef;
+}
+.used {
+    opacity: 0.7;
+}
+
 #app {
     font-family: 'Arial', sans-serif;
     padding: 20px;
