@@ -22,9 +22,13 @@
                         }"
                         min="0"
                         :disabled="!isGameActive(0)"
-                        @click="handleScoreClick(index)"
+                        @click="handleScoreClick(index, 'upper')"
                     >
-                        {{ upperSectionScores[index] }}
+                        {{
+                            usedScores.has(index) && selectedScores.upper[index] !== null
+                                ? selectedScores.upper[index]
+                                : upperSectionScores[index]
+                        }}
                     </td>
                     <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
@@ -71,9 +75,13 @@
                         }"
                         min="0"
                         :disabled="!isGameActive(0)"
-                        @click="handleScoreClick(index)"
+                        @click="handleScoreClick(index, 'lower')"
                     >
-                        {{ lowerSectionScores[index] }}
+                        {{
+                            usedScores.has(index) && selectedScores.lower[index] !== null
+                                ? selectedScores.lower[index]
+                                : lowerSectionScores[index]
+                        }}
                     </td>
                     <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
@@ -99,16 +107,14 @@ import {ref, computed} from 'vue';
 const props = defineProps({
     dices: Object,
     isSelectingScore: Boolean,
+    selectedScores: {
+        type: Object,
+        default: () => ({}),
+    },
 });
+
 const emit = defineEmits(['score-selected']);
 const usedScores = ref(new Set());
-
-const handleScoreClick = index => {
-    if (props.isSelectingScore && !usedScores.value.has(index)) {
-        usedScores.value.add(index);
-        emit('score-selected', index);
-    }
-};
 
 const upperSectionLabels = ['Enen = 1', 'Tweeën = 2', 'Drieën = 3', 'Vieren = 4', 'Vijven = 5', 'Zessen = 6'];
 
@@ -122,6 +128,27 @@ const lowerSectionLabels = [
     {name: 'Chance', condition: 'Vrije keus', points: 'Totaal v.d. 5 stenen'},
 ];
 
+const submittedUpperSectionScores = ref(new Array(upperSectionLabels.length).fill(null));
+const submittedLowerSectionScores = ref(new Array(lowerSectionLabels.length).fill(null));
+
+const handleScoreClick = (index, section) => {
+    if (props.isSelectingScore && !usedScores.value.has(index)) {
+        let score = 0;
+
+        if (section === 'upper') {
+            const diceValue = index + 1;
+            score = (props.dices[diceValue] || 0) * diceValue;
+            submittedUpperSectionScores.value[index] = score;
+        } else if (section === 'lower') {
+            score = lowerSectionScores.value[index]; // Use the computed score for the lower section
+            submittedLowerSectionScores.value[index] = score;
+        }
+
+        usedScores.value.add(index);
+        emit('score-selected', {index, section, resetDice: true});
+    }
+};
+
 const upperSectionScores = computed(() => {
     return upperSectionLabels.map((_, index) => {
         const diceValue = index + 1;
@@ -130,7 +157,7 @@ const upperSectionScores = computed(() => {
 });
 
 const totalUpper = computed(() => {
-    return upperSectionScores.value.reduce((sum, score) => sum + score, 0);
+    return submittedUpperSectionScores.value.reduce((acc, score) => acc + (score || 0), 0);
 });
 
 const bonus = computed(() => {

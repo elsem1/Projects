@@ -1,16 +1,24 @@
 <template>
     <ThrownDices
+        ref="thrownDicesRef"
         :dices="diceObject"
         @dice-rolled="updateDices"
         @score-selected="handleScoreSelected"
         @activate-score-selection="activateScoreSelection"
     />
-    <Scoretable :dices="diceObject" :is-selecting-score="isSelectingScore" @score-selected="handleScoreSelected" />
+    <ScoreTable
+        :dices="diceObject"
+        :is-selecting-score="isSelectingScore"
+        :selected-scores="selectedScores"
+        :live-upper-scores="computedUpperScores"
+        :live-lower-scores="computedLowerScores"
+        @score-selected="handleScoreSelected"
+    />
 </template>
 
 <script setup>
-import {reactive, computed, ref} from 'vue';
-import Scoretable from './components/ScoreTable.vue';
+import {reactive, ref} from 'vue';
+import ScoreTable from './components/ScoreTable.vue';
 import ThrownDices from './components/ThrownDices.vue';
 
 const diceObject = reactive({
@@ -22,8 +30,13 @@ const diceObject = reactive({
     6: 0,
 });
 
-const diceArray = computed(() => Object.values(diceObject));
+const selectedScores = reactive({
+    upper: Array(6).fill(null),
+    lower: Array(7).fill(null),
+});
+
 const isSelectingScore = ref(false);
+const thrownDicesRef = ref(null);
 
 const updateDices = rolledDice => {
     Object.keys(diceObject).forEach(key => {
@@ -32,16 +45,30 @@ const updateDices = rolledDice => {
     rolledDice.forEach(value => {
         diceObject[value]++;
     });
-    console.log(diceArray.value);
+    console.log('Updated Dice Object:', diceObject);
 };
 
-const handleScoreSelected = index => {
+const handleScoreSelected = ({index, section, resetDice}) => {
     isSelectingScore.value = false;
-    console.log(`Score selected`);
+    if (section === 'upper') {
+        selectedScores.upper[index] = diceObject[index + 1] * (index + 1);
+    } else {
+        selectedScores.lower[index] = 0;
+    }
+    console.log(`Score selected for ${section}:`, index);
+    if (resetDice) {
+        resetDiceForNewRound();
+    }
 };
 
 const activateScoreSelection = () => {
     isSelectingScore.value = true;
+};
+
+const resetDiceForNewRound = () => {
+    if (thrownDicesRef.value) {
+        thrownDicesRef.value.resetDice();
+    }
 };
 </script>
 

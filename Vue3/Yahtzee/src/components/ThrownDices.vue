@@ -24,9 +24,6 @@
 import {ref} from 'vue';
 import DiceRender from './DiceRender.vue';
 
-const props = defineProps({
-    dices: Object,
-});
 const emit = defineEmits(['dice-rolled', 'score-selected', 'activate-score-selection']);
 const diceRefs = ref([]);
 const isRolling = ref(false);
@@ -42,12 +39,6 @@ const useScore = () => {
     emit('activate-score-selection');
 };
 
-const handleScoreSelected = () => {
-    isSelectingScore.value = false;
-    resetDice();
-    emit('score-selected');
-};
-
 const setDiceRef = (el, index) => {
     if (el) {
         diceRefs.value[index] = el;
@@ -55,6 +46,7 @@ const setDiceRef = (el, index) => {
 };
 
 const resetDice = () => {
+    // Reset de dobbelstenen zowel in waarde als in animatie
     isHeld.value = Array(5).fill(false);
     diceValues.value = Array(5).fill(1);
     isRolling.value = false;
@@ -106,13 +98,17 @@ const rollDice = async () => {
             scoreUsed.value = false;
             isRolling.value = true;
         }
-    }, 2500);
+    }, 0);
 };
 
 const toggleHold = index => {
     isHeld.value[index] = !isHeld.value[index];
     console.log(`Dice ${index + 1} is held:`, isHeld.value[index]);
 };
+
+defineExpose({
+    resetDice,
+});
 </script>
 
 <style scoped>
