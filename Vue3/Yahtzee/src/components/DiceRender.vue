@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps({
     value: {
@@ -60,7 +60,7 @@ defineExpose({
 
 <template>
     <div>
-        <section class="container" :class="{held: isHeld}">
+        <section class="container" :class="{ held: isHeld }">
             <div id="cube" :style="diceStyle">
                 <div class="face front">
                     <span class="dot dot1"></span>

@@ -7,8 +7,8 @@
                 <tr id="part1">
                     <th>Upper Section</th>
                     <th colspan="2">How to score</th>
-                    <th>Score</th>
-                    <th>Potental Score</th>
+                    <th>Game #1</th>
+                    <th v-for="n in 4" :key="n + 1">Game #{{ n + 1 }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,25 +20,26 @@
                     }" @click="handleScoreClick(index, 'upper')">
                         {{ getPotentialScore(index, 'upper') }}
                     </td>
-                    <td v-for="n in 1" :key="n + 1" class="game"></td>
+
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td colspan="3">Totaal aantal punten</td>
                     <td id="totalUp">{{ totalUpper }}</td>
-                    <td v-for="n in 1" :key="n + 1" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td>Bonus</td>
                     <td>Als puntentotaal 63 of meer is</td>
                     <td>35 punten</td>
                     <td id="bonusUp">{{ bonus }}</td>
-                    <td v-for="n in 1" :key="n + 1" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td>Totaal</td>
                     <td colspan="2">van de bovenste helft</td>
                     <td class="totalUpTotal">{{ totalUpper + bonus }}</td>
-                    <td v-for="n in 1" :key="n + 1" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
             </tbody>
         </table>
@@ -49,7 +50,7 @@
                     <th>Lower Section</th>
                     <th colspan="2"></th>
                     <th></th>
-                    <th v-for="n in 1" :key="n + 1"></th>
+                    <th v-for="n in 4" :key="n + 1"></th>
                 </tr>
             </thead>
             <tbody>
@@ -63,24 +64,23 @@
                     }" @click="handleScoreClick(index, 'lower')">
                         {{ getPotentialScore(index, 'lower') }}
                     </td>
-                    <td v-for="n in 1" :key="n + 1" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td>Totaal</td>
                     <td colspan="2">van de onderste helft</td>
                     <td class="totalLowerTotal">{{ totalLower }}</td>
-                    <td v-for="n in 1" :key="n + 1" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
                 <tr>
                     <td colspan="3">Totaal Generaal</td>
                     <td id="generalTotal">{{ totalUpper + bonus + totalLower }}</td>
-                    <td v-for="n in 1" :key="n + 1" class="game"></td>
+                    <td v-for="n in 4" :key="n + 1" class="game"></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </template>
-
 
 <script setup>
 import { ref, computed } from 'vue';
@@ -190,6 +190,9 @@ const totalLower = computed(() =>
 const bonus = computed(() => totalUpper.value >= 63 ? 35 : 0);
 
 
+const isGameActive = gameIndex => {
+    return gameIndex === 0;
+};
 
 </script>
 

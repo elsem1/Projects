@@ -1,15 +1,9 @@
 <template>
     <div class="thrown-dices-container">
         <div class="dice-row">
-            <DiceRender
-                v-for="i in 5"
-                :key="i"
-                :ref="el => setDiceRef(el, i - 1)"
-                :value="diceValues[i - 1]"
-                :is-held="isHeld[i - 1]"
-                @click="toggleHold(i - 1)"
-                :class="{throwing: isRolling, [`dice-delay-${i}`]: isRolling}"
-            />
+            <DiceRender v-for="i in 5" :key="i" :ref="el => setDiceRef(el, i - 1)" :value="diceValues[i - 1]"
+                :is-held="isHeld[i - 1]" @click="toggleHold(i - 1)"
+                :class="{ throwing: isRolling, [`dice-delay-${i}`]: isRolling }" />
         </div>
 
         <div class="controls">
@@ -21,7 +15,7 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import { ref } from 'vue';
 import DiceRender from './DiceRender.vue';
 
 const emit = defineEmits(['dice-rolled', 'score-selected', 'activate-score-selection']);
