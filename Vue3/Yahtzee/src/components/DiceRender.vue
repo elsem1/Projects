@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 const props = defineProps({
     value: {
@@ -45,7 +45,7 @@ const animateDice = (value, isReset = false) => {
 
         // Zorgt voor de draaianimatie en lengte van de worp
         diceStyle.value = {
-            transition: `transform ${0.1}s ease-in-out`, // terugzetten naar `transform ${duration}s ease-in-out`
+            transition: `transform ${duration}s ease-in-out`,
             transform: `rotateX(${randomRotationX}deg) rotateY(${randomRotationY}deg) ${selectedRotation}`,
         };
     }
@@ -60,7 +60,7 @@ defineExpose({
 
 <template>
     <div>
-        <section class="container" :class="{ held: isHeld }">
+        <section class="container" :class="{held: isHeld}">
             <div id="cube" :style="diceStyle">
                 <div class="face front">
                     <span class="dot dot1"></span>
