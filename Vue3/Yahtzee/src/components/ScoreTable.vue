@@ -128,10 +128,10 @@ const handleScoreClick = (index, section) => {
 
         if (section === 'upper') {
             submittedUpperScores.value[index] = score;
-            usedUpperScores.value.add(index); // Add to upper section used scores
+            usedUpperScores.value.add(index);
         } else {
             submittedLowerScores.value[index] = score;
-            usedLowerScores.value.add(index); // Add to lower section used scores
+            usedLowerScores.value.add(index);
         }
 
         emit('score-selected', {resetDice: true});
@@ -140,9 +140,9 @@ const handleScoreClick = (index, section) => {
 
 const isScoreUsed = (index, section) => {
     if (section === 'upper') {
-        return usedUpperScores.value.has(index); // Check upper section used scores
+        return usedUpperScores.value.has(index);
     } else {
-        return usedLowerScores.value.has(index); // Check lower section used scores
+        return usedLowerScores.value.has(index);
     }
 };
 
@@ -209,7 +209,7 @@ const bonus = computed(() => (totalUpper.value >= 63 ? 35 : 0));
 <style>
 .selectable {
     cursor: pointer;
-    background-color: #eef;
+    background-color: rgb(138, 173, 72) !important;
 }
 
 .used {
@@ -219,7 +219,7 @@ const bonus = computed(() => (totalUpper.value >= 63 ? 35 : 0));
 #app {
     font-family: 'Arial', sans-serif;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #363434d3;
 }
 
 table {
@@ -246,7 +246,7 @@ th {
 }
 
 td.game {
-    background-color: #eaf2f8;
+    background-color: #363434d3;
 }
 
 .diceResult {
