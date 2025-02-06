@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import GroceriesTable from './components/GroceriesTable.vue'
+import GroceriesTable from './domains/groceries/components/GroceriesTable.vue'
 
 const list = ref([
   ['Brood', '1.00', 1],
