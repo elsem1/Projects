@@ -1,14 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import routes from '@/grocery/routes';
+import { createRouter, createWebHistory } from "vue-router";
+import {groceryRoutes} from '../domains/groceries/routes'
 
+const routes = [...groceryRoutes]
 
-Vue.use(VueRouter);
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_BASE_URL),
+export const router = createRouter({
+  history: createWebHistory(),
   routes,
-});
-export default router;
-
+})

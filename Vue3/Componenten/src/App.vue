@@ -1,19 +1,20 @@
 <script setup>
-import { ref, computed } from 'vue'
-import GroceriesTable from './domains/groceries/components/GroceriesTable.vue'
 
-const list = ref([
-  ['Brood', '1.00', 1],
-  ['Broccoli', '0.99', 2],
-  ['Krentebollen', '1.20', 4],
-  ['Noten', '1.50', 0],
-])
-
-const headers = computed(() => ['Product', 'Prijs', 'Aantal', 'Subtotaal'])
 </script>
 
 <template>
-  <GroceriesTable :headers="headers" :list="list" />
+  <div id="nav">
+    <nav>
+      <RouterLink to ="/">Home</RouterLink> |
+      <RouterLink to ="/create">Create</RouterLink> |
+      <RouterLink to ="/overview">Overview</RouterLink> |
+    </nav>
+    <RouterView/>
+
+    </div>
+
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
