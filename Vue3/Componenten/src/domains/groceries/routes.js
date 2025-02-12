@@ -1,4 +1,3 @@
-
 export const groceryRoutes = [
   {
     path: '/',
@@ -7,18 +6,18 @@ export const groceryRoutes = [
   },
   {
     path: '/overview',
-    name: 'overview',
+    name: 'Overview',
     component: () => import('../groceries/pages/OverviewView.vue'),
   },
 
   {
     path: '/edit/:id',
-    name: 'edit',
+    name: 'Edit',
     component: () => import('../groceries/pages/EditView.vue'),
   },
   {
     path: '/create',
-    name: 'create',
+    name: 'Create',
     component: () => import('../groceries/pages/CreateView.vue'),
   },
-];
+]

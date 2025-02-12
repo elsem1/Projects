@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import GroceryForm from '../components/GroceryForm.vue';
-import { addGrocery } from '../store';
+import { ref } from 'vue'
+import GroceryForm from '../components/GroceryForm.vue'
+import { addGrocery } from '../store'
 
 const grocery = ref({
   id: null,
@@ -9,12 +9,11 @@ const grocery = ref({
   price: 0,
   amount: 0,
 })
-const handleSubmit = () => {
-    grocery.value.id = Date.now();
-    addGrocery(grocery.value);
-    grocery.value = { id: null, name: '', amount: 0, price: 0 };
-};
-
+const handleSubmit = (newGrocery) => {
+  newGrocery.id = Date.now()
+  addGrocery(newGrocery)
+  grocery.value = { id: null, name: '', amount: 0, price: 0 }
+}
 </script>
 
 <template>

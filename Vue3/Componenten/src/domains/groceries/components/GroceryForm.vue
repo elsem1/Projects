@@ -1,29 +1,33 @@
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 const props = defineProps({
   grocery: Object,
+})
 
-});
-
-const emit = defineEmits(['submit']);
+const groceryCopy = ref({ ...props.grocery })
+const emit = defineEmits(['submit'])
+const router = useRouter()
 
 const submitForm = () => {
-    emit('submit');
-};
+  emit('submit', groceryCopy.value)
+  router.push('/')
+}
 </script>
 
 <template>
   <form @submit.prevent="submitForm">
     <div class="form">
       <label for="name">Name</label>
-      <input id="name" type="text" placeholder="{{ props.grocery.name }}" required />
+      <input id="name" type="text" v-model="groceryCopy.name" required />
     </div>
     <div class="form">
       <label for="price">Price (€)</label>
-      <input id="price" min="0" type="number" step="0.01" placeholder="{{ props.grocery.price }}" required />
+      <input id="price" min="0" type="number" step="0.01" v-model="groceryCopy.price" required />
     </div>
     <div class="form">
       <label for="amount">Amount</label>
-      <input id="amount" min="0" type="number" placeholder="{{ props.grocery.amount }}" required />
+      <input id="amount" min="0" type="number" v-model="groceryCopy.amount" required />
     </div>
 
     <button type="submit">Save</button>
@@ -60,4 +64,5 @@ button {
 
 button:hover {
   background-color: #0056b3;
-}</style>
+}
+</style>
