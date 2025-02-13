@@ -1,23 +1,23 @@
 export const inventoryRoutes = [
     {
         path: '/',
-        name: 'Home',
-        component: () => import('../inventory/pages/InventoryOverview.vue'),
-    },
-    {
-        path: '/overview',
-        name: 'Overview',
+        name: 'inventory.overview',
         component: () => import('../inventory/pages/InventoryOverview.vue'),
     },
 
     {
         path: '/edit/:id',
-        name: 'Edit',
+        name: 'inventory.edit',
         component: () => import('../inventory/pages/EditView.vue'),
     },
     {
         path: '/create',
-        name: 'Create',
+        name: 'inventory.create',
         component: () => import('../inventory/pages/CreateView.vue'),
     },
+    {
+      path: '/bestellen',
+      name: 'inventory.bestellen',
+      component: () => import('../inventory/pages/BestellenView.vue'),
+  },
 ];

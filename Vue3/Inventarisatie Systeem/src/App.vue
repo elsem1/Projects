@@ -1,14 +1,18 @@
-<script setup></script>
+<script setup>
+import { RouterLink } from 'vue-router';
+
+</script>
 
 <template>
     <div id="nav">
         <nav>
             <RouterLink to="/">Home</RouterLink>
             |
-            <RouterLink to="/create">Create</RouterLink>
+            <RouterLink to="/create">Toevoegen</RouterLink>
             |
-            <RouterLink to="/overview">Overview</RouterLink>
+            <RouterLink to="/bestellen">Bestel</RouterLink>
             |
+
         </nav>
         <RouterView />
     </div>

@@ -1,43 +1,39 @@
 <template>
-    <div id="Inventarisatie Systeem">
-        <table>
-            <thead>
-                <tr>
-                    <th v-for="header in Object.keys(products[0]).filter(k => k !== 'id')" :key="header">
-                        {{ header.charAt(0).toUpperCase() + header.slice(1) }}
-                    </th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in products" :key="item.id">
-                    <td v-for="(value, key) in item" :key="key" v-show="!['id'].includes(key)">
-                        <template v-if="key === 'name'">
-                            {{ value }}
-                            <RouterLink class="edit-button" :to="`/edit/${item.id}`">Edit</RouterLink>
-                            <button class="delete-button" @click="removeProduct(item.id)">Delete</button>
-                        </template>
-                        <input v-else-if="key === 'actualAmount'" type="number" v-model.number="item[key]" />
-                        <template v-else-if="key === 'minimumAmount'">{{ value }}</template>
-                    </td>
-                </tr>
-                <tr></tr>
-            </tbody>
-        </table>
-    </div>
+  <div id="Inventarisatie Systeem">
+      <table>
+          <thead>
+              <tr>
+                  <th v-for="header in Object.keys(products[0]).filter(k => k !== 'id')" :key="header">
+                      {{ header.charAt(0).toUpperCase() + header.slice(1) }}
+                  </th>
+                  <!-- <th>Subtotal</th> -->
+              </tr>
+          </thead>
+          <tbody>
+              <tr v-for="item in products" :key="item.id">
+                  <td v-for="(value, key) in item" :key="key" v-show="!['id'].includes(key)">
+                      <template v-if="key === 'name'">
+                          {{ value }}
+                          <RouterLink class="edit-button" :to="`/edit/${item.id}`">Bewerken</RouterLink>
+                          <button class="delete-button" @click="removeProduct(item.id)">Verwijderen</button>
+                      </template>
+                      <input v-else-if="key === 'actualAmount'" type="number" v-model.number="item[key]" />
+                      <template v-else-if="key === 'minimumAmount'">{{ value }}</template>
+                  </td>
+              </tr>
+              <tr></tr>
+          </tbody>
+      </table>
+  </div>
 </template>
+
 <script setup>
-import {computed} from 'vue';
-import {getAllProducts, deleteProduct} from '../store';
+import { getAllProducts, modifyProduct } from '../store';
 
-const products = getAllProducts;
+const products = getAllProducts()
 
-const calculateTotal = computed(() =>
-    inventory.value.reduce((acc, item) => (acc += item.amount * item.price), 0).toFixed(2),
-);
-
-const removeProduct = ProductId => {
-    deleteProduct(ProductId);
+const removeProduct = (ProductId) => {
+  modifyProduct(ProductId);
 };
 </script>
 
@@ -76,7 +72,7 @@ th {
 }
 .edit-button {
     position: absolute;
-    right: 5rem;
+    right: 7rem;
     bottom: 0.35rem;
     padding: 3px 6px;
     font-size: 1rem;
