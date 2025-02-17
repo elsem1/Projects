@@ -2,17 +2,25 @@
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 const props = defineProps({
-    product: Object,
+  product: Object,
+  isCreatePage: Boolean,
+  isEditPage: Boolean,
 });
+
 
 const productCopy = ref({...props.product});
 const emit = defineEmits(['submit']);
 const router = useRouter();
 
 const submitForm = () => {
+  if (props.isCreatePage) {
     emit('submit', productCopy.value);
-    router.push('/');
+  } else if (props.isEditPage) {
+    emit('submit', productCopy.value);
+  }
+  router.push('/');
 };
+
 </script>
 
 <template>

@@ -2,20 +2,21 @@ import {computed, ref} from 'vue';
 
 // State
 const products = ref([
-    {id: 1, name: 'Biologisch katoen stof (meter)', actualAmount: 0, minimumAmount: 500},
-    {id: 2, name: 'Gerecycled polyester stof (meter)', actualAmount: 800, minimumAmount: 300},
-    {id: 3, name: 'Biologisch jute stof (meter)', actualAmount: 150, minimumAmount: 50},
-    {id: 4, name: 'Biologisch katoen garen (klos)', actualAmount: 200, minimumAmount: 100},
-    {id: 5, name: 'Natuurlijke verfstoffen (liter)', actualAmount: 50, minimumAmount: 20},
-    {id: 6, name: 'Biologisch linnen stof (meter)', actualAmount: 600, minimumAmount: 250},
-    {id: 7, name: 'Gerecycled katoen stof (meter)', actualAmount: 200, minimumAmount: 300},
-    {id: 8, name: 'Biologisch bamboe stof (meter)', actualAmount: 400, minimumAmount: 150},
-    {id: 9, name: 'Eco-vriendelijke knopen (stuks)', actualAmount: 85, minimumAmount: 2000},
-    {id: 10, name: 'Biologisch hennep stof (meter)', actualAmount: 300, minimumAmount: 100},
+  {id: 1, name: 'Lithium-ion batterij', actualAmount: 0, minimumAmount: 500},
+  {id: 2, name: 'Gerecyclede printplaten', actualAmount: 1200, minimumAmount: 800},
+  {id: 3, name: 'SMD weerstanden', actualAmount: 5000, minimumAmount: 2000},
+  {id: 4, name: 'Kabels voor elektronica (m)', actualAmount: 1500, minimumAmount: 1000},
+  {id: 5, name: 'Microchips', actualAmount: 1, minimumAmount: 5000},
+  {id: 6, name: 'LCD schermen', actualAmount: 200, minimumAmount: 50},
+  {id: 7, name: 'USB-kabels', actualAmount: 157, minimumAmount: 600},
+  {id: 8, name: 'LED-lampjes', actualAmount: 67, minimumAmount: 2000},
+  {id: 9, name: 'Electromotoren', actualAmount: 150, minimumAmount: 100},
+  {id: 10, name: 'Soldeerbouten', actualAmount: 50, minimumAmount: 30},
 ]);
 
+
 // Getters
-export const getAllProducts = () => products.value;
+export const getAllProducts = computed(() => products.value);
 export const getProductById = (id) => computed(() => products.value.find(product => product.id == id));
 
 // Actions

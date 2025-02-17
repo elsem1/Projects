@@ -18,6 +18,6 @@ export const inventoryRoutes = [
     {
       path: '/bestellen',
       name: 'inventory.bestellen',
-      component: () => import('../inventory/pages/BestellenView.vue'),
+      component: () => import('../inventory/pages/OrderView.vue'),
   },
 ];
