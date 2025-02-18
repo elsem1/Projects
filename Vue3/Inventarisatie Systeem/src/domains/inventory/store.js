@@ -25,11 +25,10 @@ export const modifyProduct = (id, updatedProduct = null) => {
   const index = products.value.findIndex(product => product.id === id);
   if (index !== -1) {
     if (updatedProduct) {
-      // Update het product
-      products.value.splice(index, 1, updatedProduct);
+
+      products.value.splice(index, 1, updatedProduct); // Update het product
     } else {
-      // Verwijder het product
-      products.value.splice(index, 1);
+            products.value.splice(index, 1); // Verwijder het product
     }
   }
 };
