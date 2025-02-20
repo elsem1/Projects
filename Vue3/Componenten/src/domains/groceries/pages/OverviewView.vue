@@ -3,6 +3,7 @@
     <table>
       <thead>
         <tr>
+          <!-- creatief bedacht, maar onderstaande loop zou ik uitschrijven voor betere leesbaarheid-->
           <th v-for="header in Object.keys(groceries[0]).filter((k) => k !== 'id')" :key="header">
             {{ header.charAt(0).toUpperCase() + header.slice(1) }}
           </th>

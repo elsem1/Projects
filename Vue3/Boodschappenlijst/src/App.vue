@@ -10,6 +10,8 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in list" :key="index">
+          <!-- creatief om dit in een loop te doen, maar in dit geval is het voor de leesbaarheid handiger het gewoon uit te schrijven zonder loop,
+           dan is de v-if ook niet meer nodig -->
           <td v-for="(value, index) in item" :key="index">
             <input v-if="index === 2" type="number" v-model="item[index]" />
             <span v-else>{{ value }}</span>
@@ -35,8 +37,11 @@ const list = ref([
   ['Noten', '1.50', 0],
 ])
 
+// TODO: headers hoeven niet in een computed property omdat ze statisch zijn
 const headers = computed(() => ['Product', 'Prijs', 'Aantal', 'Subtotaal'])
 
+// TODO: calculateTotal zou wel goed in een computed property passen, zodat het totaal automatisch herberekend wordt indien 
+// er prijzen van producten zouden wijzigen
 const calculateTotal = () => {
   let total = 0
 

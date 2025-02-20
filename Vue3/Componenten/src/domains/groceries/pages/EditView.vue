@@ -6,7 +6,8 @@ import { getGroceryById, updateGrocery } from '../store'
 
 const route = useRoute()
 const id = Number(route.params.id)
-const grocery = computed(() => getGroceryById(id))
+// TODO: onderstaande computed is overbodig, want getGroceryById is al een computed (in de store)
+const grocery = getGroceryById(id)
 
 const handleSubmit = (updatedGrocery) => {
   updateGrocery(updatedGrocery)

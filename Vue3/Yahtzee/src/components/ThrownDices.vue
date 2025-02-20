@@ -40,6 +40,7 @@ const useScore = () => {
 };
 
 const setDiceRef = (el, index) => {
+    console.log(el);
     if (el) {
         diceRefs.value[index] = el;
     }
