@@ -38,6 +38,7 @@ const submitForm = () => {
             <input id="amount" min="0" type="number" step="1" v-model="productCopy.minimumAmount" required />
         </div>
         <button class="cancel" @click="router.push('/')">Annuleren</button>
+        <!-- TODO: als je een v-model ipv v-bind gebruikt in de parent pages, kun je daar de submit knop eventhandler plaatsen -->
         <button v-if="productCopy.id === null" class="submit">Toevoegen</button>
         <button v-if="productCopy.id !== null" class="submit">Aanpassen</button>
     </form>

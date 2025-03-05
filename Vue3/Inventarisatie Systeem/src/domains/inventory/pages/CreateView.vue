@@ -22,6 +22,7 @@ const handleSubmit = (newProduct) => {
     newProduct.id = getAllProducts.value.length + 1;
     addProduct(newProduct);
     console.log(product.value.name + ' is created.');
+    // TODO: ipv reset kun je ook redirecten naar product overzichtspagina om resultaat te zien
     product.value = { id: null, name: '', actualAmount: 0, minimumAmount: 0 };
 };
 </script>

@@ -21,6 +21,8 @@ export const getProductById = (id) => computed(() => products.value.find(product
 
 // Actions
 export const addProduct = product => products.value.push(product);
+
+// TODO: voor de leesbaarheid kun je beter een updateProduct en deleteProduct method maken
 export const modifyProduct = (id, updatedProduct = null) => {
   const index = products.value.findIndex(product => product.id === id);
   if (index !== -1) {
