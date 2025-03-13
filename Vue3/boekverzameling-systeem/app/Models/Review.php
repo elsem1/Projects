@@ -10,11 +10,10 @@ class Review extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'user_id',
+        'book_id',
         'review',
     ];
-
-    protected $primaryKey = 'review_id';
 
     public function book()
     {

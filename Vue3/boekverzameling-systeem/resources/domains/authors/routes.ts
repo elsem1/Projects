@@ -1,18 +1,18 @@
 export const authorRoutes = [
     {
-        path: '/',
+        path: '/authors',
         name: 'author.overview',
         component: () => import('../authors/pages/Overview.vue'),
     },
 
     {
-        path: '/edit:id',
+        path: '/authors/edit:id',
         name: 'author.edit',
         component: () => import('../authors/pages/Edit.vue'),
     },
 
     {
-        path: '/create',
+        path: '/authors/create',
         name: 'author.create',
         component: () => import('../authors/pages/Create.vue'),
     },

@@ -19,9 +19,9 @@ class ReviewFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => User::factory(),
+            'user_id' => User::factory(),
+            'book_id' => Book::factory(),
             'review' => fake()->text(500),
-            'book_id' => Book::factory()
         ];
     }
 }
