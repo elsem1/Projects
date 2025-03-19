@@ -1,19 +1,19 @@
 export const reviewRoutes = [
     {
         path: '/reviews',
-        name: 'review.overview',
+        name: 'reviews.overview',
         component: () => import('../reviews/pages/Overview.vue'),
     },
 
     {
         path: '/reviews/edit:id',
-        name: 'review.edit',
+        name: 'reviews.edit',
         component: () => import('../reviews/pages/Edit.vue'),
     },
 
     {
         path: '/reviews/create',
-        name: 'review.create',
+        name: 'reviews.create',
         component: () => import('../authors/pages/Create.vue'),
     },
 ];

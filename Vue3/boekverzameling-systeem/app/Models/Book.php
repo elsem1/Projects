@@ -18,7 +18,8 @@ class Book extends Model
         'publisher',
         'year',
         'genre',
-        'edition'
+        'edition',
+        'summary'
     ];
 
     public function author()

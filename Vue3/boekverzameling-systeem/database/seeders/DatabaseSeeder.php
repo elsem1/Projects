@@ -16,14 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Maak 45 auteurs aan als er nog geen zijn
+        // Maak 45 auteurs aan als deze er nog niet zijn
         if (Author::count() === 0) {
             $authors = Author::factory()->count(45)->create();
         } else {
             $authors = Author::all();
         }
 
-        // Maak 50 gebruikers aan indien nodig
+        // Maak 50 gebruikers aan als deze er nog niet zijn
         if (User::count() === 0) {
             $users = User::factory()->count(50)->create();
         } else {

@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->integer('year');
             $table->string('genre');
             $table->integer('edition');
+            $table->text('summary');
             $table->timestamps();
         });
     }

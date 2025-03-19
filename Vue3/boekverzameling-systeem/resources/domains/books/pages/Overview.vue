@@ -2,7 +2,7 @@
     <div class="overview">
         <h1>Hello Books!</h1>
 
-        <!-- <thead>
+        <thead>
             <th>Books</th>
             <th>Author</th>
             <th>Genre</th>
@@ -12,24 +12,29 @@
         </thead>
         <tbody>
             <tr v-for="book in books" :key="book.id">
-                <td v-for="(value, key) in book" :key="key">
-                    <template v-if="key === 'title'">
-                        {{ value }}
-                    </template>
-                    <template v-if="key === 'author'">
-                        {{ value }}
-                    </template>
-                </td>
+                <td>{{ book.title }}</td>
+                <td>{{ getAuthorById(book.author_id).value?.name }}</td>
+                <td>{{ book.genre }}</td>
+                <td>{{ book.year }}</td>
+                <td>{{ book.edition }}</td>
+                <td>{{ book.publisher }}</td>
+
             </tr>
-        </tbody> -->
+
+
+        </tbody>
 
     </div>
 </template>
 
-<script setup>
-import { fetchBooks } from '../store'
-import { getAllBooks } from '../store'
+<script setup lang="ts">
+
+import {getAllBooks, fetchBooks} from '../store'
+import {fetchAuthors, getAuthorById} from '../../authors/store'
 
 const books = getAllBooks;
+
 fetchBooks()
+fetchAuthors()
+
 </script>

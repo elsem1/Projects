@@ -35,9 +35,10 @@ class BookFactory extends Factory
             'author_id' => 1,
             'title' => fake()->sentence(4, true),
             'publisher' => fake()->company(),
-            'year' => fake()->year(),
+            'year' => fake()->numberBetween(1900, 2025),
             'genre' => $this->getRandomGenre(),
-            'edition' => fake()->numberBetween(1, 10)
+            'edition' => fake()->numberBetween(1, 10),
+            'summary' => fake()->text(300)
         ];
     }
 

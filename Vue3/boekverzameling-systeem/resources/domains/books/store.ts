@@ -16,14 +16,15 @@ interface Book {
 
 const books = ref<Book[]>([]);
 
-export const fetchBooks = async () => {
-    const response = await axios.get<Book[]>('/api/books');
-    if(!response.data) return
-    books.value = response.data
-};
 
 // Getters
 export const getAllBooks = computed(() => books.value)
+export const getBookById = (id: number) => computed(() => books.value.find(book => book.id === id))
 
 
 // Actions
+export const fetchBooks = async () => {
+    const response = await axios.get('/api/books');
+    if(!response.data) return
+    books.value = response.data
+};

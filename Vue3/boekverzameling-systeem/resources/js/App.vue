@@ -6,8 +6,10 @@ import bookOverview from '../domains/books/pages/Overview.vue';
 <template>
     <div id="nav">
         <nav> |
-            <RouterLink to="/">Home</RouterLink> |
-            <RouterLink to="/create">Toevoegen</RouterLink> |
+            <RouterLink :to="{ name: 'home'}">Home</RouterLink> |
+            <RouterLink :to="{ name: 'books.create'}">Toevoegen</RouterLink> |
+            <RouterLink :to="{ name: 'authors.overview' }">Authors</RouterLink> |
+            <RouterLink :to="{ name: 'reviews.overview' }">Reviews</RouterLink> |
         </nav>
 
         <RouterView />
