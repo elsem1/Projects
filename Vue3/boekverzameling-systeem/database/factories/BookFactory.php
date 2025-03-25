@@ -29,6 +29,7 @@ class BookFactory extends Factory
         'Biography',
         'History',
     ];
+
     public function definition(): array
     {
         return [
@@ -50,5 +51,4 @@ class BookFactory extends Factory
     {
         return static::$genres[array_rand(static::$genres)];
     }
-
 }

@@ -7,7 +7,8 @@ use App\Models\Author;
 
 class AuthorController extends Controller
 {
-    public function index() {
+    public function index()
+    {
 
         $authors = Author::all();
 

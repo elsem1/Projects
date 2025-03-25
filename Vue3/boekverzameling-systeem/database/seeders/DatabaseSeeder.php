@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\Review;
 use App\Models\Book;
 use App\Models\Author;
@@ -53,5 +54,9 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
+        $this->call([
+            GenreSeeder::class,
+        ]);
     }
 }
