@@ -8,10 +8,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import Form from '../components/Form.vue';
+import Form from '../components/BookForm.vue';
 import { useRouter } from 'vue-router';
 import { createBook } from '../store';
-import { Book } from '../types';
+import { Book } from '../../types';
 
 const router = useRouter();
 

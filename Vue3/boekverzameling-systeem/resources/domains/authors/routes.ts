@@ -6,7 +6,7 @@ export const authorRoutes = [
     },
 
     {
-        path: '/authors/edit:id',
+        path: '/authors/:id/edit',
         name: 'authors.edit',
         component: () => import('../authors/pages/Edit.vue'),
     },

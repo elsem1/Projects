@@ -33,4 +33,19 @@ class BookController extends Controller
 
         return DB::table('genres')->select('id', 'name')->get();
     }
+
+    public function update(StoreBookRequest $request, Book $book)
+    {
+        $book->update($request->validated());
+
+        $books = Book::all();
+        return new BookResource($book);
+    }
+
+    public function destroy(Book $book)
+    {
+        $title = $book->title;
+        $book->delete();
+        return response()->json(['message' => "Boek {$title} is succesvol verwijderd."]);
+    }
 }

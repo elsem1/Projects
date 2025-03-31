@@ -18,6 +18,7 @@
                 <td>{{ book.year }}</td>
                 <td>{{ book.edition }}</td>
                 <td>{{ book.publisher }}</td>
+                <td><RouterLink :to="{ name: 'books.edit', params: { id: (book.id) } }">Bewerk</RouterLink>   <button @click="deleteBook(book.id)">Verwijder</button></td>
 
             </tr>
 
@@ -29,8 +30,8 @@
 
 <script setup lang="ts">
 
-import {getAllBooks, fetchBooks} from '../store'
-import {fetchAuthors, getAuthorById} from '../../authors/store'
+import { getAllBooks, fetchBooks, deleteBook } from '../store'
+import { fetchAuthors, getAuthorById } from '../../authors/store'
 
 const books = getAllBooks;
 

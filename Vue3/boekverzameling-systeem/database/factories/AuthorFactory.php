@@ -18,11 +18,7 @@ class AuthorFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'age' => fake()->dateTimeThisCentury(),
+            'age' => fake()->dateTimeThisCentury()->format('d-m-Y'),
         ];
     }
 }
-
-
-
-

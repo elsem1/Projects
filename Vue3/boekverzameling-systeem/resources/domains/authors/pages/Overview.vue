@@ -11,7 +11,8 @@
             <tr v-for="author in authors" :key="author.id">
                 <td>{{ author.name }}</td>
                 <td>{{ author.age }}</td>              
-                <!-- <td>Iets in de controller maken om het aantal boeken van de auteur te weergeven</td> -->
+                <td><!-- <td>Iets in de controller maken om het aantal boeken van de auteur te weergeven</td> --></td>
+                <td><RouterLink :to="{ name: 'authors.edit', params: { id: (author.id) } }">Bewerk</RouterLink>   <button @click="deleteAuthor(author.id)">Verwijder</button></td>
                 
             </tr>
 
@@ -21,7 +22,7 @@
 </template>
 
 <script setup>
-import { fetchAuthors, getAllAuthors } from '../store'
+import { fetchAuthors, getAllAuthors, deleteAuthor } from '../store'
 
 const authors = getAllAuthors;
 

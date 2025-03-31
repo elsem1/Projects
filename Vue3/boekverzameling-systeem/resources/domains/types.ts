@@ -14,3 +14,11 @@ export interface Genre {
     id: number;
     name: string;
 }
+
+export interface Author {
+   id: number;
+   name: string;
+   age: string;
+   created_at: string;
+   updated_at: string;
+}

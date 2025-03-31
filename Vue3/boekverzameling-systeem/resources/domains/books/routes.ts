@@ -11,7 +11,7 @@ export const bookRoutes = [
     },
 
     {
-        path: '/books/edit:id',
+        path: '/books/:id/edit',
         name: 'books.edit',
         component: () => import('../books/pages/Edit.vue'),
     },
