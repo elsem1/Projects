@@ -9,7 +9,7 @@ const genres = ref<Genre[]>([]);
 
 // Getters
 export const getAllBooks = computed(() => books.value)
-export const getBookById = (id: number) => { return computed(() => books.value.find(book => book.id === id)) }
+export const getBookById = (id: number) => computed(() => books.value.find(book => book.id == id));
 export const getGenres = computed(() => genres.value)
 
 

@@ -13,9 +13,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = Book::all();
-
-        return response()->json($books);
+        return BookResource::collection(Book::all());
     }
 
     public function store(StoreBookRequest $request)

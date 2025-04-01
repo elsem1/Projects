@@ -18,7 +18,10 @@
                 <td>{{ book.year }}</td>
                 <td>{{ book.edition }}</td>
                 <td>{{ book.publisher }}</td>
-                <td><RouterLink :to="{ name: 'books.edit', params: { id: (book.id) } }">Bewerk</RouterLink>   <button @click="deleteBook(book.id)">Verwijder</button></td>
+                <td>
+                    <RouterLink :to="{ name: 'books.edit', params: { id: book.id } }">Bewerk</RouterLink>
+                    <button @click="deleteBook(book.id)">Verwijder</button>
+                </td>
 
             </tr>
 
@@ -32,6 +35,7 @@
 
 import { getAllBooks, fetchBooks, deleteBook } from '../store'
 import { fetchAuthors, getAuthorById } from '../../authors/store'
+import { onMounted } from 'vue';
 
 const books = getAllBooks;
 

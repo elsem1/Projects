@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Author;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Resources\AuthorResource;
+use Illuminate\Support\Facades\DB;
+
 
 class AuthorController extends Controller
 {
     public function index()
     {
-        $authors = Author::all();
-
-        return response()->json($authors);
+        return AuthorResource::collection(Author::all());
     }
 
     public function store(StoreAuthorRequest $request)
@@ -30,6 +30,22 @@ class AuthorController extends Controller
 
         $Authors = Author::all();
         return new AuthorResource($author);
+    }
+
+    public function booksPerAuthor()
+    {
+        $results = DB::table('books')
+            ->select('author_id', DB::raw('COUNT(*) as book_count'))
+            ->groupBy('author_id')
+            ->get();
+
+        return $results;
+    }
+    public function bookCount()
+    {
+        $totalBooks = DB::table('books')->count();
+
+        return $totalBooks;
     }
 
     public function destroy(Author $author)
