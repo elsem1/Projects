@@ -7,13 +7,32 @@ use App\Models\Author;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Resources\AuthorResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class AuthorController extends Controller
 {
     public function index()
     {
-        return AuthorResource::collection(Author::all());
+        // Log::info('Controller method started');
+        // $start = microtime(true);
+
+        // // Query execution
+        // $authors = Author::all();
+        // $mid = microtime(true);
+        // Log::info('Query took ' . round(($mid - $start) * 1000, 2) . 'ms');  // Round to 2 decimals for precision
+
+        // // Resource transformation
+        // $resourceCollection = AuthorResource::collection($authors);
+        // $end = microtime(true);
+        // Log::info('Resource transformation took ' . round(($end - $mid) * 1000, 2) . 'ms');
+
+        // // Total time
+        // Log::info('Total operation took ' . round(($end - $start) * 1000, 2) . 'ms');
+
+        // return response()->json($authors);  // Simple JSON response
+        $authors = Author::all();  // Ensure this returns the expected data
+        return response()->json($authors);
     }
 
     public function store(StoreAuthorRequest $request)
