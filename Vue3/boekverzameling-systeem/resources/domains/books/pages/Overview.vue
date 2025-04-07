@@ -9,9 +9,10 @@
                         <th>Books</th>
                         <th>Author</th>
                         <th>Genre</th>
-                        <th>Year of publication</th>
+                        <th>Publication year</th>
                         <th>Edition</th>
                         <th>Publisher</th>
+                        <th>Acties</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,7 +24,7 @@
                         <td>{{ book.edition }}</td>
                         <td>{{ book.publisher }}</td>
                         <td>
-                            <RouterLink :to="{ name: 'books.edit', params: { id: book.id } }">Bewerk</RouterLink>
+                            <RouterLink :to="{ name: 'books.edit', params: { id: book.id } }">Bewerk  </RouterLink>
                             <button @click="deleteBook(book.id)">Verwijder</button>
                         </td>
                     </tr>

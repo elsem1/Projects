@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Author;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Resources\AuthorResource;
+use App\Http\Resources\BookResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -31,7 +32,8 @@ class AuthorController extends Controller
         // Log::info('Total operation took ' . round(($end - $start) * 1000, 2) . 'ms');
 
         // return response()->json($authors);  // Simple JSON response
-        $authors = Author::all();  // Ensure this returns the expected data
+        $authors = Author::withCount('books')->get();
+
         return response()->json($authors);
     }
 
@@ -40,7 +42,7 @@ class AuthorController extends Controller
         $author = Author::create($request->validated());
         $authors = Author::all();
 
-        return AuthorResource::collection($authors);
+        return new AuthorResource($author);
     }
 
     public function update(StoreAuthorRequest $request, Author $author)
@@ -51,26 +53,15 @@ class AuthorController extends Controller
         return new AuthorResource($author);
     }
 
-    public function booksPerAuthor()
-    {
-        $results = DB::table('books')
-            ->select('author_id', DB::raw('COUNT(*) as book_count'))
-            ->groupBy('author_id')
-            ->get();
-
-        return $results;
-    }
-    public function bookCount()
-    {
-        $totalBooks = DB::table('books')->count();
-
-        return $totalBooks;
-    }
-
     public function destroy(Author $author)
     {
-        $name = $author->name;
+        if ($author->books()->exists()) {
+            return response()->json([
+                'message' => 'Cannot delete author with books'
+            ], 422);
+        }
+
         $author->delete();
-        return response()->json(['message' => "Auteur {$name} is succesvol verwijderd."]);
+        return response()->noContent();
     }
 }

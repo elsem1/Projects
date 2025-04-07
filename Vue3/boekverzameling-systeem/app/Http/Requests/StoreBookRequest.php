@@ -28,7 +28,7 @@ class StoreBookRequest extends FormRequest
             'year' => 'integer|max:2025',
             'genre' => 'required|exists:genres,name',
             'edition' => 'integer|max:10',
-            'summary' => 'required|string',
+            'summary' => 'required|string|max:1000',
         ];
     }
 }

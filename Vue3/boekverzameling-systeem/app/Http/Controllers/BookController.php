@@ -22,7 +22,7 @@ class BookController extends Controller
 
         $books = Book::all();
 
-        return BookResource::collection($books);
+        return new BookResource($book);
     }
 
     public function genre()
