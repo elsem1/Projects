@@ -1,8 +1,8 @@
 import { ref, computed } from 'vue';
 import { getRequest, putRequest, deleteRequest, postRequest } from '../http/index'
-import type { Ref, ComputedRef } from 'vue';
 
-export const storeModuleFactory = <T extends { id: number | string }>(moduleName: string) => {
+
+export const storeModuleFactory = <T extends { id: number | string }, FormData = Partial<T>>(moduleName: string) => {
     const state = ref({
         items: {} as Record<string | number, T>,
         isLoading: false,
@@ -11,7 +11,7 @@ export const storeModuleFactory = <T extends { id: number | string }>(moduleName
 
     const getters = {
         all: computed(() => Object.values(state.value.items)),
-        byId: (id: number | string) => computed(() => state.value.items[id]),
+        getById: (id: number | string) => computed(() => state.value.items[id]),
         isLoading: computed(() => state.value.isLoading),
         error: computed(() => state.value.error)
     };
@@ -26,7 +26,7 @@ export const storeModuleFactory = <T extends { id: number | string }>(moduleName
         setItem: (item: T) => {
             state.value.items[item.id] = Object.freeze(item);
         },
-        deleteItem: (id: number | string) => {
+        deleteItem: (id: T['id']) => {
             delete state.value.items[id];
         }        
     };
