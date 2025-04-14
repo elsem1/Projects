@@ -18,14 +18,14 @@
                 <tbody>
                     <tr v-for="book in books" :key="book.id">
                         <td>{{ book.title }}</td>
-                        <td>{{ getAuthorById(book.author_id).value?.name }}</td>
+                        <td>{{ authorStore.getters.byId(book.author_id).value?.name }}</td>
                         <td>{{ book.genre }}</td>
                         <td>{{ book.year }}</td>
                         <td>{{ book.edition }}</td>
                         <td>{{ book.publisher }}</td>
                         <td>
                             <RouterLink :to="{ name: 'books.edit', params: { id: book.id } }">Bewerk  </RouterLink>
-                            <button @click="deleteBook(book.id)">Verwijder</button>
+                            <button @click="bookStore.actions.delete(book.id)">Verwijder</button>
                         </td>
                     </tr>
                 </tbody>
@@ -36,14 +36,13 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, computed } from 'vue';
+import { bookStore } from '../store'
+import { authorStore } from '../../authors/store';
 
-import { getAllBooks, fetchBooks, deleteBook } from '../store'
-import { fetchAuthors, getAuthorById } from '../../authors/store'
-import { onMounted } from 'vue';
 
-const books = getAllBooks;
+const books = computed(() => bookStore.getters.all.value)
+const authors = computed(() => authorStore.getters.all.value)
 
-fetchBooks()
-fetchAuthors()
 
 </script>

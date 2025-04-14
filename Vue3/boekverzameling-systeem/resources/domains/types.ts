@@ -1,16 +1,16 @@
-export interface Book {
-   id: number;
-   author_id: number;
-   title: string;
-   publisher: string;
-   year: string;
-   genre: string;
-   edition: number;
-   created_at: string;
-   updated_at: string;
-}
+import { Ref } from 'vue';
 
-export interface BookFormData extends Omit<Book, 'id' | 'created_at' | 'updated_at'> {}
+export interface Book {
+  id: number;
+  author_id: number;
+  title: string;
+  publisher: string;
+  year: string;
+  genre: string;
+  edition: number;
+  created_at: string; 
+  updated_at: string;
+}
 
 export interface Genre {
     id: number;
@@ -18,12 +18,12 @@ export interface Genre {
 }
 
 export interface Author {
-   id: number;
-   name: string;
-   age: string;
-   created_at: string;
-   updated_at: string;
-   books_count?: number;
+  id: number;
+  name: string;
+  age: string;
+  created_at: string;
+  updated_at: string;
+  books_count?: number;
 }
 
 export interface ApiResponse<T> {
@@ -32,13 +32,17 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
-export interface AuthorFormData extends Omit<Author, 'id' | 'created_at' | 'updated_at'> {}
-
 export interface ApiError {
-   response?: {
-     status: number;
-     data: any;
-   };
-   message: string;
-   config: any;
- }
+  response?: {
+    status: number;
+    data: any;
+  };
+  message: string;
+  config: any;
+}
+
+export type State<T extends {id: number}> = Ref<{[id: number]: Readonly<T>}>;
+export type New<T extends {id: number}> = Omit<T, 'id'>;
+export type Updatable<T extends {id: number}> = New<T> & {
+  id?: number;
+};

@@ -13,9 +13,9 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue';
-import { fetchAuthors } from '../../authors/store';
+import { authorStore } from '../../authors/store';
 
-fetchAuthors();
+authorStore.getters.all
 
 const props = defineProps({ author: Object });
 

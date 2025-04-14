@@ -1,12 +1,12 @@
 import { ref, computed } from 'vue';
 import { storeModuleFactory } from '../../js/services/store';
-import { Book, Genre, BookFormData } from '../types';
-import { deleteRequest, getRequest, postRequest, putRequest } from '../../js/services/http/index';
+import { Book, Genre } from '../types';
+import { getRequest } from '../../js/services/http/index';
 
 
 // Initialiseert de store module voor boeken met genres 
-export const createBookStore = () => {
-    const bookStore = storeModuleFactory<Book, BookFormData>('books');
+const createBookStore = () => {
+    const bookStore = storeModuleFactory<Book>('books');
     const genreState = ref<{
         genres: Genre[];
         isLoading: boolean;
@@ -40,15 +40,16 @@ export const createBookStore = () => {
     };
 
     return {
-        ...bookStore,
-        genreState,
+        ...bookStore,        
         genreActions,
         genreGetters
     };
 };
 
-const bookStore = createBookStore();
+export const bookStore = createBookStore();
 
 // Haalt de lijst van boeken op bij het laden van component
 bookStore.actions.getAll();
+
+
 

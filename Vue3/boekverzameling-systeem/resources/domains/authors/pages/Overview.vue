@@ -1,5 +1,4 @@
-<template>
-    
+<template>    
         <h1>Hello Authors!</h1>
         
             <table>
@@ -19,7 +18,7 @@
                         <td>{{ author.books_count }}</td>
                         <td>
                             <RouterLink :to="{ name: 'authors.edit', params: { id: author.id } }">Bewerk </RouterLink>
-                            <button @click="deleteAuthor(author.id)">Verwijder</button>
+                            <button @click="authorStore.actions.delete(author.id)">Verwijder</button>
                         </td>
 
                     </tr>
@@ -29,13 +28,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { fetchAuthors, getAllAuthors, deleteAuthor } from '../store'
+import { onMounted, computed } from 'vue';
+import { authorStore } from '../store'
 
-const authors = getAllAuthors;
 
-fetchAuthors()
-
+const authors = computed(() => authorStore.getters.all.value)
 
 </script>
 

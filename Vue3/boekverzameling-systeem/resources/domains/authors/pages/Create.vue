@@ -9,7 +9,7 @@
 import { ref } from 'vue';
 import Form from '../components/AuthorForm.vue';
 import { useRouter } from 'vue-router';
-import { createAuthor } from '../store';
+import { authorStore } from '../store';
 import { Author } from '../../types';
 
 const router = useRouter();
@@ -21,7 +21,7 @@ const author = ref({
 });
 
 const handleSubmit = async (data: Author) => {
-    await createAuthor(data);
+    await authorStore.actions.create(data);
     router.push({ name: 'authors.overview' });
 }
 

@@ -23,7 +23,7 @@
 
         <label>Genre:</label>
         <select v-model="form.genre" required>
-            <option v-for="genre in getGenres" :key="genre.id" :value="genre.name">
+            <option v-for="genre in genres" :key="genre.id" :value="genre.name">
                 {{ genre.name }}
             </option>
         </select>
@@ -37,20 +37,15 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue';
-import { fetchAuthors, getAllAuthors } from '../../authors/store';
-import { fetchGenres, getGenres } from '../store';
+import { authorStore } from '../../authors/store';
+import { bookStore } from '../store';
 
 
+const genres = bookStore.genreGetters.genres
 
-fetchAuthors();
-fetchGenres();
-
-const authors = getAllAuthors;
-
+const authors = authorStore.getters.all;
 const props = defineProps({ book: Object });
-
 const emit = defineEmits(['submit']);
-
 const form = ref({ ...props.book });
 
 const handleSubmit = () => emit('submit', form.value);
