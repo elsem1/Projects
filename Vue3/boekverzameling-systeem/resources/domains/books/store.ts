@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import { storeModuleFactory } from '../../js/services/store';
 import { Book, Genre } from '../types';
-import { getRequest } from '../../js/services/http/index';
+import { getRequest } from '../../js/services/http';
 
 
 // Initialiseert de store module voor boeken met genres 
@@ -49,7 +49,7 @@ const createBookStore = () => {
 export const bookStore = createBookStore();
 
 // Haalt de lijst van boeken op bij het laden van component
-bookStore.actions.getAll();
+
 
 
 

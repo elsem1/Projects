@@ -1,21 +1,30 @@
 <template>
+    <ErrorMessage />
+    <!-- <div v-if="getMessage">
+        {{ getMessage }}
+    </div> -->
     <form @submit.prevent="handleSubmit">
 
-        <label>Naam van de Auteur:</label>
-        <input v-model="authorData.name" type="text" required />
+        <div>
+            <label>Naam van de Auteur:</label>
+            <input v-model="authorData.name" type="text" />
+            <ErrorForm name="name" />
+        </div>
 
-        <label>Geboortedatum:</label>
-        <input v-model="authorData.age" type="text" required placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+        <div>
+            <label>Geboortedatum:</label>
+            <input v-model="authorData.age" type="text" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+            <ErrorForm name="age" />
+        </div>
 
         <button class="submit">Opslaan</button>
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, defineProps, defineEmits } from 'vue';
-import { authorStore } from '../../authors/store';
-
-authorStore.getters.all
+import ErrorForm from '../../../js/services/error/ErrorForm.vue';
+import ErrorMessage from '../../../js/services/error/ErrorMessage.vue';
 
 const props = defineProps({ author: Object });
 

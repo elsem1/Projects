@@ -6,6 +6,5 @@ import { Author } from '../types';
 export const authorStore = storeModuleFactory<Author>('authors');
 
 // Haalt de lijst van boeken op bij het laden van component
-authorStore.actions.getAll();
 
 

@@ -1,13 +1,14 @@
 <template>    
         <h1>Hello Authors!</h1>
         
+        
             <table>
                 <thead>
                     <tr>
                         <th>Name of the Author</th>
                         <th>Date of Birth  </th>
                         <th>Books written</th>
-                        <th>Acties</th>
+                        <th>Acties</th><ErrorMessage />
                     </tr>
 
                 </thead>
@@ -18,9 +19,8 @@
                         <td>{{ author.books_count }}</td>
                         <td>
                             <RouterLink :to="{ name: 'authors.edit', params: { id: author.id } }">Bewerk </RouterLink>
-                            <button @click="authorStore.actions.delete(author.id)">Verwijder</button>
+                            <button @click="authorStore.actions.delete(author.id)">Verwijder</button>                            
                         </td>
-
                     </tr>
                 </tbody>
             </table>
@@ -30,7 +30,9 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue';
 import { authorStore } from '../store'
+import ErrorMessage from '../../../js/services/error/ErrorMessage.vue';
 
+authorStore.actions.getAll();
 
 const authors = computed(() => authorStore.getters.all.value)
 

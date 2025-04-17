@@ -20,15 +20,11 @@ class BookController extends Controller
     {
         $book = Book::create($request->validated());
 
-        $books = Book::all();
-
         return new BookResource($book);
     }
 
     public function genre()
     {
-        $genres = DB::table('genres')->pluck('name', 'id');
-
         return DB::table('genres')->select('id', 'name')->get();
     }
 
@@ -36,7 +32,6 @@ class BookController extends Controller
     {
         $book->update($request->validated());
 
-        $books = Book::all();
         return new BookResource($book);
     }
 
