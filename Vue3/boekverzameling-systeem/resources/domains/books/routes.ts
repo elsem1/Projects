@@ -21,4 +21,10 @@ export const bookRoutes = [
         name: 'books.create',
         component: () => import('../books/pages/Create.vue'),
     },
+
+    {
+        path: '/books/:id',
+        name: 'books.view',
+        component: () => import('../books/pages/View.vue'),
+    }
 ];

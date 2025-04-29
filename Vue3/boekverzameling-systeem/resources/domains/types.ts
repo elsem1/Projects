@@ -3,11 +3,13 @@ import { Ref } from 'vue';
 export interface Book {
   id: number;
   author_id: number;
+  author?: Author;
   title: string;
   publisher: string;
   year: string;
   genre: string;
   edition: number;
+  summary: string;
   created_at: string; 
   updated_at: string;
 }
