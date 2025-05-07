@@ -2,7 +2,7 @@ export const reviewRoutes = [
     {
         path: '/reviews',
         name: 'reviews.overview',
-        component: () => import('../reviews/pages/Overview.vue'),
+        component: () => import('../books/pages/View.vue'),
     },
 
     {

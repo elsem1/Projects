@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('book_id');
             $table->foreignId('user_id');
             $table->text('review');
+            $table->integer('rating');
             $table->timestamps();
 
             $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');

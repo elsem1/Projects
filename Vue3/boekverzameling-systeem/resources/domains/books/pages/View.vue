@@ -13,7 +13,7 @@
     <p>It falls under the {{ book.value.genre }} genre</p>
     <p>Here's a summary:</p>
     <p>{{ book.value.summary }}</p>
-    <p>{{ }}</p>
+    <Box :bookId="Number(route.params.id)"/>
 
 
 
@@ -25,12 +25,13 @@ import { bookStore } from '../store'
 import { Book } from '../../types';
 import { useRoute, useRouter } from 'vue-router';
 import { computed } from 'vue';
+import Box from '../../reviews/components/ReviewBox.vue';
 
 const route = useRoute();
 const routes = useRouter();
 const book = computed(() => bookStore.getters.byId(Number(route.params.id)));
 
 
-
+bookStore.actions.getAll()
 
 </script>

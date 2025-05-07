@@ -22,8 +22,7 @@ Route::put('/authors/{author}', [AuthorController::class, 'update']);
 Route::delete('/authors/{author}', [AuthorController::class, 'destroy']);
 
 
-Route::get('/reviews/{review}', [ReviewController::class, 'show']);
-Route::get('/reviews/{book}/create', [ReviewController::class, 'create']);
-Route::post('/reviews', [ReviewController::class, 'store']);
+Route::get('/books/{book}/reviews', [ReviewController::class, 'index']);
+Route::post('/books/{book}/reviews', [ReviewController::class, 'store']);
 Route::put('/reviews/{review}', [ReviewController::class, 'update']);
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);

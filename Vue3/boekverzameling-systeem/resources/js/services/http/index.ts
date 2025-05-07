@@ -5,7 +5,8 @@ import { setErrorBag, setMessage } from '../error';
 const http = axios.create({
     baseURL: '/api',
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
     }
 });
 

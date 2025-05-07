@@ -6,6 +6,7 @@ import { New, State, Updatable} from '../../../domains/types'
 const singularNames: Record<string, string> = {
     books: "book",
     authors: "author",
+    reviews: "review",
 };
 
 export const storeModuleFactory = <T extends { id: number }>(moduleName: string) => {

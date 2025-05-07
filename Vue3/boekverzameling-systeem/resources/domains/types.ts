@@ -19,6 +19,14 @@ export interface Genre {
     name: string;
 }
 
+export interface Review {
+  id: number;
+  user_id: number;  
+  book_id: number;
+  review: string;
+  rating: number;
+}
+
 export interface Author {
   id: number;
   name: string;

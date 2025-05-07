@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { computed } from 'vue';
 import { authorStore } from '../store'
 import ErrorMessage from '../../../js/services/error/ErrorMessage.vue';
 
