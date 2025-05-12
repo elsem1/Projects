@@ -13,7 +13,10 @@ class Review extends Model
         'user_id',
         'book_id',
         'review',
-        'rating,'
+        'rating'
+    ];
+    protected $casts = [
+        'rating' => 'integer'
     ];
 
     public function book()

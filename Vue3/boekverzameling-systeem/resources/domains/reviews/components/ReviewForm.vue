@@ -1,22 +1,21 @@
 <template>
     
     <ErrorMessage />
-
     <form @submit.prevent="handleSubmit">
 
-        <h1>Write a new review!</h1>
+        <h1>{{ editingReview ? 'Bewerk Review' : 'Schrijf een nieuwe review!'}}</h1>
         <div>
             <label>Review:</label>
-            <input v-model="form.review" type="text" />
+            <input v-model="form.review" type="text" rows="4" />
             <ErrorForm name="review" />
         </div>
-
+        
         <div>
             <label>Rating:</label>
-            <input v-model="form.rating" type="range" min="0" max="5" />
+            <input v-model="form.rating" type="range" min="0" max="5" steps="1" />
             <ErrorForm name="rating" />
         </div>
-
+         <button type="submit">{{ editingReview ? 'Update' : 'Opslaan' }}</button>
         <button class="submit">Opslaan</button>        
 
     </form>
@@ -29,21 +28,27 @@ import { getMessage } from '../../../js/services/error';
 import ErrorMessage from '../../../js/services/error/ErrorMessage.vue';
 import ErrorForm from '../../../js/services/error/ErrorForm.vue';
 
-const props = defineProps({ review: Object });
+const props = defineProps({ 
+    review: Object,
+    bookId: Number
+});
 const emit = defineEmits(['submit']);
 
 const form = ref({
+    book_id: props.bookId,
     review: '',
     rating: 0
 });
 
-const reviewData = ref({ ...props.review });
-
 
 
 const handleSubmit = () => {
-    emit('submit', reviewData.value);
-    form.value = { review: '', rating: 0 }; 
+    emit('submit', {
+        ...form.value,
+        rating: Number(form.value.rating)
+});
+    form.value.review = '';
+    form.value.rating = 3;
 };
 </script>
 

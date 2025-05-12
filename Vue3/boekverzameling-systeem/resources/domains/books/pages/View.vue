@@ -10,9 +10,10 @@
         <span v-else-if="book.value.edition">th</span>
         <span> edition</span>
     </p>
-    <p>It falls under the {{ book.value.genre }} genre</p>
+    <p>It falls in the {{ book.value.genre }} genre</p>
     <p>Here's a summary:</p>
     <p>{{ book.value.summary }}</p>
+
     <Box :bookId="Number(route.params.id)"/>
 
 

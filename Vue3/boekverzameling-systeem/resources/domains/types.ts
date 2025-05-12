@@ -21,10 +21,12 @@ export interface Genre {
 
 export interface Review {
   id: number;
-  user_id: number;  
   book_id: number;
+  user_id: number;
   review: string;
   rating: number;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Author {
