@@ -27,6 +27,10 @@ export interface Review {
   rating: number;
   created_at?: string;
   updated_at?: string;
+  user?: {
+    id: number;
+    name: string;    
+  }
 }
 
 export interface Author {

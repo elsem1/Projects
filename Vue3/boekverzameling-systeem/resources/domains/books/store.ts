@@ -48,8 +48,6 @@ const createBookStore = () => {
 
 export const bookStore = createBookStore();
 
-// Haalt de lijst van boeken op bij het laden van component
-
 
 
 
