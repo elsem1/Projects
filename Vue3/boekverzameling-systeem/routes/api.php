@@ -12,7 +12,7 @@ Route::post('/books', [BookController::class, 'store']);
 Route::get('/books/{book}', [BookController::class, 'index']);
 Route::put('/books/{book}', [BookController::class, 'update']);
 Route::delete('/books/{book}', [BookController::class, 'destroy']);
-Route::delete('/books/{book}/force', [BookController::class, 'forceDestroy']);
+Route::delete('/books/{book}/destroy', [BookController::class, 'destroy']);
 
 Route::get('/genres', [BookController::class, 'genre']);
 Route::get('/count', [AuthorController::class, 'booksPerAuthor', 'bookCount']);

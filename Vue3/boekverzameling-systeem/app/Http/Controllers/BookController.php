@@ -50,16 +50,4 @@ class BookController extends Controller
             'message' => "Boek '{$title}' is succesvol verwijderd."
         ]);
     }
-
-
-    public function forceDestroy(Book $book)
-    {
-        $title = $book->title;
-        $book->reviews()->delete();
-        $book->delete();
-
-        return response()->json([
-            'message' => "Boek '{$title}' en alle gekoppelde reviews zijn succesvol verwijderd."
-        ]);
-    }
 }

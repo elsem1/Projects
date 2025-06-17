@@ -24,8 +24,8 @@
                     <td>{{ book.edition }}</td>
                     <td>{{ book.publisher }}</td>
                     <td class="actions">
-                        <RouterLink :to="{ name: 'books.edit', params: { id: book.id } }">Edit</RouterLink>                        
-                        <button @click="confirmDeletion(book.id)">Delete</button>
+                        <RouterLink :to="{ name: 'books.edit', params: { id: book.id } }">Edit</RouterLink>
+                        <button @click="confirmDeletion(book)">Delete</button>
                         <RouterLink :to="{ name: 'books.view', params: { id: book.id } }">View</RouterLink>
                     </td>
                 </tr>
@@ -37,6 +37,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { bookStore } from '../store'
+import { reviewStore } from '../../reviews/store'
 import { authorStore } from '../../authors/store';
 import ErrorMessage from '../../../js/services/error/ErrorMessage.vue';
 
@@ -44,14 +45,26 @@ onMounted(() => {
     bookStore.actions.getAll();
     bookStore.genreActions.fetchGenres();
     authorStore.actions.getAll();
+    reviewStore.actions.getAll();
 });
 const books = bookStore.getters.all
 
 const confirmDeletion = async (book: { id: number, title: string }) => {
-    if (confirm('Weet je zeker dat je het boek `${book.title}` wilt verwijderen?')) {
-        bookStore.actions.delete(book.id);
-    }
+    const hasReviews = reviewStore.getters.byBookId(book.id).value.length > 0;
+
+    if (hasReviews) {
+        const confirmWithReviews = confirm(
+            `Dit boek heeft ${reviewStore.getters.byBookId(book.id).value.length} review(s). ` +
+            `Weet je zeker dat je het boek én de bijbehorende reviews wilt verwijderen?`
+        );
+        if (!confirmWithReviews) return;
+    } else {
+        const confirmDelete = (confirm(`Weet je zeker dat je het boek "${book.title}" wilt verwijderen?`));
+        if (!confirmDelete) return;
+    };
+    await bookStore.actions.delete(book.id);
 };
+
 </script>
 
 <style scoped>
@@ -91,7 +104,8 @@ const confirmDeletion = async (book: { id: number, title: string }) => {
     white-space: nowrap;
 }
 
-.actions a, .actions button {
+.actions a,
+.actions button {
     margin-right: 0.5rem;
     text-decoration: none;
     background: none;
@@ -102,7 +116,8 @@ const confirmDeletion = async (book: { id: number, title: string }) => {
     padding: 0;
 }
 
-.actions a:last-child, .actions button:last-child {
+.actions a:last-child,
+.actions button:last-child {
     margin-right: 0;
 }
 </style>
