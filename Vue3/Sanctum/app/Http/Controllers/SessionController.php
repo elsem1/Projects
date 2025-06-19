@@ -25,7 +25,7 @@ class SessionController extends Controller
 
         $remember = $request->boolean('remember');
 
-        if (!Auth::viaRemember($credentials, $remember)) {
+        if (!Auth::attempt($credentials, $remember)) {
             throw ValidationException::withMessages([
                 'email' => 'De ingevoerde gegevens zijn ongeldig.',
             ]);

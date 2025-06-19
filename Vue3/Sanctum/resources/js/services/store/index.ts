@@ -5,7 +5,7 @@ import {
     deleteRequest,
     postRequest,
 } from "../http/index";
-import { New, Updatable } from "../../../domains/type";
+import { New, Updatable } from "../../domains/type";
 
 const singularNames: Record<string, string> = {
     books: "book",

@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import { getMessage } from '../../../js/services/error';
+import { getMessage } from "./index.ts";
 </script>

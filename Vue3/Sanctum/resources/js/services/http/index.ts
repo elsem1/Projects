@@ -1,9 +1,10 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios from "axios";
 import { destroyErrors, destroyMessage } from "../error";
 import { setErrorBag, setMessage } from "../error";
 
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
+// axios.defaults.withCredentials = true;
+// axios.defaults.withXSRFToken = true;
 
 const http = axios.create({
     baseURL: "/api",
@@ -11,7 +12,7 @@ const http = axios.create({
         "Content-Type": "application/json",
         Accept: "application/json",
     },
-});
+}); 
 
 export const getRequest = <T = any>(
     endpoint: string,

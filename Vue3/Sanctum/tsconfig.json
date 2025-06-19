@@ -3,9 +3,10 @@
     "compilerOptions": {
         "module": "esnext",
         "target": "esnext",
-        "types": ["vite/client", "node"],
+        "types": ["vite/client", "node", "vue"],
         "moduleResolution": "node",
         "lib": ["es2017", "dom"],
+        "allowSyntheticDefaultImports": true,
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,
         "declaration": true,
