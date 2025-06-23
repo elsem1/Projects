@@ -1,20 +1,22 @@
 <template>
     
-    <Form />
-    
+    <Form @submit="login"/>   
+    <button @click="meRequest" class="meRequest">/me</button>
+        
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import Form from "../components/LoginForm.vue";
-import type { User } from "../../type";
+import axios from "axios";
+import { userLogin } from "../../type";
 
-const login = async (): Promise<void> => {
-        
-    await axios.get("/sanctum/csrf-cookie");
-    const { data } = await axios.post<{ token: string }>('/api/login', {
-    email: email.value,
-    password: password.value,
-    });
+const login = async (credentials: userLogin) => {    
+    await axios.post('/api/login', credentials);
+};
+
+const meRequest = async () => {
+    await axios.get('/api/me');       
 };
 </script>
 

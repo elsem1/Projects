@@ -1,5 +1,3 @@
-import { Ref } from "vue";
-
 export interface User {
     id: number;
     name: string;
@@ -12,25 +10,9 @@ export interface User {
     is_admin: boolean;
 }
 
-export interface ApiResponse<T> {
-    data: T;
-    success: boolean;
-    message?: string;
+export interface userLogin {
+    email: String;
+    password: String;
 }
 
-export interface ApiError {
-    response?: {
-        status: number;
-        data: any;
-    };
-    message: string;
-    config: any;
-}
 
-export type State<T extends { id: number }> = Ref<{
-    [id: number]: Readonly<T>;
-}>;
-export type New<T extends { id: number }> = Omit<T, "id">;
-export type Updatable<T extends { id: number }> = New<T> & {
-    id?: number;
-};
