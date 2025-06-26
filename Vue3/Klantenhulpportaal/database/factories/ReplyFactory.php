@@ -19,6 +19,7 @@ class ReplyFactory extends Factory
     public function definition(): array
     {
         $content = fake()->randomElement([
+            fake()->sentences(3, true),
             fake()->paragraph(),
             fake()->paragraphs(fake()->numberBetween(2, 6), true),
             fake()->text(255),
@@ -26,9 +27,6 @@ class ReplyFactory extends Factory
 
         return [
             'content' => $content,
-            'ticket_id' => Ticket::factory(),
-            'user_id' => User::factory(),
-
         ];
     }
 };

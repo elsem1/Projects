@@ -19,7 +19,7 @@ class NoteFactory extends Factory
     public function definition(): array
     {
         return [
-            'content' => fake()->paragraph(),
+            'content' => fake()->paragraphs(3, true),
             'user_id' => null,
             'ticket_id' => Ticket::factory(),
         ];

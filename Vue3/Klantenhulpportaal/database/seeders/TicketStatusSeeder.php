@@ -18,7 +18,7 @@ class TicketStatusSeeder extends Seeder
             ['name' => 'In Progress', 'description' => 'Ticket is currently being worked on.'],
             ['name' => 'Pending', 'description' => 'Waiting for customer response.'],
             ['name' => 'Resolved', 'description' => 'Issue has been resolved.'],
-            ['name' => 'Closed', 'description' => 'Ticket is closed. No further action required.'],
+            ['name' => 'Closed', 'description' => 'Ticket is closed. Issue is not been resolved but will not be picked up.'],
             ['name' => 'Rejected', 'description' => 'Ticket was invalid or will not be processed.'],
         ]);
     }

@@ -7,6 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
-    /** @use HasFactory<\Database\Factories\NoteFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'id',
+        'content',
+        'user_id',
+        'ticket_id',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function ticket()
+    {
+        return $this->belongsTo(Ticket::class);
+    }
 }

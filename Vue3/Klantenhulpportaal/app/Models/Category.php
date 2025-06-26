@@ -7,6 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
+
+    protected $fullable = [
+        'id',
+        'name',
+        'description',
+    ];
+
+    protected $table = 'categories';
+
+    public function tickets()
+    {
+        return $this->belongsToMany(Ticket::class, 'category_ticket');
+    }
 }

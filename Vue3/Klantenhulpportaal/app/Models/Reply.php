@@ -7,6 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    /** @use HasFactory<\Database\Factories\ReplyFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'id',
+        'ticket_id',
+        'user_id',
+        'content'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function ticket()
+    {
+        return $this->belongsTo(Ticket::class);
+    }
 }
