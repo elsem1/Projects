@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { setErrorBag, setMessage, destroyErrors, destroyMessage } from '../error';
-import router from '../router'
+import { router } from '../router'
 
 const http: AxiosInstance = axios.create({
     baseURL: '/api',

@@ -1,7 +1,8 @@
 <template>
-    <h1>Hello World!</h1>
-    <Routerview />
+
+    <Layout />
 </template>
 
 <script setup lang="ts">
+import Layout from './DefaultLayout.vue'
 </script>

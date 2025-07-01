@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TicketStatusSeeder::class,
         ]);
-
+        User::factory()->create(['email' => 'admin@example.com', 'is_admin' => true]);
         Category::factory()->count(7)->create();
 
         User::factory()->count(5)->create(['is_admin' => 1]);
