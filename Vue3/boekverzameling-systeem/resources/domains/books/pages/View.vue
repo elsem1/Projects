@@ -41,6 +41,7 @@ const route = useRoute();
 const bookId = computed(() => Number(route.params.id));
 const book = computed(() => bookStore.getters.byId(bookId.value));
 
+
 const getEditionSuffix = (edition: number) => {
     if (edition === 1) return 'st';
     if (edition === 2) return 'nd';
@@ -48,8 +49,8 @@ const getEditionSuffix = (edition: number) => {
     return 'th';
 };
 
-onMounted(async () => {
-    await bookStore.actions.getAll();
-});
+
+bookStore.actions.getAll();
+
 
 </script>

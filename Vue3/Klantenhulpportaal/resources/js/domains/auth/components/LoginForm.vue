@@ -15,8 +15,8 @@
             <label>
                 <input v-model="userLogin.remember" type="checkbox" />
                 Rememeber Me
-            </label>
-            <button type="submit" class="submit">Inloggen</button>
+            </label>            
+            <button type="submit" class="submit">Inloggen</button>            
         </form>
     </div>
 </template>

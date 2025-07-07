@@ -13,7 +13,9 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+        return Ticket::with(['categories'])->get();
+
+        return response()->json($tickets);
     }
 
     /**

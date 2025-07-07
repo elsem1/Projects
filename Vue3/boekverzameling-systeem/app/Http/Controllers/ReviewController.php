@@ -20,16 +20,12 @@ class ReviewController extends Controller
 
     public function store(StoreReviewRequest $request)
     {
-        $randomUser = User::inRandomOrder()->firstOrFail();
+        $randomUserId = User::inRandomOrder()->firstOrFail()->id;
         $reviewData = $request->validated();
 
+        $reviewData['user_id'] = $randomUserId;
 
-        $review = Review::create([
-            'book_id' => $request->book_id,
-            'user_id' => $randomUser->id,
-            'review' => $request->review,
-            'rating' => $request->rating
-        ]);
+        $review = Review::create($reviewData);
 
         return new ReviewResource($review);
     }

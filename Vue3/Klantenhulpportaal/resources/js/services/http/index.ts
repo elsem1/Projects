@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { setErrorBag, setMessage, destroyErrors, destroyMessage } from '../error';
-import { router } from '../router'
+import type {RequestMiddleware, ResponseErrorMiddleware, ResponseMiddleware} from './types';
+
 
 const http: AxiosInstance = axios.create({
     baseURL: '/api',
@@ -19,65 +19,32 @@ const initCsrf = async () => {
         console.error('CSRF-token ophalen mislukt:', error);
     }
 };
+const requestMiddleware: RequestMiddleware[] = [];
+const responseMiddleware: ResponseMiddleware[] = [];
+const responseErrorMiddleware: ResponseErrorMiddleware[] = [];
 
-http.interceptors.request.use(
-    config => {
-        destroyErrors(); // Wis oude foutmeldingen
-        destroyMessage(); // Wis oude berichten
-        return config;
-    },
-    error => Promise.reject(error)
-);
+
+http.interceptors.request.use(request => {
+    for (const middleware of requestMiddleware) middleware(request);
+
+    return request;
+});
 
 http.interceptors.response.use(
-    response => response, // Laat succesvolle responses door
+    response => {
+        for (const middleware of responseMiddleware) middleware(response);
+
+        return response;
+    },
+    // eslint-disable-next-line promise/prefer-await-to-callbacks
     error => {
-        const statusCode = error.response?.status;
+        if (!error.response) return Promise.reject(error);
+        for (const middleware of responseErrorMiddleware) middleware(error);
 
-        // Variabelen voor foutmeldingen en acties
-        let message = 'Er is een fout opgetreden.';
-        let action = () => {};
-
-        // Switch op basis van statuscode
-        switch (statusCode) {
-            case 401: // Unauthorized
-            message = 'Je bent niet ingelogd. Redirect naar login.';
-            action = () => router.push({ name: 'login' });
-            break;
-
-        case 403: // Forbidden
-            message = 'Je hebt geen toegang tot deze actie.';
-            action = () => router.push({ name: 'forbidden' });
-            break;
-
-        case 404: // Not Found
-            message = 'De gevraagde resource is niet gevonden.';
-            action = () => router.push({ name: 'not-found' });
-            break;
-
-        case 422: // Unprocessable Entity
-            message = error.response.data.message || 'Validatiefout.';
-            setErrorBag(error.response.data.errors); // Sla validatiefouten op
-            break;
-
-        case 500: // Internal Server Error
-            message = 'Er is een interne serverfout opgetreden.';
-            action = () => console.error('Serverfout: neem contact op met support.');
-            break;
-
-        default: // Andere fouten
-            message = 'Onverwachte fout. Probeer het later opnieuw.';
-            break;
-        }
-
-        // Stel foutmelding in en voer de actie uit
-        setMessage(message);
-        action();
-
-        // Gooi de fout verder door voor specifieke afhandeling elders
         return Promise.reject(error);
-    }
+    },
 );
+
 
 export const getRequest = <T = any>(
     endpoint: string,
@@ -100,6 +67,13 @@ export const deleteRequest = <T = any>(
     endpoint: string,
     config?: AxiosRequestConfig
     ): Promise<AxiosResponse<T>> => http.delete<T>(endpoint, config);
+
+export const registerRequestMiddleware = (middlewareFunc: RequestMiddleware) => requestMiddleware.push(middlewareFunc);
+export const registerResponseMiddleware = (middlewareFunc: ResponseMiddleware) =>
+    responseMiddleware.push(middlewareFunc);
+export const registerResponseErrorMiddleware = (middlewareFunc: ResponseErrorMiddleware) =>
+    responseErrorMiddleware.push(middlewareFunc);
+
 
 
 export { initCsrf };

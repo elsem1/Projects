@@ -1,13 +1,11 @@
 <template>
 
     <Form @submit="login" />
-    <div v-if="loggedIn">
-        <button class="logout" @click="logout">Logout</button>
-    </div>
+    
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Form from "../components/LoginForm.vue"
 import { getRequest, initCsrf, postRequest } from "../../../services/http";
 import { UserLogin } from "../types";
@@ -23,9 +21,13 @@ const login = async (credentials: UserLogin) => {
 }
 
 const checkLogIn = async () => {
-    await getRequest('/me');
-    // if () hier was ik bezig om iets te bedenken dat kan kijken of de user is ingelogd
-    loggedIn.value = true;
+    const response = await getRequest('/me');
+    if (
+    loggedIn.value = !!response?.data?.id
+    ) { loggedIn.value = true        
+    } else {
+        loggedIn.value = false
+    }
 };
 
 const logout = async () => {
@@ -34,8 +36,6 @@ const logout = async () => {
     router.push('/');
 }
 
-onMounted(() => {
-    checkLogIn();
-});
+
 
 </script>

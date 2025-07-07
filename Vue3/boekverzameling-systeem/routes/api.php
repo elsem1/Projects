@@ -15,7 +15,6 @@ Route::delete('/books/{book}', [BookController::class, 'destroy']);
 Route::delete('/books/{book}/destroy', [BookController::class, 'destroy']);
 
 Route::get('/genres', [BookController::class, 'genre']);
-Route::get('/count', [AuthorController::class, 'booksPerAuthor', 'bookCount']);
 
 Route::get('/authors', [AuthorController::class, 'index']);
 Route::post('/authors', [AuthorController::class, 'store']);
