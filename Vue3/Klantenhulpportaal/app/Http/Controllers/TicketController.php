@@ -5,17 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
+use App\Http\Resources\TicketResource;
+use Illuminate\Support\Facades\DB;
+
 
 class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
-        return Ticket::with(['categories'])->get();
+        // Haal tickets met gekoppelde categorieën, en users op
+        $tickets = Ticket::with('categories', 'creator', 'handler')->orderBy('created_at', 'asc')->get();
 
-        return response()->json($tickets);
+        return TicketResource::collection($tickets);
     }
 
     /**

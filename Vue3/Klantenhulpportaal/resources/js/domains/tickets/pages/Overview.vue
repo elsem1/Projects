@@ -12,33 +12,37 @@
                     <th>Aangemaakt door</th>
                     <th>Aangemaakt op</th>
                     <th>Laatste update op</th>
-                    <th>Toegewezen aan</th>                    
+                    <th>Toegewezen aan</th>
                 </tr>
             </thead>
             <tbody>
+
                 <tr v-for="ticket in tickets" :key="ticket.id">
                     <td>{{ ticket.id }}</td>
+                    <td>{{ ticket.title }}</td>
                     <td>
                         <span v-for="category in ticket.categories" :key="category.id">
                             {{ category.name }}
-                        <span v-if="!isLast(ticket.categories, category)">, </span>
+                            <span v-if="!isLast(ticket.categories, category)">, </span>
                         </span>
                     </td>
-                    <td>{{ ticket.status }}</td>
-                    <td>{{ ticket.created_by }}</td>
+                    <td>{{ ticket.status_name }}</td>
+                    <td>{{ ticket.creator.first_name }} {{ ticket.creator.last_name }}</td>
                     <td>{{ ticket.created_at }}</td>
                     <td>{{ ticket.updated_at }}</td>
-                    <td>{{ ticket.handled_by }}</td>
+                    <td>{{ ticket.handler?.first_name }} {{ ticket.handler?.last_name }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </template>
 <script setup lang="ts">
+import { computed } from 'vue';
 import { ticketStore } from '../store';
 import { Category } from '../types'
 
 
+// Bezig met chronologisch sorteren tickets, denk dat ik dit in de store moet gaan doen.
 function isLast(categories: Category[], category: Category) {
     return categories[categories.length - 1].id === category.id;
 }
@@ -46,7 +50,54 @@ function isLast(categories: Category[], category: Category) {
 const tickets = ticketStore.getters.all;
 
 ticketStore.actions.getAll();
+console.log(tickets);
 
 </script>
-<style>
+<style scoped>
+/* Container padding */
+div {
+    padding: 1rem;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+/* Tabel basisstijl */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Headerstijl */
+thead th {
+    background-color: #f4f4f4;
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Cell padding en border */
+tbody td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Wisselende rij-kleur voor leesbaarheid */
+tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Hover effect voor rijen */
+tbody tr:hover {
+    background-color: #f0f8ff;
+}
+
+/* Titel styling */
+title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
 </style>
