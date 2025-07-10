@@ -7,7 +7,7 @@ use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 use App\Http\Resources\TicketResource;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
@@ -15,10 +15,16 @@ class TicketController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
+    public function index(Request $request)
     {
-        // Haal tickets met gekoppelde categorieën, en users op
-        $tickets = Ticket::with('categories', 'creator', 'handler')->orderBy('created_at', 'asc')->get();
+        $user = $request->user();
+
+        if ($user->is_admin) {
+            // Haal tickets met gekoppelde categorieën, en users op
+            $tickets = Ticket::with('categories', 'creator', 'handler')->get();
+        } else {
+            $tickets = Ticket::where('created_by', $user->id)->get();
+        }
 
         return TicketResource::collection($tickets);
     }

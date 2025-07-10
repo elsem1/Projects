@@ -1,13 +1,18 @@
+import { statusPriority } from ".";
+
 export interface Ticket {
     id: number;
     title: string;
     categories: Category[];
     content: string;
-    status_name: string;
+    status_name: keyof typeof statusPriority;
     creator: User;          
     handler?: User | null; 
     created_at: string;
+    created_at_raw: string;
     updated_at?: string;
+    updated_at_raw?: string;
+
 }
 
 export interface Category {

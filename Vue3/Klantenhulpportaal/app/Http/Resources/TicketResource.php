@@ -39,7 +39,7 @@ class TicketResource extends JsonResource
                     'name' => $category->name,
                 ];
             }),
-
+            // voor nu in de back-end met carbon, maar practischer is in de font-end met (dayjs?)
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
             'created_at_raw' => $this->created_at,
             'updated_at' => Carbon::parse($this->updated_at)->diffForHumans(),

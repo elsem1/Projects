@@ -4,7 +4,7 @@
 
         <table id="tickets">
             <thead>
-                <tr>
+                <tr>                    
                     <th>Ticket id</th>
                     <th>Ticket titel</th>
                     <th>Categorieën</th>
@@ -17,7 +17,12 @@
             </thead>
             <tbody>
 
-                <tr v-for="ticket in tickets" :key="ticket.id">
+                
+                <tr v-for="ticket in ticketsSortedByDate" 
+                    :key="ticket.id"
+                    @click="goToTicket(ticket.id)"
+                    style="cursor: pointer;"> 
+
                     <td>{{ ticket.id }}</td>
                     <td>{{ ticket.title }}</td>
                     <td>
@@ -39,18 +44,27 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { ticketStore } from '../store';
-import { Category } from '../types'
+import { Category, Ticket } from '../types'
+import { sortBy } from '../../../services/helpers/sortHelper';
+import { statusPriority } from '..';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 
-// Bezig met chronologisch sorteren tickets, denk dat ik dit in de store moet gaan doen.
+const tickets = ticketStore.getters.all;
+ticketStore.actions.getAll();
+
 function isLast(categories: Category[], category: Category) {
     return categories[categories.length - 1].id === category.id;
 }
+function goToTicket(id: number) {
+    router.push({ name: 'tickets.view', params: { id } });
+}
 
-const tickets = ticketStore.getters.all;
-
-ticketStore.actions.getAll();
-console.log(tickets);
+const ticketsSortedByDate = computed<Readonly<Ticket>[]>(() =>
+    sortBy(tickets.value, t => 
+    `${statusPriority[t.status_name]}-${t.created_at_raw}`)
+);
 
 </script>
 <style scoped>
