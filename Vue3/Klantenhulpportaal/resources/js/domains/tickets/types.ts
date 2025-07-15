@@ -6,13 +6,20 @@ export interface Ticket {
     categories: Category[];
     content: string;
     status_name: keyof typeof statusPriority;
+    status_id: number
     creator: User;          
     handler?: User | null; 
     created_at: string;
     created_at_raw: string;
     updated_at?: string;
     updated_at_raw?: string;
+}
 
+export type TicketUpdate = {
+    title: string,
+    categories: Category[],
+    status_id: number,
+    content: string,
 }
 
 export interface Category {

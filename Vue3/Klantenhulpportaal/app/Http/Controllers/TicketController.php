@@ -19,9 +19,10 @@ class TicketController extends Controller
     {
         $user = $request->user();
 
+
         if ($user->is_admin) {
             // Haal tickets met gekoppelde categorieën, en users op
-            $tickets = Ticket::with('categories', 'creator', 'handler')->get();
+            $tickets = Ticket::with('categories', 'creator', 'handler',)->get();
         } else {
             $tickets = Ticket::where('created_by', $user->id)->get();
         }
@@ -50,7 +51,9 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        $ticket->load(['categories', 'creator', 'handler']);
+
+        return new TicketResource($ticket);
     }
 
     /**

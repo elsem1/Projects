@@ -20,7 +20,13 @@ import { usersRoutes } from '../../domains/users/routes';
 // Maak de router aan met een lege routes array
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [],
+    routes: [
+    ...authRoutes,
+    ...notesRoutes,
+    ...repliesRoutes,
+    ...ticketsRoutes,
+    ...usersRoutes,
+],
 });
 
 // Functie om routes dynamisch toe te voegen
@@ -31,14 +37,7 @@ export const addRoutes = (newRoutes: RouteRecordRaw[]) => {
 };
 export const useRouterInApp = (app: App<Element>) => app.use(router);
 
-// Voeg al je routes samen en voeg ze toe aan de router
-addRoutes([
-    ...authRoutes,
-    ...notesRoutes,
-    ...repliesRoutes,
-    ...ticketsRoutes,
-    ...usersRoutes,
-]);
+
 
 const createRoute = (name: string, id?: number, query?: LocationQueryRaw) => {
     const route: RouteLocationRaw = {name};

@@ -42,7 +42,7 @@ export const sortBy = <Item>(
         : (item: Item) => item[key] as number | string | null | undefined; // anders: pak veld uit object
     
     return array
-        .map(item => [getValue(item), item] as const) // Schwartzian: decorate
+        .map(item => [getValue(item), item] as const) // Schwartzian: decorate als tuple
         .sort(([a], [b]) => compare(a, b, reverse))  // sorteert op de extracted waarden van compare()
         .map(([, item]) => item);                    // Schwartzian: undecorate
 };

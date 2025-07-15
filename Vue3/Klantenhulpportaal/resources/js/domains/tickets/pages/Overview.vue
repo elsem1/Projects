@@ -4,7 +4,7 @@
 
         <table id="tickets">
             <thead>
-                <tr>                    
+                <tr>
                     <th>Ticket id</th>
                     <th>Ticket titel</th>
                     <th>Categorieën</th>
@@ -17,11 +17,9 @@
             </thead>
             <tbody>
 
-                
-                <tr v-for="ticket in ticketsSortedByDate" 
-                    :key="ticket.id"
-                    @click="goToTicket(ticket.id)"
-                    style="cursor: pointer;"> 
+
+                <tr v-for="ticket in ticketsSortedByDate" :key="ticket.id" @click="goToTicket(ticket.id)"
+                    style="cursor: pointer;">
 
                     <td>{{ ticket.id }}</td>
                     <td>{{ ticket.title }}</td>
@@ -62,8 +60,8 @@ function goToTicket(id: number) {
 }
 
 const ticketsSortedByDate = computed<Readonly<Ticket>[]>(() =>
-    sortBy(tickets.value, t => 
-    `${statusPriority[t.status_name]}-${t.created_at_raw}`)
+    sortBy(tickets.value, t =>
+        `${statusPriority[t.status_name]}-${t.created_at_raw}`)
 );
 
 </script>
