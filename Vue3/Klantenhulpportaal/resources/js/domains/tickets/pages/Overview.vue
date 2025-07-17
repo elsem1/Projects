@@ -59,10 +59,10 @@ function goToTicket(id: number) {
     router.push({ name: 'tickets.view', params: { id } });
 }
 
-const ticketsSortedByDate = computed<Readonly<Ticket>[]>(() =>
+const ticketsSortedByDate = computed<Readonly<Ticket>[]>(() => 
     sortBy(tickets.value, t =>
-        `${statusPriority[t.status_name]}-${t.created_at_raw}`)
-);
+        `${statusPriority[t.status_name]}-${t.created_at_raw}`) // Kijkt eerst naar priority (allees tickets die nog in behandeling zijn)
+);                                                              // sorteert daarna op chronologische volgorde, oudste eerst
 
 </script>
 <style scoped>

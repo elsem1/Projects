@@ -1,14 +1,14 @@
 <template>
+    <ErrorMessage />
     <div v-if="ticket">
         <title>Ticket Formulier</title>
-
         <section>
-
-            <form @submit.prevent="submitForm">
+            <form @submit.prevent="handleSubmit">
                 <ul>
                     <li>
                         <label for="title"><strong>Titel:</strong></label>
                         <input id="title" v-model="form.title" type="text" required />
+                        <ErrorForm name="title" />
                     </li>
 
                     <li>
@@ -18,6 +18,7 @@
                                 {{ category.name }}
                             </option>
                         </select>
+                        <ErrorForm name="category" />
                     </li>
 
                     <li>
@@ -27,78 +28,62 @@
                                 {{ status.name }}
                             </option>
                         </select>
+                        <ErrorForm name="status" />
                     </li>
 
                     <li>
                         <label for="content"><strong>Uitleg:</strong></label>
-                        <textarea id="content" v-model="form.content" rows="5" required></textarea>
-                    </li>
-
-                    <li>
-                        <button type="submit">Opslaan</button>
+                        <textarea id="content" v-model="form.content" rows="5" required/>
+                        <ErrorForm name="content" />
                     </li>
                 </ul>
+                <RouterLink :to="{ name: 'tickets.overview' }"
+                class="btn btn-cancel">
+                Cancel
+            </RouterLink>
+                <button class="btn btn-submit" type="submit">Opslaan</button>
+                    
             </form>
         </section>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, onMounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { ticketStore } from "../store";
-import { CategoryStore } from "../../categories/store";
-import { StatusStore } from "../../status/store";
-import type { Category, Ticket, TicketUpdate } from "../types";
-import { TicketStatus } from "../../status/types";
+import { reactive, defineProps, defineEmits, onMounted } from 'vue'
+import { StatusStore } from '../../status/store';
+import { CategoryStore } from '../../categories/store';
+import ErrorMessage from '../../../services/error/ErrorMessage.vue';
+import ErrorForm from '../../../services/error/ErrorForm.vue';
+import { Category, TicketForm, Status } from '../types';
 
-const route = useRoute();
-const router = useRouter();
-const ticketId = Number(route.params.id);
-const categories = ref<Category[]>([]);
-const status = ref<TicketStatus[]>([]);
+const props = defineProps<{
+    ticket: Omit<TicketForm, 'categories' | 'status_id'> & {
+        categories: Category[],
+        status?: Status,
+        status_id?: number | null,
+    }
+}>();
 
-const ticket = ticketStore.getters.byId(ticketId);
+const categories = CategoryStore.getters.all;
+const status = StatusStore.getters.all;
+CategoryStore.actions.getAll();
+StatusStore.actions.getAll();
 
-const form = reactive(<TicketUpdate>{
-    title: "",
-    categories: [],
-    status_id: 1,
-    content: "",
+const emit = defineEmits(['submit']);
+
+const form = reactive<TicketForm>({
+    ...props.ticket,
+    categories: props.ticket.categories?.map(c => c.id) || [],
+    status_id: props.ticket.status?.id ?? props.ticket.status_id ?? null,
 });
 
-onMounted(async () => {
-    await ticketStore.actions.getById(ticketId);
-    const catData = await CategoryStore.actions.getAll();
-    const statData = await StatusStore.actions.getAll();
-
-    categories.value = CategoryStore.getters.all.value;
-    status.value = StatusStore.getters.all.value;
-
-    if (ticket.value) {
-        form.title = ticket.value.title;
-        form.categories = ticket.value.categories; //.map(c => c.id);
-        form.status_id = ticket.value.status_id;
-        form.content = ticket.value.content;
-    }
-});
-
-async function submitForm() {
-    try {
-        await ticketStore.actions.update(ticketId, {
-            title: form.title,
-            categories: form.categories,
-            status_id: form.status_id,
-            content: form.content,
-        });
-
-        router.push(`/tickets/${ticketId}`);
-    } catch (error) {
-        console.error("Fout bij opslaan:", error);
-    }
-}
+const handleSubmit = () => emit('submit', form);
 
 </script>
+
+
+
+
 
 <style scoped>
 div {
@@ -153,18 +138,47 @@ textarea {
     font-family: inherit;
 }
 
-button {
-    padding: 0.6rem 1.2rem;
-    background-color: #007bcc;
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-family: Arial, sans-serif;
+    font-size: 0.95rem;
     border: none;
     border-radius: 4px;
-    color: white;
-    font-weight: bold;
+    text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    margin-left: 1rem;
+    transition: filter 0.2s ease, transform 0.1s ease;
 }
 
-button:hover {
-    background-color: #005fa3;
+
+.btn-submit {
+    background-color: #007acc;
+    color: #fff;
 }
+
+.btn-cancel {
+    background-color: #f05353;
+    color: #333;
+    margin-left: 0.5rem;
+}
+
+
+.btn:hover {
+    filter: brightness(1.1); 
+    transform: translateY(-1px);
+}
+
+
+.btn:active {
+    filter: brightness(0.9); 
+    transform: translateY(0);
+}
+
+
+.btn:focus {
+    outline: 2px solid #80bfff;
+    outline-offset: 2px;
+}
+
 </style>

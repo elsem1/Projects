@@ -9,5 +9,16 @@ export const ticketsRoutes = [
         name: "tickets.view",
         component: () => import("./pages/View.vue"),
     },
+    {
+        path: "/tickets/:id/edit",
+        name: "tickets.edit",
+        component: () => import("./pages/Edit.vue"),
+    },
+    {
+        path: "/tickets/create",
+        name: "tickets.create",
+        component: () => import("./pages/Create.vue"),
+    },
+    
     
 ];

@@ -14,17 +14,22 @@ export interface Ticket {
     updated_at?: string;
     updated_at_raw?: string;
 }
-
-export type TicketUpdate = {
-    title: string,
-    categories: Category[],
-    status_id: number,
-    content: string,
+export interface TicketForm {
+    id?: number;
+    title: string;
+    content: string;
+    status_id: number | null;
+    categories: number[];
 }
 
 export interface Category {
     id: number,
     name: string,    
+}
+
+export interface Status {
+    id: number,
+    name: string,
 }
 
 export interface User {

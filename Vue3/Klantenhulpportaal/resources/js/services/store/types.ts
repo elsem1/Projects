@@ -1,4 +1,5 @@
 import type {Ref} from 'vue';
+import { Ticket } from '../../domains/tickets/types';
 
 export type State<T extends {id: number}> = Ref<{[id: number]: Readonly<T>}>;
 

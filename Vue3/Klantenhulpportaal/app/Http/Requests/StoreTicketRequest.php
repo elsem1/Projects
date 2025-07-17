@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class StoreTicketRequest extends FormRequest
 {
@@ -11,7 +12,8 @@ class StoreTicketRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+
+        return $this->user() !== null;
     }
 
     /**
@@ -22,7 +24,12 @@ class StoreTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:255',
+            'status_id' => 'exists:statuses,id',
+            'categories' => 'array',
+            'categories.*' => 'exists:categories,id',
+            'content' => 'required|string|max:2000',
+
         ];
     }
 }

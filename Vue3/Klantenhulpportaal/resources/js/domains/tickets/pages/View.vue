@@ -20,9 +20,13 @@
                 <li><strong>Toegewezen aan:</strong> {{ ticket.handler?.first_name ?? '-' }} {{
                     ticket.handler?.last_name ?? '' }}</li>
                 <li><strong>Uitleg:</strong> {{ ticket.content }}</li>
-
             </ul>
         </section>
+        <RouterLink :to="{ name: 'tickets.edit', params: { id: ticket.id } }"
+            class="btn-edit">
+            Wijzig
+        </RouterLink>
+        
     </div>
 </template>
 
@@ -35,10 +39,8 @@ import { computed, onMounted } from 'vue';
 const route = useRoute();
 const ticketId = computed(() => Number(route.params.id));
 
-onMounted(() => {
-    ticketStore.actions.getById(ticketId.value);
-});
 const ticket = ticketStore.getters.byId(ticketId.value);
+ticketStore.actions.getById(ticketId.value);
 
 
 
@@ -80,5 +82,33 @@ strong {
     width: 140px;
     display: inline-block;
     color: #555;
+}
+.btn-edit {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    color: #fff;
+    background-color: #007acc; /* Zachte blauwe kleur */
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-edit:hover {
+    background-color: #005fa3; /* Donkerder blauw bij hover */
+    transform: translateY(-1px);
+}
+
+.btn-edit:active {
+    background-color: #004f8a; /* Nog donkerder bij klik */
+    transform: translateY(0);
+}
+
+.btn-edit:focus {
+    outline: 2px solid #80bfff; /* Subtiele focus ring */
+    outline-offset: 2px;
 }
 </style>
