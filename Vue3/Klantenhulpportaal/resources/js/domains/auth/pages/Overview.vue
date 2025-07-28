@@ -1,40 +1,37 @@
 <template>
-
+    <div class="loggedout" v-if="showLogin">
     <Form @submit="login" />
-    
+    </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Form from "../components/LoginForm.vue"
 import { getRequest, initCsrf, postRequest } from "../../../services/http";
 import { UserLogin } from "../types";
 import { router } from "../../../services/router";
 
-const loggedIn = ref(false);
+const showLogin = ref(true);
 
 const login = async (credentials: UserLogin) => {
     await initCsrf();
     await postRequest('/login', credentials);
-    loggedIn.value = true;
+    showLogin.value = false;
     router.push('/')
 }
 
-const checkLogIn = async () => {
-    const response = await getRequest('/me');
-    if (
-    loggedIn.value = !!response?.data?.id
-    ) { loggedIn.value = true        
-    } else {
-        loggedIn.value = false
+const checkLogin = async () => {
+    try {
+        const response = await getRequest("/me");        
+        showLogin.value = !response?.data?.id;
+    } catch (error) {        
+        showLogin.value = true;
     }
 };
+onMounted(() => {
+    checkLogin();
+})
 
-const logout = async () => {
-    await postRequest('/logout');
-    loggedIn.value = false;
-    router.push('/');
-}
 
 
 

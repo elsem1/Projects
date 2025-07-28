@@ -7,19 +7,27 @@
 
             <ul>
                 <li><strong>Ticket id:</strong> {{ ticket.id }}</li>
+
                 <li><strong>Categorieën:</strong>
                     <span v-for="(category, index) in ticket.categories" :key="category.id">
                         {{ category.name }}<span v-if="index < ticket.categories.length - 1">, </span>
                     </span>
                 </li>
+
                 <li><strong>Status:</strong> {{ ticket.status_name }}</li>
+
                 <li><strong>Aangemaakt door:</strong> {{ ticket.creator.first_name }} {{
                     ticket.creator.last_name }}</li>
+
                 <li><strong>Aangemaakt op:</strong> {{ ticket.created_at }}</li>
+
                 <li><strong>Laatste update op:</strong> {{ ticket.updated_at }}</li>
+
                 <li><strong>Toegewezen aan:</strong> {{ ticket.handler?.first_name ?? '-' }} {{
                     ticket.handler?.last_name ?? '' }}</li>
+
                 <li><strong>Uitleg:</strong> {{ ticket.content }}</li>
+
             </ul>
         </section>
         <RouterLink :to="{ name: 'tickets.edit', params: { id: ticket.id } }"
@@ -32,15 +40,15 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { ticketStore } from '../store';
+import { TicketStore } from '../store';
 import { computed, onMounted } from 'vue';
 
 
 const route = useRoute();
 const ticketId = computed(() => Number(route.params.id));
 
-const ticket = ticketStore.getters.byId(ticketId.value);
-ticketStore.actions.getById(ticketId.value);
+const ticket = TicketStore.getters.byId(ticketId.value);
+TicketStore.actions.getById(ticketId.value);
 
 
 

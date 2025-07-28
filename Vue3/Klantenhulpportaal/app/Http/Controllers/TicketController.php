@@ -9,6 +9,7 @@ use App\Http\Resources\TicketResource;
 use App\Http\Resources\TicketFormResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
@@ -29,7 +30,14 @@ class TicketController extends Controller
 
     public function store(StoreTicketRequest $request)
     {
-        $ticket = Ticket::create($request->validated());
+        $validated = $request->validated();
+
+        $ticket = Ticket::create([
+            ...$validated,
+            'created_by' => Auth::id(),
+        ]);
+
+        $ticket->categories()->attach($validated['category_ids']);
 
         return new TicketResource($ticket);
     }
@@ -38,6 +46,12 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         $ticket->load(['categories', 'creator', 'handler']);
+
+        $statusName = DB::table('ticket_statuses')
+            ->where('id', $ticket->status_id)
+            ->value('name');
+
+        $ticket->status_name = $statusName;
 
         return new TicketResource($ticket);
     }

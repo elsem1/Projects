@@ -13,7 +13,7 @@
 
                     <li>
                         <label><strong>Categorieën:</strong></label>
-                        <select v-model="form.categories" multiple>
+                        <select v-model="form.category_ids" multiple>
                             <option v-for="category in categories" :key="category.id" :value="category.id">
                                 {{ category.name }}
                             </option>
@@ -22,7 +22,7 @@
                     </li>
 
                     <li>
-                        <label for="status"><strong>Status:</strong></label>
+                        <label for="status_id"><strong>Status:</strong></label>
                         <select id="status" v-model="form.status_id" required>
                             <option v-for="status in status" :key="status.id" :value="status.id">
                                 {{ status.name }}
@@ -58,7 +58,7 @@ import { Category, TicketForm, Status } from '../types';
 
 const props = defineProps<{
     ticket: Omit<TicketForm, 'categories' | 'status_id'> & {
-        categories: Category[],
+        category_ids: number[],
         status?: Status,
         status_id?: number | null,
     }
@@ -73,17 +73,13 @@ const emit = defineEmits(['submit']);
 
 const form = reactive<TicketForm>({
     ...props.ticket,
-    categories: props.ticket.categories?.map(c => c.id) || [],
+    category_ids: props.ticket.category_ids || [],
     status_id: props.ticket.status?.id ?? props.ticket.status_id ?? null,
 });
 
 const handleSubmit = () => emit('submit', form);
 
 </script>
-
-
-
-
 
 <style scoped>
 div {

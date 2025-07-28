@@ -3,12 +3,12 @@ import { statusPriority } from ".";
 export interface Ticket {
     id: number;
     title: string;
-    categories: Category[];
+    category_ids: number[];    
     content: string;
     status_name: keyof typeof statusPriority;
     status_id: number
-    creator: User;          
-    handler?: User | null; 
+    creator: number;          
+    handler?: number; 
     created_at: string;
     created_at_raw: string;
     updated_at?: string;
@@ -19,7 +19,7 @@ export interface TicketForm {
     title: string;
     content: string;
     status_id: number | null;
-    categories: number[];
+    category_ids: number[];
 }
 
 export interface Category {

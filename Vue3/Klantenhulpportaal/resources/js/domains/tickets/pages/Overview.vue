@@ -24,9 +24,9 @@
                     <td>{{ ticket.id }}</td>
                     <td>{{ ticket.title }}</td>
                     <td>
-                        <span v-for="category in ticket.categories" :key="category.id">
+                        <span v-for="category in categories" :key="category.id">
                             {{ category.name }}
-                            <span v-if="!isLast(ticket.categories, category)">, </span>
+                            <span v-if="!isLast(categories, category)">, </span>
                         </span>
                     </td>
                     <td>{{ ticket.status_name }}</td>
@@ -41,16 +41,20 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ticketStore } from '../store';
+import { TicketStore } from '../store';
 import { Category, Ticket } from '../types'
 import { sortBy } from '../../../services/helpers/sortHelper';
 import { statusPriority } from '..';
 import { useRouter } from 'vue-router';
+import { CategoryStore } from '../../categories/store';
+
 
 const router = useRouter();
 
-const tickets = ticketStore.getters.all;
-ticketStore.actions.getAll();
+const tickets = TicketStore.getters.all;
+const categories = CategoryStore.getters.all;
+TicketStore.actions.getAll();
+
 
 function isLast(categories: Category[], category: Category) {
     return categories[categories.length - 1].id === category.id;
@@ -71,6 +75,7 @@ div {
     padding: 1rem;
     font-family: Arial, sans-serif;
     color: #333;
+    
 }
 
 /* Tabel basisstijl */

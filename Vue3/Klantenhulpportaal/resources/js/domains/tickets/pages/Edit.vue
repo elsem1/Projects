@@ -9,7 +9,7 @@
 import { computed, onMounted } from 'vue';
 import Form from '../components/TicketForm.vue'
 import { useRoute, useRouter } from 'vue-router';
-import { ticketStore } from '../store';
+import { TicketStore } from '../store';
 import { Ticket } from '../types'
 
 const router = useRouter();
@@ -17,15 +17,15 @@ const route = useRoute();
 
 
 
-const ticket = computed (() => ticketStore.getters.byId(Number(route.params.id)).value);
+const ticket = computed (() => TicketStore.getters.byId(Number(route.params.id)).value);
 
 const handleSubmit = async (data: Ticket) => {
-    await ticketStore.actions.update(Number(route.params.id), data);
+    await TicketStore.actions.update(Number(route.params.id), data);
     router.push({ name: 'tickets.overview' });
 }
 
 const ticketId = computed(() => Number(route.params.id));
-ticketStore.actions.getById(ticketId.value);
+TicketStore.actions.getById(ticketId.value);
 
 
 

@@ -25,10 +25,11 @@ class StoreTicketRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'status_id' => 'exists:statuses,id',
+            'status_id' => 'integer',
             'categories' => 'array',
             'categories.*' => 'exists:categories,id',
             'content' => 'required|string|max:2000',
+            'category_ids' => ''
 
         ];
     }

@@ -3,11 +3,7 @@
         <header>
             <h1 class="page-title">Klantenhulpportaal</h1>
         </header>
-        <nav>
-            <div v-if="loggedIn">
-                <button class="logout" @click="logout">Logout</button>
-            </div>
-        </nav>
+        
 
         <main class="main-content">
 
@@ -20,32 +16,6 @@
 </template>
 
 <script lang="ts" setup>
-import { getRequest, postRequest } from "../services/http/index";
-import { ref, onMounted } from "vue";
-import { router } from "../services/router"
-
-const loggedIn = ref(false);
-
-const checkLogIn = async () => {
-    const response = await getRequest('/me');
-    if (
-    loggedIn.value = !!response?.data?.id
-    ) { loggedIn.value = true        
-    } else {
-        loggedIn.value = false
-    }
-};
-
-const logout = async () => {
-    await postRequest('/logout');
-    loggedIn.value = false;
-    router.push('/');
-}
-
-onMounted(() => {
-    checkLogIn();
-});
-
 </script>
 
 <style>

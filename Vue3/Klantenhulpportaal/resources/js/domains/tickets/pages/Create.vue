@@ -7,29 +7,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { New } from '../../../services/store/types';
+import { ref, computed } from 'vue';
 import Form from '../components/TicketForm.vue';
 import { useRouter } from 'vue-router';
-import { ticketStore } from '../store';
-import { Ticket } from '../types';
+import { TicketStore } from '../store';
+import { Ticket, User } from '../types';
 
 const router = useRouter();
 
-const ticket = ref<{
-    title: string;
-    categories: number[]; 
-    status_id: number;
-    content: string;
-}>({
+const ticket = ref<Ticket>({
     title: "",
-    categories: [],
-    status_id: 1,
+    category_ids: [],
+    status_id: 0,
     content: "",
+    id: 1,    
+    status_name: "Open",    
+    creator: 1,        
+    handler: 1, 
+    created_at: "",
+    created_at_raw: "",
+    updated_at: "",
+    updated_at_raw: "",
 });
 
 const handleSubmit = async (data: Ticket) => {
-    await ticketStore.actions.create(data);
+    await TicketStore.actions.create(data);
     router.push({ name: 'tickets.overview' });
 }
+
 
 </script>
