@@ -13,7 +13,7 @@
 
                     <li>
                         <label><strong>Categorieën:</strong></label>
-                        <select v-model="form.category_ids" multiple>
+                        <select v-model="form.categories" multiple>
                             <option v-for="category in categories" :key="category.id" :value="category.id">
                                 {{ category.name }}
                             </option>
@@ -33,16 +33,15 @@
 
                     <li>
                         <label for="content"><strong>Uitleg:</strong></label>
-                        <textarea id="content" v-model="form.content" rows="5" required/>
+                        <textarea id="content" v-model="form.content" rows="5" required />
                         <ErrorForm name="content" />
                     </li>
                 </ul>
-                <RouterLink :to="{ name: 'tickets.overview' }"
-                class="btn btn-cancel">
-                Cancel
-            </RouterLink>
+                <RouterLink :to="{ name: 'tickets.overview' }" class="btn btn-cancel">
+                    Cancel
+                </RouterLink>
                 <button class="btn btn-submit" type="submit">Opslaan</button>
-                    
+
             </form>
         </section>
     </div>
@@ -54,13 +53,15 @@ import { StatusStore } from '../../status/store';
 import { CategoryStore } from '../../categories/store';
 import ErrorMessage from '../../../services/error/ErrorMessage.vue';
 import ErrorForm from '../../../services/error/ErrorForm.vue';
-import { Category, TicketForm, Status } from '../types';
+import { TicketForm, Status } from '../types';
 
 const props = defineProps<{
-    ticket: Omit<TicketForm, 'categories' | 'status_id'> & {
-        category_ids: number[],
-        status?: Status,
-        status_id?: number | null,
+    ticket: {
+        title: string;
+        content: string;
+        categories: number[];
+        status_id: number;
+        status?: Status;
     }
 }>();
 
@@ -73,8 +74,8 @@ const emit = defineEmits(['submit']);
 
 const form = reactive<TicketForm>({
     ...props.ticket,
-    category_ids: props.ticket.category_ids || [],
-    status_id: props.ticket.status?.id ?? props.ticket.status_id ?? null,
+    categories: props.ticket.categories || [],
+    status_id: props.ticket.status_id,
 });
 
 const handleSubmit = () => emit('submit', form);
@@ -161,13 +162,13 @@ textarea {
 
 
 .btn:hover {
-    filter: brightness(1.1); 
+    filter: brightness(1.1);
     transform: translateY(-1px);
 }
 
 
 .btn:active {
-    filter: brightness(0.9); 
+    filter: brightness(0.9);
     transform: translateY(0);
 }
 
@@ -176,5 +177,4 @@ textarea {
     outline: 2px solid #80bfff;
     outline-offset: 2px;
 }
-
 </style>

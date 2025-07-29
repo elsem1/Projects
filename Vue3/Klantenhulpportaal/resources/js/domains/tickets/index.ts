@@ -7,4 +7,4 @@ export const statusPriority = {
     'Resolved': 99,
     'Closed': 99,
     'Rejected': 99
-};
+} as const;

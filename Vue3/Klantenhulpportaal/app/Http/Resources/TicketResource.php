@@ -33,8 +33,8 @@ class TicketResource extends JsonResource
                 'first_name' => $this->handler->first_name,
                 'last_name' => $this->handler->last_name,
             ] : null,
-            'categories_ids' => $this->categories->pluck('id'),
-            'categories' => $this->categories->map(function ($category) {
+            'categories' => $this->categories->pluck('id'),
+            'category_details' => $this->categories->map(function ($category) {
                 return [
                     'id' => $category->id,
                     'name' => $category->name,

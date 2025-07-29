@@ -2,6 +2,11 @@
     <div>
         <title>Tickets Overzicht</title>
 
+        <RouterLink :to="{ name: 'tickets.create' }" class="btn btn-create">
+            + Nieuwe Ticket
+        </RouterLink>
+
+
         <table id="tickets">
             <thead>
                 <tr>
@@ -24,9 +29,9 @@
                     <td>{{ ticket.id }}</td>
                     <td>{{ ticket.title }}</td>
                     <td>
-                        <span v-for="category in categories" :key="category.id">
+                        <span v-for="category in ticket.category_details" :key="category.id">
                             {{ category.name }}
-                            <span v-if="!isLast(categories, category)">, </span>
+                            <span v-if="!isLast(ticket.category_details, category)">, </span>
                         </span>
                     </td>
                     <td>{{ ticket.status_name }}</td>
@@ -46,13 +51,12 @@ import { Category, Ticket } from '../types'
 import { sortBy } from '../../../services/helpers/sortHelper';
 import { statusPriority } from '..';
 import { useRouter } from 'vue-router';
-import { CategoryStore } from '../../categories/store';
+
 
 
 const router = useRouter();
 
 const tickets = TicketStore.getters.all;
-const categories = CategoryStore.getters.all;
 TicketStore.actions.getAll();
 
 
@@ -63,10 +67,17 @@ function goToTicket(id: number) {
     router.push({ name: 'tickets.view', params: { id } });
 }
 
-const ticketsSortedByDate = computed<Readonly<Ticket>[]>(() => 
-    sortBy(tickets.value, t =>
-        `${statusPriority[t.status_name]}-${t.created_at_raw}`) // Kijkt eerst naar priority (allees tickets die nog in behandeling zijn)
-);                                                              // sorteert daarna op chronologische volgorde, oudste eerst
+const ticketsSortedByDate = computed<Readonly<Ticket>[]>(() =>
+    sortBy(
+        tickets.value,
+        (t: Ticket) => [
+            statusPriority[t.status_name] ?? 99, // 1 = actief, 99 = afgesloten, kijkt eerst naar priority (allees tickets die nog in behandeling zijn)
+            t.created_at_raw                   // sorteert daarna op chronologische volgorde, oudste eerst
+        ] as const,
+        false // ascending = oplopend: 1 komt voor 99
+    )
+);
+
 
 </script>
 <style scoped>
@@ -75,7 +86,7 @@ div {
     padding: 1rem;
     font-family: Arial, sans-serif;
     color: #333;
-    
+
 }
 
 /* Tabel basisstijl */
@@ -116,5 +127,44 @@ title {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
     display: block;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-family: Arial, sans-serif;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 1rem;
+    transition: filter 0.2s ease, transform 0.1s ease;
+}
+
+.btn-create {
+    position: relative;
+    top: -2.5rem;
+    right: -79rem;
+    background-color: #44d631;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+
+.btn:active {
+    filter: brightness(0.9);
+    transform: translateY(0);
+}
+
+
+.btn:focus {
+    outline: 2px solid #80bfff;
+    outline-offset: 2px;
 }
 </style>

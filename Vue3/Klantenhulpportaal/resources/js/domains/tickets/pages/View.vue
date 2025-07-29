@@ -9,7 +9,7 @@
                 <li><strong>Ticket id:</strong> {{ ticket.id }}</li>
 
                 <li><strong>Categorieën:</strong>
-                    <span v-for="(category, index) in ticket.categories" :key="category.id">
+                    <span v-for="(category, index) in ticket.category_details" :key="category.id">
                         {{ category.name }}<span v-if="index < ticket.categories.length - 1">, </span>
                     </span>
                 </li>
@@ -30,11 +30,10 @@
 
             </ul>
         </section>
-        <RouterLink :to="{ name: 'tickets.edit', params: { id: ticket.id } }"
-            class="btn-edit">
+        <RouterLink :to="{ name: 'tickets.edit', params: { id: ticket.id } }" class="btn-edit">
             Wijzig
         </RouterLink>
-        
+
     </div>
 </template>
 
@@ -91,13 +90,15 @@ strong {
     display: inline-block;
     color: #555;
 }
+
 .btn-edit {
     display: inline-block;
     padding: 0.4rem 0.8rem;
     font-family: Arial, sans-serif;
     font-size: 0.9rem;
     color: #fff;
-    background-color: #007acc; /* Zachte blauwe kleur */
+    background-color: #007acc;
+    /* Zachte blauwe kleur */
     border: none;
     border-radius: 4px;
     text-decoration: none;
@@ -106,17 +107,20 @@ strong {
 }
 
 .btn-edit:hover {
-    background-color: #005fa3; /* Donkerder blauw bij hover */
+    background-color: #005fa3;
+    /* Donkerder blauw bij hover */
     transform: translateY(-1px);
 }
 
 .btn-edit:active {
-    background-color: #004f8a; /* Nog donkerder bij klik */
+    background-color: #004f8a;
+    /* Nog donkerder bij klik */
     transform: translateY(0);
 }
 
 .btn-edit:focus {
-    outline: 2px solid #80bfff; /* Subtiele focus ring */
+    outline: 2px solid #80bfff;
+    /* Subtiele focus ring */
     outline-offset: 2px;
 }
 </style>

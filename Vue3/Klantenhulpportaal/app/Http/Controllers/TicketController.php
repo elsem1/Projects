@@ -22,7 +22,7 @@ class TicketController extends Controller
             // Haal tickets met gekoppelde categorieën, en users op
             $tickets = Ticket::with('categories', 'creator', 'handler',)->get();
         } else {
-            $tickets = Ticket::where('created_by', $user->id)->get();
+            $tickets = Ticket::where('created_by', $user->id)->with('categories')->get();
         }
 
         return TicketResource::collection($tickets);
@@ -37,7 +37,7 @@ class TicketController extends Controller
             'created_by' => Auth::id(),
         ]);
 
-        $ticket->categories()->attach($validated['category_ids']);
+        $ticket->categories()->attach($validated['categories']);
 
         return new TicketResource($ticket);
     }
@@ -58,8 +58,14 @@ class TicketController extends Controller
 
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
+        $validated = $request->validated();
 
-        $ticket->update($request->validated());
+        $ticket->update($validated);
+
+        if (isset($validated['categories'])) {
+            $ticket->categories()->sync($validated['categories']);
+        }
+
         return new TicketFormResource($ticket);
     }
 
