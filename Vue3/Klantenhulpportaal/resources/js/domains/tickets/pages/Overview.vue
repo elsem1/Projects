@@ -80,7 +80,7 @@ const ticketsSortedByDate = computed<Readonly<Ticket>[]>(() =>
 
 
 </script>
-<style scoped>
+<style>
 /* Container padding */
 div {
     padding: 1rem;
@@ -143,9 +143,9 @@ title {
 }
 
 .btn-create {
-    position: relative;
-    top: -2.5rem;
-    right: -79rem;
+    position: absolute;
+    top: 15.5rem;
+    right: 6rem;
     background-color: #44d631;
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

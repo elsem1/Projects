@@ -1,0 +1,1 @@
+export const NOTE_DOMAIN_NAME = 'notes';
