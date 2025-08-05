@@ -8,10 +8,16 @@ use App\Http\Requests\UpdateNoteRequest;
 use App\Http\Resources\NoteResource;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Ticket;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class NoteController extends Controller
 {
-    
+
+    public function index()
+    {
+        return NoteResource::collection(Note::all());
+    }
+
     public function store(StoreNoteRequest $request, Ticket $ticket)
     {
         $validated = $request->validated();
@@ -25,7 +31,7 @@ class NoteController extends Controller
         return new NoteResource($note);
     }
 
-    
+
     public function update(UpdateNoteRequest $request, Note $note)
     {
         $validated = $request->validated();
@@ -34,5 +40,4 @@ class NoteController extends Controller
 
         return new NoteResource($note);
     }
-
 }

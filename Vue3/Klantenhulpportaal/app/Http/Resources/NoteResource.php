@@ -12,8 +12,22 @@ class NoteResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'content' => $this->content,
+            'user_id' => $this->user_id,
+            'user' => $this->user ? [
+                'id' => $this->user->id,
+                'name' => [
+                    'first_name' => $this->user->first_name,
+                    'last_name' => $this->user->last_name,
+                    'full_name' => "{$this->user->first_name} {$this->user->last_name}"
+                ]
+            ] : null,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }

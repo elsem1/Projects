@@ -1,5 +1,6 @@
 import { statusPriority } from ".";
 import { User } from "../auth/types";
+import { Note } from "../notes/types";
 
 
 export interface Ticket {
@@ -12,6 +13,7 @@ export interface Ticket {
     status_id: number;
     creator: User;
     handler?: User;
+    notes?: Note[];
     created_at: string;
     created_at_raw: string;
     updated_at?: string;

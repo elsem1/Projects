@@ -10,6 +10,7 @@ use App\Http\Resources\TicketFormResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Note;
 
 class TicketController extends Controller
 {
@@ -45,7 +46,12 @@ class TicketController extends Controller
 
     public function show(Ticket $ticket)
     {
-        $ticket->load(['categories', 'creator', 'handler']);
+        $ticket->load([
+            'categories',
+            'creator',
+            'handler',
+            'notes.user',
+        ]);
 
         $statusName = DB::table('ticket_statuses')
             ->where('id', $ticket->status_id)

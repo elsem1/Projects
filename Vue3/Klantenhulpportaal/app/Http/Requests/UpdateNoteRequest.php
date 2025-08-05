@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateNoteRequest extends FormRequest
 {
@@ -11,7 +12,9 @@ class UpdateNoteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $user = Auth::user();
+
+        return $user->is_admin;
     }
 
     /**
@@ -22,7 +25,8 @@ class UpdateNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'content' => 'required|string|max:2000',
+            'user_id' => 'exists:user,id'
         ];
     }
 }

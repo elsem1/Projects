@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
+use App\Http\Resources\NoteResource;
 
 class TicketResource extends JsonResource
 {
@@ -40,6 +41,8 @@ class TicketResource extends JsonResource
                     'name' => $category->name,
                 ];
             }),
+            'notes' => NoteResource::collection($this->notes),
+
             // voor nu in de back-end met carbon, maar practischer is in de font-end met (dayjs?)
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
             'created_at_raw' => $this->created_at,

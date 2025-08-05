@@ -13,10 +13,10 @@ Route::get('/me', [SessionController::class, 'meRequest'])->middleware('auth:san
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/ticket-statuses', [TickerStatusController::class, 'index']);
 
+Route::get('/notes', [NoteController::class, 'index']);
 
 Route::get('/tickets', [TicketController::class, 'index']);
 Route::post('/tickets', [TicketController::class, 'store']);
 Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->middleware('auth');
 Route::put('/tickets/{ticket}', [TicketController::class, 'update'])->middleware('auth');
 Route::get('/tickets/{ticket}/note', [NoteController::class, 'store'])->middleware('auth');
-

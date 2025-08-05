@@ -3,15 +3,19 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreNoteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
+
     public function authorize(): bool
     {
-        return false;
+        $user = Auth::user();
+
+        return $user->is_admin;
     }
 
     /**
@@ -22,7 +26,8 @@ class StoreNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'content' => 'required|string|max:2000',
+            'user_id' => 'exists:user,id'
         ];
     }
 }

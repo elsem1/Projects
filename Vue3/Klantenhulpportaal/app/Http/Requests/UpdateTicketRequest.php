@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\User;
 use App\Models\Ticket;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateTicketRequest extends FormRequest
 {
