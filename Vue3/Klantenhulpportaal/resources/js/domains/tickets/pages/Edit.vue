@@ -21,7 +21,7 @@ const ticket = computed (() => TicketStore.getters.byId(Number(route.params.id))
 
 const handleSubmit = async (data: Ticket) => {
     await TicketStore.actions.update(Number(route.params.id), data);
-    router.push({ name: 'tickets.overview' });
+    router.push({ name: 'tickets.view', params: { id: ticketId.value } });
 }
 
 const ticketId = computed(() => Number(route.params.id));

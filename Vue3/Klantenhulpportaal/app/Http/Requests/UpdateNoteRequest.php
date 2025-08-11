@@ -26,7 +26,7 @@ class UpdateNoteRequest extends FormRequest
     {
         return [
             'content' => 'required|string|max:2000',
-            'user_id' => 'exists:user,id'
+            'user_id' => 'exists:users,id'
         ];
     }
 }

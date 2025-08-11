@@ -44,20 +44,21 @@ class TicketController extends Controller
     }
 
 
-    public function show(Ticket $ticket)
+    public function show(Ticket $ticket, Request $request)
     {
-        $ticket->load([
+        $user = $request->user();
+
+        $relations = [
             'categories',
             'creator',
-            'handler',
-            'notes.user',
-        ]);
+            'handler'
+        ];
 
-        $statusName = DB::table('ticket_statuses')
-            ->where('id', $ticket->status_id)
-            ->value('name');
+        if ($user->is_admin) {
+            $relations[] = 'notes.user';
+        }
 
-        $ticket->status_name = $statusName;
+        $ticket->load($relations);
 
         return new TicketResource($ticket);
     }

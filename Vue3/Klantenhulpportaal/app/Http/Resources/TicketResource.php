@@ -14,40 +14,31 @@ class TicketResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
             'status_id' => $this->status_id,
-            'status_name' => $this->status_name,
+            'status_name' => $this->status_name ?? $this->status?->name,
 
-            'creator' => [
-                'id' => $this->creator?->id,
-                'first_name' => $this->creator?->first_name,
-                'last_name' => $this->creator?->last_name,
-            ],
+            'creator' => $this->whenLoaded('creator', new UserResource($this->creator)),
+            'handler' => $this->whenLoaded('handler', new UserResource($this->handler)),
 
-            'handler' => $this->handler ? [
-                'id' => $this->handler->id,
-                'first_name' => $this->handler->first_name,
-                'last_name' => $this->handler->last_name,
-            ] : null,
-            'categories' => $this->categories->pluck('id'),
-            'category_details' => $this->categories->map(function ($category) {
-                return [
-                    'id' => $category->id,
-                    'name' => $category->name,
-                ];
-            }),
-            'notes' => NoteResource::collection($this->notes),
+            'categories' => $this->whenLoaded('categories', $this->categories->pluck('id')),
+            'category_details' => $this->whenLoaded(
+                'categories',
+                CategoryResource::collection($this->categories)
+            ),
 
-            // voor nu in de back-end met carbon, maar practischer is in de font-end met (dayjs?)
-            'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
-            'created_at_raw' => $this->created_at,
-            'updated_at' => Carbon::parse($this->updated_at)->diffForHumans(),
-            'updated_at_raw' => $this->created_at,
+            'notes' => $this->when(
+                $request->user()?->is_admin && $this->relationLoaded('notes'),
+                NoteResource::collection($this->notes)
+            ),
+
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

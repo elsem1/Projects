@@ -16,7 +16,7 @@ export interface Ticket {
     notes?: Note[];
     created_at: string;
     created_at_raw: string;
-    updated_at?: string;
+    updated_at: string;
     updated_at_raw?: string;
 }
 

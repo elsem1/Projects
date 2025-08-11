@@ -36,8 +36,8 @@
                     </td>
                     <td>{{ ticket.status_name }}</td>
                     <td>{{ ticket.creator.first_name }} {{ ticket.creator.last_name }}</td>
-                    <td>{{ ticket.created_at }}</td>
-                    <td>{{ ticket.updated_at }}</td>
+                    <td>{{ formatDate(ticket.created_at) }}</td>
+                    <td>{{ formatDate(ticket.updated_at) }}</td>
                     <td>{{ ticket.handler?.first_name }} {{ ticket.handler?.last_name }}</td>
                 </tr>
             </tbody>
@@ -45,20 +45,21 @@
     </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { TicketStore } from '../store';
 import { Category, Ticket } from '../types'
 import { sortBy } from '../../../services/helpers/sortHelper';
 import { statusPriority } from '..';
 import { useRouter } from 'vue-router';
-
-
+import { formatRelativeTime } from '../../../services/helpers/dateHelper';
 
 const router = useRouter();
-
 const tickets = TicketStore.getters.all;
-TicketStore.actions.getAll();
+onMounted(async () => {
+    TicketStore.actions.getAll();
+});
 
+const formatDate = formatRelativeTime
 
 function isLast(categories: Category[], category: Category) {
     return categories[categories.length - 1].id === category.id;
@@ -144,7 +145,7 @@ title {
 
 .btn-create {
     position: absolute;
-    top: 15.5rem;
+    top: 17rem;
     right: 6rem;
     background-color: #44d631;
     color: white;

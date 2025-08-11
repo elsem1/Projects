@@ -1,63 +1,51 @@
 <template>
     <div v-if="ticket">
         <h3>Ticket Detail</h3>
-
         <section>
             <h2>{{ ticket.title }}</h2>
-
             <ul>
                 <li><strong>Ticket id:</strong> {{ ticket.id }}</li>
-
                 <li><strong>Categorieën:</strong>
                     <span v-for="(category, index) in ticket.category_details" :key="category.id">
                         {{ category.name }}<span v-if="index < ticket.categories.length - 1">, </span>
                     </span>
                 </li>
-
                 <li><strong>Status:</strong> {{ ticket.status_name }}</li>
                 <li><strong>Aangemaakt door:</strong> {{ ticket.creator.first_name }}
                     {{ ticket.creator.last_name }}</li>
-                <li><strong>Aangemaakt op:</strong> {{ ticket.created_at }}</li>
-                <li><strong>Laatste update op:</strong> {{ ticket.updated_at }}</li>
+                <li><strong>Aangemaakt op:</strong> {{ formatDate(ticket.created_at) }}</li>
+                <li><strong>Laatste update op:</strong> {{ formatDate(ticket.updated_at) }}</li>
                 <li><strong>Toegewezen aan:</strong> {{ ticket.handler?.first_name ?? '-' }}
                     {{ ticket.handler?.last_name ?? '' }}</li>
                 <li><strong>Uitleg:</strong> {{ ticket.content }}</li>
-
             </ul>
         </section>
         <RouterLink :to="{ name: 'tickets.edit', params: { id: ticket.id } }" class="btn-edit">
             Wijzig
         </RouterLink>
-    </div>
-    <div class="notes mt-8">
-        <NotesView :notes="notes" />
+        
+        <div class="notes mt-8">
+            <NotesView :notes="ticket.notes || []" />
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { TicketStore } from '../store';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import NotesView from '../../notes/components/NotesView.vue';
-import { NoteStore } from '../../notes/store';
-
-
+import { formatRelativeTime } from '../../../services/helpers/dateHelper';
 
 const route = useRoute();
 const ticketId = computed(() => Number(route.params.id));
-
 const ticket = TicketStore.getters.byId(ticketId.value);
-const notes = computed(() => ticket?.notes || [])
+
+const formatDate = formatRelativeTime;
 
 onMounted(async () => {
     await TicketStore.actions.getById(ticketId.value);
-
 });
-
-
-
-
-
 </script>
 <style scoped>
 div {
