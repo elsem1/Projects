@@ -25,7 +25,6 @@ const ticket = ref<TicketForm>({
 
 const handleSubmit = async (data: TicketForm) => {
     await TicketStore.actions.create(data as unknown as Ticket);
-    
     router.push({ name: 'tickets.overview' });
 };
 

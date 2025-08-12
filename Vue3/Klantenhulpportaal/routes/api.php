@@ -22,5 +22,4 @@ Route::put('/tickets/{ticket}', [TicketController::class, 'update'])->middleware
 Route::get('/tickets/{ticket}/notes', [NoteController::class, 'index']);
 Route::post('/tickets/{ticket}/notes', [NoteController::class, 'store']);
 Route::put('/tickets/{ticket}/notes/{note}', [NoteController::class, 'update']);
-Route::patch('/tickets/{ticket}/notes/{note}', [NoteController::class, 'update']);
 Route::delete('/tickets/{ticket}/notes/{note}', [NoteController::class, 'destroy']);

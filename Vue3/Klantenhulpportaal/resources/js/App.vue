@@ -26,14 +26,14 @@ const checkLogIn = async () => {
         const response = await getRequest('/me');
         loggedIn.value = !!response?.data?.id;
     } catch (error) {
-        loggedIn.value = false; 
+        loggedIn.value = false;
     }
 };
 
 const logout = async () => {
     await postRequest('/logout');
     loggedIn.value = false;
-    await checkLogIn(); 
+    await checkLogIn();
     router.push('/');
 };
 

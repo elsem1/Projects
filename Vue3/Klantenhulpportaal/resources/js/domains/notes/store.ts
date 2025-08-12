@@ -1,8 +1,8 @@
 import { NOTE_DOMAIN_NAME } from ".";
 import { storeModuleFactory } from "../../services/store";
-import { Note } from "./types";
+import { Note, NoteForm } from "./types";
 import { computed } from "vue";
-import { putRequest } from "../../services/http";
+import { deleteRequest, getRequest, postRequest, putRequest } from "../../services/http";
 
 
 const createNoteStore = () => {
@@ -14,22 +14,36 @@ const createNoteStore = () => {
         })
     };
     
-    const extraActions = {
+    const extraActions = {        
     async getByTicketId(ticketId: number) {
         try {
-            await NoteStore.actions.getAll();
+            const response = await getRequest(`tickets/${ticketId}/notes`);
+            NoteStore.setters.setAll(response.data);
         } catch (error) {
             console.error('Error fetching notes for ticket:', error);
             throw error;
         }
     },
 
-    async updateForTicket(ticketId: number, noteId: number, data: Partial<Note>) {
+    async updateForNote(ticketId: number, noteId: number, data: Partial<Note>) {
         const { data: updatedNote } = await putRequest(`tickets/${ticketId}/notes/${noteId}`, data);
         if (updatedNote) {
             NoteStore.setters.setById(updatedNote);
         }
+    },
+
+    async createForNote(ticketId: number, data: NoteForm) {
+        const { data: newNote } = await postRequest(`tickets/${ticketId}/notes`, data);
+        if (newNote) {
+            NoteStore.setters.setById(newNote);
+        }
+    },
+
+    async deleteForNote(ticketId: number, noteId: number) {
+        await deleteRequest(`tickets/${ticketId}/notes/${noteId}`);
+        NoteStore.setters.deleteById(noteId);
     }
+
 };
 
 

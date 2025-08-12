@@ -20,11 +20,6 @@ class NoteController extends Controller
 
     public function store(StoreNoteRequest $request, Ticket $ticket)
     {
-        // Controleer of user notes mag toevoegen
-        if (!$request->user()->is_admin) {
-            abort(403, 'Alleen admins kunnen notes toevoegen');
-        }
-
         $validated = $request->validated();
 
         $note = Note::create([
@@ -39,18 +34,15 @@ class NoteController extends Controller
 
     public function update(UpdateNoteRequest $request, Ticket $ticket, Note $note)
     {
-        // Controleer of note bij dit ticket hoort
-        if ($note->ticket_id !== $ticket->id) {
-            abort(404, 'Note niet gevonden voor dit ticket');
-        }
-
-        // Controleer autorisatie
-        if (!$request->user()->is_admin) {
-            abort(403, 'Alleen admins kunnen notes bewerken');
-        }
         $validated = $request->validated();
         $note->update($validated);
 
         return new NoteResource($note);
+    }
+
+    public function destroy(Ticket $ticket, Note $note)
+    {
+        $note->delete();
+        return response()->noContent();
     }
 }

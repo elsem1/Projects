@@ -23,7 +23,7 @@
 
                     <li>
                         <label for="status_id"><strong>Status:</strong></label>
-                        <select id="status" v-model="form.status_id" required>
+                        <select id="status" v-model="form.status_id" :disabled="Boolean(!isAdmin)" required>
                             <option v-for="status in status" :key="status.id" :value="status.id">
                                 {{ status.name }}
                             </option>
@@ -48,12 +48,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, defineProps, defineEmits, onMounted } from 'vue'
+import { reactive, defineProps, defineEmits, ref, onMounted } from 'vue'
 import { StatusStore } from '../../status/store';
 import { CategoryStore } from '../../categories/store';
 import ErrorMessage from '../../../services/error/ErrorMessage.vue';
 import ErrorForm from '../../../services/error/ErrorForm.vue';
 import { TicketForm, Status } from '../types';
+import { getRequest } from '../../../services/http';
 
 const props = defineProps<{
     ticket: {
@@ -65,10 +66,21 @@ const props = defineProps<{
     }
 }>();
 
+const isAdmin = ref(false);
+
 const categories = CategoryStore.getters.all;
 const status = StatusStore.getters.all;
 CategoryStore.actions.getAll();
 StatusStore.actions.getAll();
+
+const checkAdminStatus = async () => {
+    try {
+        const response = await getRequest('/me');
+        isAdmin.value = !!response?.data?.is_admin;
+    } catch (error) {
+        isAdmin.value = false;
+    }
+};
 
 const emit = defineEmits(['submit']);
 
@@ -79,6 +91,12 @@ const form = reactive<TicketForm>({
 });
 
 const handleSubmit = () => emit('submit', form);
+
+onMounted(() => {
+    checkAdminStatus();
+});
+
+
 
 </script>
 
@@ -176,5 +194,11 @@ textarea {
 .btn:focus {
     outline: 2px solid #80bfff;
     outline-offset: 2px;
+}
+
+select:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
 }
 </style>

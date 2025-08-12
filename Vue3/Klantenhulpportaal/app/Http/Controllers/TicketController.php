@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Note;
+use App\Policies\TicketPolicy;
 
 class TicketController extends Controller
 {
@@ -76,9 +77,7 @@ class TicketController extends Controller
         return new TicketFormResource($ticket);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Ticket $ticket)
     {
         $ticket->delete();

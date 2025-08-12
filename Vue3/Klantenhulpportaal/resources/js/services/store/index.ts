@@ -66,7 +66,7 @@ export const storeModuleFactory = <T extends {id: number}>(moduleName: string) =
             await deleteRequest(`${moduleName}/${id}`);
             setters.deleteById(id);
         },
-    };
+    }; 
 
     return {
         state,

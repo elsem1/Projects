@@ -8,7 +8,7 @@
                 <h1 class="page-title">Klantenhulpportaal</h1>
             </div>
         </header>
-       
+
         <main class="main-content">
             <router-view />
         </main>
@@ -25,12 +25,12 @@ import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 
-const showBackButton = computed(() => {    
+const showBackButton = computed(() => {
     return route.path !== '/';
 });
 
 const goBack = () => {
-    
+
     if (window.history.state.back) {
         router.go(-1);
     } else {

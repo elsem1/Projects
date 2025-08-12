@@ -1,7 +1,12 @@
 <template>
-    <div v-if="notes.length > 0" class="notes-view">
+    <div class="notes-view">
+        <RouterLink :to="{ name: 'notes.create', params: { ticketId: $route.params.id, } }" class="btn-create">
+            Niewe notitie toevoegen
+        </RouterLink>
+
         <h3>Notities</h3>
-        <table>
+
+        <table v-if="notes.length > 0">
             <thead>
                 <tr>
                     <th>Door</th>
@@ -12,7 +17,8 @@
             <tbody>
                 <template v-for="note in notesSortedByDate" :key="note.id">
                     <tr @click="toggleExpand(note.id)" class="note-row">
-                        <td>{{ note.user?.name?.full_name || `${note.user?.name?.first_name} ${note.user?.name?.last_name}` }}</td>
+                        <td>{{ note.user?.name?.full_name || `${note.user?.name?.first_name}
+                            ${note.user?.name?.last_name}` }}</td>
                         <td>{{ formatDate(note.created_at) }}</td>
                         <td class="expand-indicator">
                             {{ expandedNoteId === note.id ? '▼' : '▶' }}
@@ -21,40 +27,55 @@
                     <tr v-if="expandedNoteId === note.id" :key="`expanded-${note.id}`" class="note-content-row">
                         <td colspan="3" class="note-content">
                             <div class="note-content">
-                            {{ note.content }}
+                                {{ note.content }}
                             </div>
                             <div class="note-action">
-                                <RouterLink :to="{ name: 'notes.edit', params: { ticketId: $route.params.id, noteId: note.id } }" class="btn-edit">
-                                Wijzig
+                                <RouterLink
+                                    :to="{ name: 'notes.edit', params: { ticketId: route.params.id, noteId: note.id } }"
+                                    class="btn-edit">
+                                    Wijzig
                                 </RouterLink>
-                            </div>                           
+                                <button class="btn-delete" @click.stop="deleteNote(note.id)">Delete</button>
+                            </div>
                         </td>
                     </tr>
-                    
+
                 </template>
-                <div class="note-create">
-                    <RouterLink :to="{ name: 'notes.create', params: { ticketId: $route.params.id, } }" class="btn-create">
-                    Niewe notitie toevoegen
-                    </RouterLink>
-                </div>
+
             </tbody>
         </table>
+
+        <div v-else class="no-notes">
+            <p>Geen notities beschikbaar voor dit ticket.</p>
+        </div>
     </div>
-    <div v-else class="no-notes">
-        <p>Geen notities beschikbaar voor dit ticket.</p>
-    </div>
+
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Note } from '../types';
 import { sortBy } from '../../../services/helpers/sortHelper';
+import { NoteStore } from '../store';
+import { useRoute } from 'vue-router';
 
 const props = defineProps<{
     notes: Note[];
 }>();
 
+
+const route = useRoute();
 const expandedNoteId = ref<number | null>(null);
+const ticketId = computed(() => Number(route.params.id));
+
+
+
+const deleteNote = async (noteToDelete: number) => {
+    if (confirm("Do you want to delete this note?")) {
+        console.log(ticketId.value, noteToDelete);
+        NoteStore.extraActions.deleteForNote(ticketId.value, noteToDelete);
+    };
+}
 
 const notesSortedByDate = computed<Readonly<Note>[]>(() =>
     sortBy(
@@ -77,6 +98,8 @@ const formatDate = (dateString: string) => {
         minute: '2-digit'
     });
 };
+
+
 </script>
 
 <style scoped>
@@ -162,10 +185,17 @@ h3 {
 
 
 .btn-create {
-    
+    display: inline-block;
     background-color: #44d631;
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.4rem 0.8rem;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -184,6 +214,7 @@ h3 {
     outline: 2px solid #80bfff;
     outline-offset: 2px;
 }
+
 .btn-edit {
     display: inline-block;
     padding: 0.4rem 0.8rem;
@@ -191,7 +222,6 @@ h3 {
     font-size: 0.9rem;
     color: #fff;
     background-color: #007acc;
-    /* Zachte blauwe kleur */
     border: none;
     border-radius: 4px;
     text-decoration: none;
@@ -201,19 +231,16 @@ h3 {
 
 .btn-edit:hover {
     background-color: #005fa3;
-    /* Donkerder blauw bij hover */
     transform: translateY(-1px);
 }
 
 .btn-edit:active {
     background-color: #004f8a;
-    /* Nog donkerder bij klik */
     transform: translateY(0);
 }
 
 .btn-edit:focus {
     outline: 2px solid #80bfff;
-    /* Subtiele focus ring */
     outline-offset: 2px;
 }
 </style>

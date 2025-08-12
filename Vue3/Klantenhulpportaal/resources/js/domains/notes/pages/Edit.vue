@@ -1,8 +1,8 @@
 <template>
     <div class="edit">
-        <h1>Note bewerken</h1>        
+        <h1>Note bewerken</h1>
         <Form v-if="note" :note="note" :ticket-id="ticketId" @submit="handleSubmit" />
-        <div v-else>Note wordt geladen...</div>   
+        <div v-else>Note wordt geladen...</div>
     </div>
 </template>
 
@@ -14,6 +14,7 @@ import { Note, NoteForm } from '../types';
 import Form from '../components/NoteForm.vue';
 import { TicketStore } from '../../tickets/store';
 import http from '../../../services/http';
+
 
 const router = useRouter();
 const route = useRoute();
@@ -34,16 +35,10 @@ onMounted(async () => {
 
 const handleSubmit = async (data: Note) => {
     try {
-        await http.put(
-            `/tickets/${ticketId.value}/notes/${noteId.value}`, 
-            data
-        );
-        router.push({ 
-            name: 'tickets.view', 
-            params: { id: ticketId.value } 
-        });
+        await NoteStore.extraActions.updateForNote(ticketId.value, noteId.value, data);
+        router.push({ name: 'tickets.view', params: { id: ticketId.value } });
     } catch (error) {
-        console.error('Update error:', error);        
+        console.error('Update error:', error);
     }
 }
 

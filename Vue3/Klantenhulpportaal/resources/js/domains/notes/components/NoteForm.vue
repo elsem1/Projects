@@ -8,7 +8,8 @@
                 <textarea id="content" v-model="form.content" rows="5" required />
                 <ErrorForm name="content" />
 
-                <RouterLink :to="{ name: 'tickets.view', params: { id: $route.params.ticketId } }" class="btn btn-cancel">
+                <RouterLink :to="{ name: 'tickets.view', params: { id: $route.params.ticketId } }"
+                    class="btn btn-cancel">
                     Cancel
                 </RouterLink>
 
@@ -20,7 +21,7 @@
 
 
 <script setup lang="ts">
-import  ErrorMessage from '../../../services/error/ErrorMessage.vue';
+import ErrorMessage from '../../../services/error/ErrorMessage.vue';
 import ErrorForm from '../../../services/error/ErrorForm.vue';
 import { reactive, defineProps, defineEmits, onMounted } from 'vue';
 import { NoteForm } from '../types';
@@ -29,7 +30,7 @@ const emit = defineEmits(['submit']);
 
 const props = defineProps<{
     note: {
-        content: string;        
+        content: string;
     };
     ticketId?: number;
 }>();
@@ -40,7 +41,7 @@ const form = reactive<NoteForm>({
 
 const handleSubmit = () => emit('submit', form);
 </script>
-<style>
+<style scoped>
 .btn {
     display: inline-block;
     padding: 0.5rem 1rem;

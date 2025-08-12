@@ -33,12 +33,18 @@ class UpdateTicketRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'title' => 'required|string|max:255',
-            'status_id' => 'integer',
             'categories' => 'array',
             'categories.*' => 'exists:categories,id',
             'content' => 'required|string|max:2000',
         ];
+
+        // Alleen admin kan status_id aanpassen
+        if (Auth::user()?->is_admin) {
+            $rules['status_id'] = 'integer';
+        }
+
+        return $rules;
     }
 }
