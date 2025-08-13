@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateNoteRequest;
 use App\Http\Resources\NoteResource;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Ticket;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+
 
 class NoteController extends Controller
 {

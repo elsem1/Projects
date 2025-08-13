@@ -66,12 +66,12 @@ const props = defineProps<{
     }
 }>();
 
-const isAdmin = ref(false);
 
 const categories = CategoryStore.getters.all;
 const status = StatusStore.getters.all;
 CategoryStore.actions.getAll();
 StatusStore.actions.getAll();
+const isAdmin = ref(false);
 
 const checkAdminStatus = async () => {
     try {

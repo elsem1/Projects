@@ -6,6 +6,11 @@ use App\Http\Requests\BaseFormRequest;
 
 class LoginRequest extends BaseFormRequest
 {
+    public function authorize(): bool
+    {
+        return true;
+    }
+    
     public function rules(): array
     {
         return [
@@ -15,8 +20,4 @@ class LoginRequest extends BaseFormRequest
         ];
     }
 
-    public function authorize(): bool
-    {
-        return true;
-    }
 }

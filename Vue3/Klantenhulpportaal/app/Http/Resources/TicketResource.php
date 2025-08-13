@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Carbon\Carbon;
+use App\Http\Resources\ReplyResource;
 use App\Http\Resources\NoteResource;
 
 class TicketResource extends JsonResource
@@ -36,6 +36,8 @@ class TicketResource extends JsonResource
                 $request->user()?->is_admin && $this->relationLoaded('notes'),
                 NoteResource::collection($this->notes)
             ),
+
+            'replies' => $this->whenLoaded('replies', ReplyResource::collection($this->replies)),            
 
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

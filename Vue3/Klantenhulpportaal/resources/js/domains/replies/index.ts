@@ -1,0 +1,1 @@
+export const REPLY_DOMAIN_NAME = 'replies';

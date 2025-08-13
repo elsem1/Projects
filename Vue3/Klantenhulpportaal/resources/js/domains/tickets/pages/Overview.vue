@@ -46,7 +46,7 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { TicketStore } from '../store';
+import { ticketStore } from '../store';
 import { Category, Ticket } from '../types'
 import { sortBy } from '../../../services/helpers/sortHelper';
 import { statusPriority } from '..';
@@ -54,9 +54,9 @@ import { useRouter } from 'vue-router';
 import { formatRelativeTime } from '../../../services/helpers/dateHelper';
 
 const router = useRouter();
-const tickets = TicketStore.getters.all;
+const tickets = ticketStore.getters.all;
 onMounted(async () => {
-    TicketStore.actions.getAll();
+    ticketStore.actions.getAll();
 });
 
 const formatDate = formatRelativeTime

@@ -10,7 +10,7 @@
 import { ref, computed } from 'vue';
 import Form from '../components/TicketForm.vue';
 import { useRouter } from 'vue-router';
-import { TicketStore } from '../store';
+import { ticketStore } from '../store';
 import { TicketForm, Ticket } from '../types';
 
 
@@ -24,7 +24,7 @@ const ticket = ref<TicketForm>({
 });
 
 const handleSubmit = async (data: TicketForm) => {
-    await TicketStore.actions.create(data as unknown as Ticket);
+    await ticketStore.actions.create(data as unknown as Ticket);
     router.push({ name: 'tickets.overview' });
 };
 

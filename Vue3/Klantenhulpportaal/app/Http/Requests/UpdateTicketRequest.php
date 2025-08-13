@@ -17,13 +17,8 @@ class UpdateTicketRequest extends FormRequest
         $user = Auth::user();
         $ticket = $this->route('ticket');
 
-        // Controleer of gebruiker en ticket bestaan
-        if (! $user || ! $ticket) {
-            return false;
-        }
-
         // Toegang voor eigenaar of admin
-        return $ticket->user_id === $user->id || $user->is_admin;
+        return $ticket->created_by === $user->id || $user->is_admin;
     }
 
     /**

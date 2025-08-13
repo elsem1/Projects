@@ -5,62 +5,44 @@ namespace App\Http\Controllers;
 use App\Models\Reply;
 use App\Http\Requests\StoreReplyRequest;
 use App\Http\Requests\UpdateReplyRequest;
+use App\Http\Resources\ReplyResource;
+use App\Models\Ticket;
+use Illuminate\Support\Facades\Auth;
 
 class ReplyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
-        //
+        return ReplyResource::collection(Reply::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StoreReplyRequest $request, Ticket $ticket)
     {
-        //
+        $validated = $request->validated();
+
+        $reply = Reply::create([
+            ...$validated,
+            'user_id' => Auth::id(),
+            'ticket_id' => $ticket->id,
+        ]);
+
+        return new ReplyResource($reply);
+    } 
+
+    
+    public function update(UpdateReplyRequest $request, Ticket $ticket, Reply $reply)
+    {
+        $validated = $request->validated();
+        $reply->update($validated);
+
+        return new ReplyResource($reply);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreReplyRequest $request)
+    
+    public function destroy(Ticket $ticket, Reply $reply)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Reply $reply)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Reply $reply)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateReplyRequest $request, Reply $reply)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Reply $reply)
-    {
-        //
+        $reply->delete();
+        return response()->noContent();
     }
 }

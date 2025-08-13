@@ -22,7 +22,8 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'content' => 'required|string|max:2000',
+            'user_id' => 'exists:users,id'
         ];
     }
 }

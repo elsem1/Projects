@@ -15,37 +15,62 @@
                     {{ ticket.creator.last_name }}</li>
                 <li><strong>Aangemaakt op:</strong> {{ formatDate(ticket.created_at) }}</li>
                 <li><strong>Laatste update op:</strong> {{ formatDate(ticket.updated_at) }}</li>
-                <li><strong>Toegewezen aan:</strong> {{ ticket.handler?.first_name ?? '-' }}
-                    {{ ticket.handler?.last_name ?? '' }}</li>
+
+                <li><strong>Toegewezen aan:</strong> <button @click="chooseHandler">{{ ticket.handler?.first_name ?? '-' }}
+                    {{ ticket.handler?.last_name ?? '' }}</button></li>
                 <li><strong>Uitleg:</strong> {{ ticket.content }}</li>
             </ul>
         </section>
+            
+
         <RouterLink :to="{ name: 'tickets.edit', params: { id: ticket.id } }" class="btn-edit">
             Wijzig
         </RouterLink>
         
-        <div class="notes mt-8">
+        <div v-if="isAdmin" class="notes mt-8">
             <NotesView :notes="ticket.notes || []" />
+        </div>
+        <div class="replies mt-8">
+            <RepliesView :replies="ticket.replies || []" />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { TicketStore } from '../store';
-import { computed, onMounted } from 'vue';
+import { ticketStore } from '../store';
+import { computed, onMounted, ref } from 'vue';
 import NotesView from '../../notes/components/NotesView.vue';
+import RepliesView from '../../replies/components/RepliesView.vue';
 import { formatRelativeTime } from '../../../services/helpers/dateHelper';
+import { getRequest } from '../../../services/http';
 
 const route = useRoute();
 const ticketId = computed(() => Number(route.params.id));
-const ticket = TicketStore.getters.byId(ticketId.value);
+const ticket = ticketStore.getters.byId(ticketId.value);
+const isAdmin = ref(false);
+const showAdminList = ref(false);
+
+const checkAdminStatus = async () => {
+    try {
+        const response = await getRequest('/me');
+        isAdmin.value = !!response?.data?.is_admin;
+    } catch (error) {
+        isAdmin.value = false;
+    }
+};
+
+const chooseHandler = () => {
+    showAdminList.value = true;
+};
 
 const formatDate = formatRelativeTime;
 
 onMounted(async () => {
-    await TicketStore.actions.getById(ticketId.value);
+    await ticketStore.actions.getById(ticketId.value);    
+    checkAdminStatus();
 });
+
 </script>
 <style scoped>
 div {

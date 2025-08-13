@@ -52,11 +52,12 @@ class TicketController extends Controller
         $relations = [
             'categories',
             'creator',
-            'handler'
+            'handler',
+            'replies.user'
         ];
 
         if ($user->is_admin) {
-            $relations[] = 'notes.user';
+            $relations[] = 'notes.user';            
         }
 
         $ticket->load($relations);

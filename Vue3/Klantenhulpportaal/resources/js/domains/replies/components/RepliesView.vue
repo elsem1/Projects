@@ -1,12 +1,12 @@
 <template>
-    <div class="notes-view">
-        <RouterLink :to="{ name: 'notes.create', params: { ticketId: $route.params.id, } }" class="btn-create">
-            Niewe notitie toevoegen
+    <div class="replies-view">
+        <RouterLink :to="{ name: 'replies.create', params: { ticketId: $route.params.id, } }" class="btn-create">
+            Niewe reactie schrijven
         </RouterLink>
 
-        <h3>Notities</h3>
+        <h3>Replies</h3>
 
-        <table v-if="notes.length > 0">
+        <table v-if="replies.length > 0">
             <thead>
                 <tr>
                     <th>Door</th>
@@ -15,27 +15,27 @@
                 </tr>
             </thead>
             <tbody>
-                <template v-for="note in notesSortedByDate" :key="note.id">
-                    <tr @click="toggleExpand(note.id)" class="note-row">
-                        <td>{{ note.user?.name?.full_name || `${note.user?.name?.first_name}
-                            ${note.user?.name?.last_name}` }}</td>
-                        <td>{{ formatDate(note.created_at) }}</td>
+                <template v-for="reply in repliesSortedByDate" :key="reply.id">
+                    <tr @click="toggleExpand(reply.id)" class="reply-row">
+                        <td>{{ reply.user?.name?.full_name || `${reply.user?.name?.first_name}
+                            ${reply.user?.name?.last_name}` }}</td>
+                        <td>{{ formatDate(reply.created_at) }}</td>
                         <td class="expand-indicator">
-                            {{ expandedNoteId === note.id ? '▼' : '▶' }}
+                            {{ expandedReplyId === reply.id ? '▼' : '▶' }}
                         </td>
                     </tr>
-                    <tr v-if="expandedNoteId === note.id" :key="`expanded-${note.id}`" class="note-content-row">
-                        <td colspan="3" class="note-content">
-                            <div class="note-content">
-                                {{ note.content }}
+                    <tr v-if="expandedReplyId === reply.id" :key="`expanded-${reply.id}`" class="reply-content-row">
+                        <td colspan="3" class="reply-content">
+                            <div class="reply-content">
+                                {{ reply.content }}
                             </div>
-                            <div class="note-action">
+                            <div class="reply-action">
                                 <RouterLink
-                                    :to="{ name: 'notes.edit', params: { ticketId: route.params.id, noteId: note.id } }"
+                                    :to="{ name: 'replies.edit', params: { ticketId: route.params.id, replyId: reply.id } }"
                                     class="btn-edit">
                                     Wijzig
                                 </RouterLink>
-                                <button class="btn btn-delete" @click="deleteNote(note.id)">Delete</button>
+                                <button class="btn btn-delete" @click="deletereply(reply.id)">Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -45,8 +45,8 @@
             </tbody>
         </table>
 
-        <div v-else class="no-notes">
-            <p>Geen notities beschikbaar voor dit ticket.</p>
+        <div v-else class="no-replies">
+            <p>Geen berichten beschikbaar voor dit ticket.</p>
         </div>
     </div>
 
@@ -54,38 +54,38 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { Note } from '../types';
+import { Reply } from '../types';
 import { sortBy } from '../../../services/helpers/sortHelper';
-import { noteStore } from '../store';
+import { replyStore } from '../store';
 import { useRoute } from 'vue-router';
 
 const props = defineProps<{
-    notes: Note[];
+    replies: Reply[];
 }>();
 
 const route = useRoute();
-const expandedNoteId = ref<number | null>(null);
+const expandedReplyId = ref<number | null>(null);
 const ticketId = computed(() => Number(route.params.id));
 
-const deleteNote = async (noteToDelete: number) => {
-    if (confirm("Do you want to delete this note?")) {
-        console.log(ticketId.value, noteToDelete);
-        noteStore.extraActions.deleteForNote(ticketId.value, noteToDelete);
-    };
-}
 
-const notesSortedByDate = computed<Readonly<Note>[]>(() =>
+const repliesSortedByDate = computed<Readonly<Reply>[]>(() =>
     sortBy(
-        props.notes,
-        (note: Note) => note.created_at,
+        props.replies,
+        (reply: Reply) => reply.created_at,
         false
     )
 );
 
 const toggleExpand = (id: number) => {
-    expandedNoteId.value = expandedNoteId.value === id ? null : id;
+    expandedReplyId.value = expandedReplyId.value === id ? null : id;
 };
 
+const deletereply = async (replyToDelete: number) => {
+    if (confirm("Do you want to delete this reply?")) {
+        console.log(ticketId.value, replyToDelete);
+        replyStore.extraActions.deleteForReply(ticketId.value, replyToDelete);
+    };
+}
 const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString('nl-NL', {
         year: 'numeric',
@@ -100,13 +100,13 @@ const formatDate = (dateString: string) => {
 </script>
 
 <style scoped>
-.notes-view {
+.replies-view {
     padding: 1rem;
     font-family: Arial, sans-serif;
     color: #333;
 }
 
-.no-notes {
+.no-replies {
     padding: 1rem;
     font-family: Arial, sans-serif;
     color: #666;
@@ -136,12 +136,12 @@ tbody td {
 }
 
 /* Wisselende rij-kleur voor leesbaarheid */
-tbody tr.note-row:nth-child(4n-3) {
+tbody tr.reply-row:nth-child(4n-3) {
     background-color: #fafafa;
 }
 
 /* Hover effect voor klikbare rijen */
-tbody tr.note-row:hover {
+tbody tr.reply-row:hover {
     background-color: #f0f8ff;
     cursor: pointer;
 }
@@ -154,18 +154,26 @@ h3 {
     display: block;
 }
 
-/* Note content styling */
-.note-content-row {
+/* Reply content styling */
+.reply-content-row {
     background-color: #f9f9f9 !important;
 }
 
-.note-content {
+.reply-content {
     background-color: #f9f9f9;
     padding: 1rem 0.75rem;
     white-space: wrap;
     font-size: 0.85rem;
     line-height: 1.4;
-    border-left: 3px solid #ddd;
+    border-left: 3px solid #007acc;
+    margin-bottom: 0.5rem;
+}
+
+/* Reply action buttons container */
+.reply-action {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
 }
 
 /* Expand indicator */
@@ -176,11 +184,11 @@ h3 {
     color: #666;
 }
 
-.note-row .expand-indicator {
+.reply-row .expand-indicator {
     transition: transform 0.2s ease;
 }
 
-
+/* Basis button styling */
 .btn {
     display: inline-block;    
     color: white;
@@ -270,4 +278,5 @@ h3 {
     outline: 2px solid #80bfff;
     outline-offset: 2px;
 }
+
 </style>

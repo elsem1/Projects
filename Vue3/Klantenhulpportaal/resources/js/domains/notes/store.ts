@@ -6,10 +6,10 @@ import { deleteRequest, getRequest, postRequest, putRequest } from "../../servic
 
 
 const createNoteStore = () => {
-    const NoteStore = storeModuleFactory<Note>(NOTE_DOMAIN_NAME);
+    const noteStore = storeModuleFactory<Note>(NOTE_DOMAIN_NAME);
     const extraGetters = {
         byTicketId: (ticketId: number) => computed(() => {
-            return NoteStore.getters.all.value.filter(
+            return noteStore.getters.all.value.filter(
             (note:Note) => note.ticket_id=== ticketId)
         })
     };
@@ -18,7 +18,7 @@ const createNoteStore = () => {
     async getByTicketId(ticketId: number) {
         try {
             const response = await getRequest(`tickets/${ticketId}/notes`);
-            NoteStore.setters.setAll(response.data);
+            noteStore.setters.setAll(response.data);
         } catch (error) {
             console.error('Error fetching notes for ticket:', error);
             throw error;
@@ -28,33 +28,33 @@ const createNoteStore = () => {
     async updateForNote(ticketId: number, noteId: number, data: Partial<Note>) {
         const { data: updatedNote } = await putRequest(`tickets/${ticketId}/notes/${noteId}`, data);
         if (updatedNote) {
-            NoteStore.setters.setById(updatedNote);
+            noteStore.setters.setById(updatedNote);
         }
     },
 
     async createForNote(ticketId: number, data: NoteForm) {
         const { data: newNote } = await postRequest(`tickets/${ticketId}/notes`, data);
         if (newNote) {
-            NoteStore.setters.setById(newNote);
+            noteStore.setters.setById(newNote);
         }
     },
 
     async deleteForNote(ticketId: number, noteId: number) {
         await deleteRequest(`tickets/${ticketId}/notes/${noteId}`);
-        NoteStore.setters.deleteById(noteId);
+        noteStore.setters.deleteById(noteId);
     }
 
 };
 
 
     return {
-        ...NoteStore,
+        ...noteStore,
         extraGetters,
         extraActions,       
         }
     };
 
 
-export const NoteStore = createNoteStore();
+export const noteStore = createNoteStore();
 
 

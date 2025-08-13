@@ -1,17 +1,17 @@
 <template>
     <div class="edit">
-        <h1>Note bewerken</h1>
-        <Form v-if="note" :note="note" :ticket-id="ticketId" @submit="handleSubmit" />
-        <div v-else>Note wordt geladen...</div>
+        <h1>Bericht bewerken</h1>
+        <Form v-if="reply" :reply="reply" :ticket-id="ticketId" @submit="handleSubmit" />
+        <div v-else>Berichten worden geladen...</div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { noteStore } from '../store';
-import { Note, NoteForm } from '../types';
-import Form from '../components/NoteForm.vue';
+import { replyStore } from '../store';
+import { ReplyForm, Reply } from '../types';
+import Form from '../components/RepliesForm.vue';
 import { ticketStore } from '../../tickets/store';
 
 
@@ -20,22 +20,22 @@ const router = useRouter();
 const route = useRoute();
 
 const ticketId = computed(() => Number(route.params.ticketId));
-const noteId = computed(() => Number(route.params.noteId));
+const replyId = computed(() => Number(route.params.replyId));
 ticketStore.actions.getById(ticketId.value);
 
-const note = computed(() => {
+const reply = computed(() => {
     const ticket = ticketStore.getters.byId(ticketId.value).value;
-    if (!ticket || !ticket.notes) return null;
-    return ticket.notes.find(note => note.id === noteId.value) || null;
+    if (!ticket || !ticket.replies) return null;
+    return ticket.replies.find(reply => reply.id === replyId.value) || null;
 });
 
 onMounted(async () => {
     ticketStore.actions.getById(ticketId.value);
 })
 
-const handleSubmit = async (data: Note) => {
+const handleSubmit = async (data: Reply) => {
     try {
-        await noteStore.extraActions.updateForNote(ticketId.value, noteId.value, data);
+        await replyStore.extraActions.updateForReply(ticketId.value, replyId.value, data);
         router.push({ name: 'tickets.view', params: { id: ticketId.value } });
     } catch (error) {
         console.error('Update error:', error);
