@@ -57,7 +57,7 @@ class TicketController extends Controller
         ];
 
         if ($user->is_admin) {
-            $relations[] = 'notes.user';            
+            $relations[] = 'notes.user';
         }
 
         $ticket->load($relations);
@@ -76,6 +76,20 @@ class TicketController extends Controller
         }
 
         return new TicketFormResource($ticket);
+    }
+
+    public function assign(Request $request, Ticket $ticket)
+    {
+        $request->validate([
+            'handler_id' => 'required|exists:users,id',
+        ]);
+
+        $ticket->handled_by = $request->handler_id;
+        $ticket->save();
+
+        $ticket->load('handler');
+
+        return response()->json($ticket);
     }
 
 

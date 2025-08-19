@@ -15,14 +15,9 @@ const createNoteStore = () => {
     };
     
     const extraActions = {        
-    async getByTicketId(ticketId: number) {
-        try {
-            const response = await getRequest(`tickets/${ticketId}/notes`);
-            noteStore.setters.setAll(response.data);
-        } catch (error) {
-            console.error('Error fetching notes for ticket:', error);
-            throw error;
-        }
+    async getByTicketId(ticketId: number) {        
+        const response = await getRequest(`tickets/${ticketId}/notes`);
+        noteStore.setters.setAll(response.data);
     },
 
     async updateForNote(ticketId: number, noteId: number, data: Partial<Note>) {

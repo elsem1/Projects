@@ -168,7 +168,7 @@ h3 {
     border-left: 3px solid #ddd;
 }
 
-/* Expand indicator */
+
 .expand-indicator {
     text-align: center;
     width: 30px;

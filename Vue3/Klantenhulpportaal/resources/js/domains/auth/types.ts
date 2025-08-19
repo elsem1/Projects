@@ -1,14 +1,22 @@
-
 export interface User {
     id: number;
     first_name: string;
     last_name: string;
-    email: string;
+    email: string;    
     email_verified_at?: string;
     is_admin: boolean;
     phone_number: string;     
     created_at?: string;
     updated_at?: string;
+}
+
+export interface UserRegister {
+    first_name: string;
+    last_name: string;
+    email: string;    
+    email_confirmation?: string;
+    password: string;
+    phone_number: string;
 }
 
 export interface UserLogin {

@@ -7,14 +7,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class SessionController extends Controller
 {
     public function authenticate(LoginRequest $request)
     {
-
         $credentials = $request->only('email', 'password');
 
 
@@ -29,10 +32,30 @@ class SessionController extends Controller
         return response()->json(Auth::user());
     }
 
+    public function register(RegisterRequest $request)
+    {
+        $validated = $request->validated();
+        unset($validated['email_confirmation']);
+        $user = User::create([
+            ...$validated,
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return new UserResource($user);
+    }
+
+
     public function meRequest()
     {
         return response()->json(Auth::user());
     }
+
+    public function getAdmins()
+    {
+        $admins = User::where('is_admin', true)->get();
+        return response()->json($admins);
+    }
+
 
     public function destroy(Request $request)
     {
