@@ -17,7 +17,7 @@
                 <li><strong>Laatste update op:</strong> {{ formatDate(ticket.updated_at) }}</li>
                 <li><strong>Uitleg:</strong> {{ ticket.content }}</li>
 
-                <li><strong>Toegewezen aan:</strong> 
+                <li><strong>Toegewezen aan:</strong>
                     <div v-if="!showAdminSelect">
                         <button @click="chooseHandler" v-if="isAdmin" class="btn-assign">
                             {{ ticket.handler?.first_name ?? 'Niet toegewezen' }}
@@ -37,21 +37,21 @@
                             </option>
                         </select>
                         <button @click="assignAdmin" class="btn btn-save" :disabled="!selectedAdminId">
-                            Toewijzen  
+                            Toewijzen
                         </button>
                         <button @click="cancelAssign" class="btn btn-cancel">
                             Annuleren
-                        </button>                        
+                        </button>
                     </div>
                 </li>
             </ul>
         </section>
-            
+
 
         <RouterLink :to="{ name: 'tickets.edit', params: { id: ticket.id } }" class="btn-edit">
-            Wijzig
+            Wijzig ticket
         </RouterLink>
-        
+
         <div v-if="isAdmin" class="notes mt-8">
             <NotesView :notes="ticket.notes || []" />
         </div>
@@ -82,23 +82,23 @@ const admins = computed(() => adminStore.adminGetters.admins.value);
 
 const chooseHandler = async () => {
     if (!isAdmin.value) return
-    
-    showAdminSelect.value = true     
+
+    showAdminSelect.value = true
     await adminStore.adminActions.getAllAdmins();
-    
+
     if (ticket.value?.handler?.id) {
         selectedAdminId.value = ticket.value.handler.id;
     }
 };
 
-const checkAdminStatus = async () => {    
+const checkAdminStatus = async () => {
     const response = await getRequest('/me');
-    isAdmin.value = response?.data?.is_admin ?? false;   
+    isAdmin.value = response?.data?.is_admin ?? false;
 };
 
 const assignAdmin = async () => {
-    if (!selectedAdminId.value) return;    
-    
+    if (!selectedAdminId.value) return;
+
     await adminStore.adminActions.assignTicketToAdmin(
         ticket.value.id,
         Number(selectedAdminId.value)
@@ -207,5 +207,4 @@ strong {
     outline: 2px solid #80bfff;
     outline-offset: 2px;
 }
-
 </style>

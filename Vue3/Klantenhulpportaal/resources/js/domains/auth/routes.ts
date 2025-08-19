@@ -7,6 +7,7 @@ export const authRoutes = [
     {
         path: '/register',
         name: 'register',
-        component: () => import('../auth/components/RegisterForm.vue')
+        component: () => import('../auth/pages/Create.vue')
     },
+   
 ];

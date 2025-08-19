@@ -17,7 +17,18 @@ export interface UserRegister {
     email_confirmation?: string;
     password: string;
     phone_number: string;
+    is_admin: number;
 }
+
+export interface UserForgot {
+    email: string;
+}
+
+export interface UserReset {
+    password: string;
+    token: string;
+}
+
 
 export interface UserLogin {
     email: string;

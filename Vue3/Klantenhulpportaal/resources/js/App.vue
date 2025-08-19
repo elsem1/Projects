@@ -1,10 +1,10 @@
-<template>    
+<template>
     <nav class="navbar">
-        
+
         <div class="nav-links">
             <RouterLink to="/">Home | </RouterLink>
-            <RouterLink to="/tickets">Tickets |</RouterLink>
-            <Routerlink to="/register" v-if="!loggedIn">Registreer</Routerlink>
+            <RouterLink to="tickets">Tickets |</RouterLink>
+            <RouterLink to="register" v-if="!loggedIn">Registreer</RouterLink>
         </div>
         <div class="logout" v-if="loggedIn">
             <button @click="logout">Logout</button>

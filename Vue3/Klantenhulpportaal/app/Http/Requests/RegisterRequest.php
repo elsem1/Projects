@@ -21,6 +21,8 @@ class RegisterRequest extends FormRequest
             'last_name' => 'required|string|max:30',
             'email' => 'required|string|email|confirmed',
             'phone_number' => 'required|string|regex:/^[\+]?[0-9\s\-\(\)]{10,20}$/',
+            'is_admin' => 'required|boolean',
+            'password' => 'required|string'
         ];
     }
 }
