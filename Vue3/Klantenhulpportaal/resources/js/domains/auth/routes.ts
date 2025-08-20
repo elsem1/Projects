@@ -9,5 +9,10 @@ export const authRoutes = [
         name: 'register',
         component: () => import('../auth/pages/Create.vue')
     },
-   
-];
+    {
+        path: '/reset-password/:token',
+        name: 'reset-password',
+        component: () => import('../auth/pages/ResetPassword.vue')
+    },
+
+];  

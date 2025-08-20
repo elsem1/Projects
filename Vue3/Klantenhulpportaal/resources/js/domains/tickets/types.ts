@@ -2,6 +2,7 @@ import { statusPriority } from ".";
 import { User } from "../auth/types";
 import { Note } from "../notes/types";
 import { Reply } from "../replies/types";
+import { Category } from "../categories/types";
 
 
 export interface Ticket {
@@ -29,10 +30,7 @@ export interface TicketForm {
     categories: number[];
 }
 
-export interface Category {
-    id: number,
-    name: string,    
-}
+
 
 export interface Status {
     id: number,

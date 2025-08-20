@@ -26,6 +26,8 @@ export interface UserForgot {
 
 export interface UserReset {
     password: string;
+    password_confirmation: string;
+    email: string;
     token: string;
 }
 

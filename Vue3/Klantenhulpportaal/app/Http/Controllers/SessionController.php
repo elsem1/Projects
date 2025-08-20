@@ -16,8 +16,10 @@ use App\Mail\SuccessfulRegistration;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Database\Console\Migrations\ResetCommand;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class SessionController extends Controller
 {
@@ -81,7 +83,30 @@ class SessionController extends Controller
         ], 422);
     }
 
-    public function resetPassword() {}
+
+    public function resetPassword(ResetPasswordRequest $request) 
+    {
+
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function (User $user, string $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+            
+            $user->save();            
+        }
+    );
+
+    if ($status === Password::PasswordReset) {
+        return response()->json(['message' => 'Password reset successful'], 200);
+    }
+
+    return response()->json([
+        'message' => 'Password reset failed',
+        'errors' => ['email' => [__($status)]]
+    ], 422);
+}
 
 
 

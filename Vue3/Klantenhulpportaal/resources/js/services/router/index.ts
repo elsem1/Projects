@@ -16,12 +16,14 @@ import { notesRoutes } from '../../domains/notes/routes';
 import { repliesRoutes } from '../../domains/replies/routes';
 import { ticketsRoutes } from '../../domains/tickets/routes';
 import { usersRoutes } from '../../domains/users/routes';
+import { categoriesRoutes } from '../../domains/categories/routes';
 
 // Maak de router aan met een lege routes array
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
     ...authRoutes,
+    ...categoriesRoutes,
     ...notesRoutes,
     ...repliesRoutes,
     ...ticketsRoutes,
