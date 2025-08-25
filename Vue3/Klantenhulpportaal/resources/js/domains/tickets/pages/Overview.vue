@@ -47,7 +47,8 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import { ticketStore } from '../store';
-import { Category, Ticket } from '../types'
+import { Ticket } from '../types'
+import { Category } from '../../categories/types';
 import { sortBy } from '../../../services/helpers/sortHelper';
 import { statusPriority } from '..';
 import { useRouter } from 'vue-router';

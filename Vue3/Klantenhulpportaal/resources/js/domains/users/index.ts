@@ -1,0 +1,1 @@
+export const USER_DOMAIN_NAME = 'Users';

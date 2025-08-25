@@ -21,20 +21,27 @@ Route::get('/reset-password/{token}', function (string $token) {
 })->middleware('guest')->name('password.reset');
 Route::post('/reset-password', [SessionController::class, 'resetPassword'])->middleware('guest');
 
-
-Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/ticket-statuses', [TickerStatusController::class, 'index']);
+
+Route::get('/users', SessionController::class, 'show');
+
+Route::get('/categories', [CategoryController::class, 'index'])->middleware(['verified', 'auth:sanctum']);
+Route::post('categories', [CategoryController::class, 'store']);
+Route::get('/categories/{category}', [CategoryController::class, 'show'])->middleware(['verified', 'auth:sanctum']);
+Route::put('/categories/{category}', [CategoryController::class, 'update']);
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+
 
 Route::get('/tickets', [TicketController::class, 'index'])->middleware(['verified', 'auth:sanctum']);
 Route::post('/tickets', [TicketController::class, 'store'])->middleware(['verified', 'auth:sanctum']);
 Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->middleware(['verified', 'auth:sanctum']);
 Route::put('/tickets/{ticket}', [TicketController::class, 'update'])->middleware(['verified', 'auth:sanctum']);
+Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
 Route::put('/tickets/{ticket}/assign', [TicketController::class, 'assign'])->middleware(['verified', 'auth:sanctum']);
 
 Route::get('/tickets/{ticket}/notes', [NoteController::class, 'index'])->middleware(['verified', 'auth:sanctum']);
 Route::post('/tickets/{ticket}/notes', [NoteController::class, 'store'])->middleware(['verified', 'auth:sanctum']);
 Route::put('/tickets/{ticket}/notes/{note}', [NoteController::class, 'update'])->middleware(['verified', 'auth:sanctum']);
-Route::delete('/tickets/{ticket}/notes/{note}', [NoteController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
 
 Route::get('/tickets/{ticket}/replies', [ReplyController::class, 'index'])->middleware(['verified', 'auth:sanctum']);
 Route::post('/tickets/{ticket}/replies', [ReplyController::class, 'store'])->middleware(['verified', 'auth:sanctum']);

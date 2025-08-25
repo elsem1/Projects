@@ -3,8 +3,10 @@
 
         <div class="nav-links">
             <RouterLink to="/">Home | </RouterLink>
-            <RouterLink to="tickets">Tickets |</RouterLink>
-            <RouterLink to="register" v-if="!loggedIn">Registreer</RouterLink>
+            <RouterLink to="/tickets">Tickets |</RouterLink>
+            <RouterLink to="/categories" v-if="isAdmin">Categoreën |</RouterLink>
+            <RouterLink to="/users" v-if="isAdmin">Users |</RouterLink>
+            <RouterLink to="/register" v-if="!loggedIn">Registreer</RouterLink>
         </div>
         <div class="logout" v-if="loggedIn">
             <button @click="logout">Logout</button>
@@ -16,11 +18,17 @@
 <script setup lang="ts">
 import Layout from '../js/layouts/DefaultLayout.vue'
 import { getRequest, postRequest } from '../js/services/http';
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { router } from '../js/services/router'
 
+
+const isAdmin = ref(false);
 const loggedIn = ref(false);
 
+const checkAdminStatus = async () => {
+    const response = await getRequest('/me');
+    isAdmin.value = response?.data?.is_admin ?? false;
+}
 const checkLogIn = async () => {
     try {
         const response = await getRequest('/me');
@@ -38,6 +46,7 @@ const logout = async () => {
 };
 
 onMounted(() => {
+    checkAdminStatus();
     checkLogIn();
 });
 </script>

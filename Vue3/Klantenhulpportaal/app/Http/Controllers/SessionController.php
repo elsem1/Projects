@@ -23,6 +23,12 @@ use Illuminate\Support\Str;
 
 class SessionController extends Controller
 {
+
+    public function show(User $user)
+    {
+        return response()->json($user);
+    }
+
     public function authenticate(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -84,29 +90,29 @@ class SessionController extends Controller
     }
 
 
-    public function resetPassword(ResetPasswordRequest $request) 
+    public function resetPassword(ResetPasswordRequest $request)
     {
 
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function (User $user, string $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ])->setRememberToken(Str::random(60));
-            
-            $user->save();            
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+            }
+        );
+
+        if ($status === Password::PasswordReset) {
+            return response()->json(['message' => 'Password reset successful'], 200);
         }
-    );
 
-    if ($status === Password::PasswordReset) {
-        return response()->json(['message' => 'Password reset successful'], 200);
+        return response()->json([
+            'message' => 'Password reset failed',
+            'errors' => ['email' => [__($status)]]
+        ], 422);
     }
-
-    return response()->json([
-        'message' => 'Password reset failed',
-        'errors' => ['email' => [__($status)]]
-    ], 422);
-}
 
 
 
