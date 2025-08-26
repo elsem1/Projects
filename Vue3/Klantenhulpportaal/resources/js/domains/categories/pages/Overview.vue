@@ -9,16 +9,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Naam</th>                        
+                        <th>Naam</th>
                         <th>Acties</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="category in sortedCategories" :key="category.id">
-                        <td>{{ category.name }}</td>                        
+                        <td>{{ category.name }}</td>
                         <td class="category-action">
-                            <RouterLink
-                                :to="{ name: 'categories.edit', params: { categoryId: category.id } }"
+                            <RouterLink :to="{ name: 'categories.edit', params: { categoryId: category.id } }"
                                 class="btn btn-edit">
                                 Wijzig
                             </RouterLink>
@@ -39,18 +38,21 @@ import { sortBy } from '../../../services/helpers/sortHelper';
 
 const categories = computed(() => categoryStore.getters.all.value);
 
-const sortedCategories = computed(() => 
+const sortedCategories = computed(() =>
     sortBy(categories.value, (category: Category) => category.name, false)
 );
 
 const deleteCategory = async (categoryId: number) => {
-    if (confirm("Weet je zeker dat je deze categorie wilt verwijderen?")) {        
-        await categoryStore.actions.delete(categoryId);
+    try {
+        (confirm("Weet je zeker dat je deze categorie wilt verwijderen?")); {
+            await categoryStore.actions.delete(categoryId);
+        }
+    } catch (error) {
+        console.error('Error deleting category:', error);
     }
 };
-
 onMounted(async () => {
-    await categoryStore.actions.getAll();    
+    await categoryStore.actions.getAll();
 });
 </script>
 

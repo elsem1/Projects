@@ -1,69 +1,73 @@
 <template>
     <div class="edit">
-        <h1>Categorie bewerken</h1>
+        <h1>Gebruiker bewerken</h1>
         <div v-if="loading">Loading...</div>
-        <Form v-else-if="categoryData" :category="categoryData" @submit="handleSubmit" />
+        <Form v-else-if="userForm" :user="userForm" @submit="handleSubmit" />
         <div v-else-if="error" class="error">{{ error }}</div>
-        <div v-else class="not-found">Categorie niet gevonden</div>
+        <div v-else class="not-found">Gebruiker niet gevonden</div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { categoryStore } from '../store';
-import { CategoryForm } from '../types';
-import Form from '../components/CategoryForm.vue';
+import { userStore } from '../store';
+import { UserForm } from '../types';
+import Form from '../components/UserForm.vue';
 
 const router = useRouter();
 const route = useRoute();
 const loading = ref(true);
 const error = ref<string | null>(null);
 
-const categoryId = computed(() => Number(route.params.categoryId));
 
-// Haal category data op voor het formulier
-const category = computed(() => categoryStore.getters.byId(categoryId.value).value);
+const userId = computed(() => Number(route.params.userId));
+
+// Haal user data op voor het formulier
+const user = computed(() => userStore.getters.byId(userId.value).value);
 
 // Prepare form data
-const categoryData = computed(() => {
-    if (!category.value) return null;
+const userForm = computed(() => {
+    if (!user.value) return null;
     return {
-        name: category.value.name,
-        description: category.value.description || ''
+        first_name: user.value.first_name,
+        last_name: user.value.last_name,
+        email: user.value.email,
+        phone_number: user.value.phone_number,
+        is_admin: user.value.is_admin,
     };
 });
 
 onMounted(async () => {
     try {
         loading.value = true;
-        error.value = null;        
-        await categoryStore.actions.getById(categoryId.value);
-        
+        error.value = null;
+        await userStore.actions.getById(userId.value);
+
         // Wacht even om zeker te zijn dat de store is bijgewerkt
-        setTimeout(() => {           
+        setTimeout(() => {
             loading.value = false;
-        }, 100);        
+        }, 100);
     } catch (err) {
-        error.value = 'Fout bij laden categorie';
-        console.error('Error loading category:', err);
+        error.value = 'Fout bij laden user';
+        console.error('Error loading user:', err);
         loading.value = false;
     }
 });
 
-const handleSubmit = async (data: CategoryForm) => {
+const handleSubmit = async (data: UserForm) => {
     try {
-        await categoryStore.actions.update(categoryId.value, data);
-        router.push({ name: 'categories.overview' });
+        await userStore.actions.update(userId.value, data);
+        router.push({ name: 'users.overview' });
     } catch (err) {
-        error.value = 'Fout bij bijwerken categorie';
+        error.value = 'Fout bij bijwerken user';
         console.error('Update error:', err);
     }
 }
 </script>
 
 <style scoped>
-.category-container {
+.user-container {
     padding: 1rem;
     font-family: Arial, sans-serif;
     color: #333;

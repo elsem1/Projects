@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->foreignId('status_id')->constrained('ticket_statuses');
-            $table->foreignId('created_by')->constrained('users')->index();
+            $table->foreignId('status_id');
+            $table->foreignId('created_by')->index();
             $table->foreignId('handled_by')->nullable();
             $table->timestamps();
         });

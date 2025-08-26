@@ -1,7 +1,7 @@
 <template>
-    <div class="user-container">        
+    <div class="user-container">
         <h3>Alle Gebruikers</h3>
-        <div v-if="!user" class="loading">
+        <div v-if="!users" class="loading">
             Gebruiker niet gevonden of aan het laden...
         </div>
         <table v-else>
@@ -11,19 +11,19 @@
                     <th>Achternaam</th>
                     <th>E-mail Adres</th>
                     <th>Telefoonnummer</th>
+                    <th>Admin</th>
                 </tr>
             </thead>
-            <tbody>                
+            <tbody>
                 <tr v-for="user in usersSortedByName" :key="user.id">
                     <td>{{ user.first_name }}</td>
                     <td>{{ user.last_name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.phone_number }}</td>
-                    
+                    <td>{{ user.is_admin }}</td>
+
                     <td class="user-action">
-                        <RouterLink
-                            :to="{ name: 'users.edit', params: { userId: user.id } }"
-                            class="btn btn-edit">
+                        <RouterLink :to="{ name: 'users.edit', params: { userId: user.id } }" class="btn btn-edit">
                             Wijzig
                         </RouterLink>
                         <button class="btn btn-delete" @click="deleteUser(user.id)">Delete</button>
@@ -51,17 +51,33 @@ const users = computed(() => {
 
 const deleteUser = async (id: number) => {
     try {
-        await userStore.actions.delete(id);        
-    } catch (error) {
+        if (!confirm("Weet je zeker dat je deze user wilt verwijderen?")) {
+            return; // Gebruiker heeft geannuleerd
+        }
+
+        await userStore.actions.delete(id);
+
+        // Als we hier komen, is de delete succesvol
+        alert('Gebruiker succesvol verwijderd');
+
+    } catch (error: any) {
         console.error('Error deleting user:', error);
+
+        if (error.response?.status === 422) {
+            // Toon het specifieke bericht van de backend
+            alert(error.response.data.message || 'Kan gebruiker niet verwijderen vanwege actieve tickets');
+        } else {
+            // Algemene foutmelding
+            alert('Er is een fout opgetreden bij het verwijderen van de gebruiker');
+        }
     }
 };
 
 const usersSortedByName = computed<Readonly<User>[]>(() =>
     sortBy(
         users.value,
-        (user: User) => user.first_name,            
-        false 
+        (user: User) => user.first_name,
+        false
     )
 );
 

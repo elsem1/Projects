@@ -10,16 +10,6 @@ export interface User {
     updated_at?: string;
 }
 
-export interface UserRegister {
-    first_name: string;
-    last_name: string;
-    email: string;    
-    email_confirmation?: string;
-    password: string;
-    phone_number: string;
-    is_admin: number;
-}
-
 export interface UserForgot {
     email: string;
 }

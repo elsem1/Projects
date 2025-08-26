@@ -35,10 +35,16 @@
                         </span>
                     </td>
                     <td>{{ ticket.status_name }}</td>
-                    <td>{{ ticket.creator.first_name }} {{ ticket.creator.last_name }}</td>
+                    <td><span v-if="ticket.creator">{{ ticket.creator.first_name }} {{ ticket.creator?.last_name || ''
+                    }}</span>
+                        <span v-else style="font-style: italic">[deleted user]</span>
+                    </td>
                     <td>{{ formatDate(ticket.created_at) }}</td>
                     <td>{{ formatDate(ticket.updated_at) }}</td>
-                    <td>{{ ticket.handler?.first_name }} {{ ticket.handler?.last_name }}</td>
+                    <td><span v-if="ticket.handler">{{ ticket.handler?.first_name }} {{ ticket.handler?.last_name || ''
+                            }}</span>
+                        <span v-else style="font-style: italic">[deleted user]</span>
+                    </td>
                 </tr>
             </tbody>
         </table>

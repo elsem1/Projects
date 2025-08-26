@@ -1,5 +1,5 @@
 <template>
-    <div class="category-container">        
+    <div class="category-container">
         <h3>Categorie Details</h3>
         <div v-if="!category" class="loading">
             Categorie niet gevonden of aan het laden...
@@ -17,8 +17,7 @@
                     <td>{{ category.name }}</td>
                     <td>{{ category.description }}</td>
                     <td class="category-action">
-                        <RouterLink
-                            :to="{ name: 'categories.edit', params: { categoryId: category.id } }"
+                        <RouterLink :to="{ name: 'categories.edit', params: { categoryId: category.id } }"
                             class="btn btn-edit">
                             Wijzig
                         </RouterLink>
@@ -45,9 +44,11 @@ const category = computed(() => {
     return categoryStore.getters.byId(categoryId.value).value;
 });
 
-const deleteCategory = async (id: number) => {
+const deleteCategory = async (categoryId: number) => {
     try {
-        await categoryStore.actions.delete(id);        
+        (confirm("Weet je zeker dat je deze categorie wilt verwijderen?")); {
+            await categoryStore.actions.delete(categoryId);
+        }
     } catch (error) {
         console.error('Error deleting category:', error);
     }

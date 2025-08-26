@@ -43,7 +43,7 @@
 <script setup lang="ts">
 
 import { ref, defineEmits } from "vue";
-import { UserRegister } from "../types";
+import { UserRegister } from "../../users/types";
 import ErrorMessage from "../../../services/error/ErrorMessage.vue";
 import ErrorForm from "../../../services/error/ErrorForm.vue";
 

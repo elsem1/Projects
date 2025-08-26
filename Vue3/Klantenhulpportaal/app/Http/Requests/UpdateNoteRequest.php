@@ -11,7 +11,6 @@ class UpdateNoteRequest extends FormRequest
     public function authorize(): bool
     {
         $user = Auth::user();
-
         return $user->is_admin;
     }
 

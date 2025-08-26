@@ -49,8 +49,8 @@
 
 <script setup lang="ts">
 import { reactive, defineProps, defineEmits, ref, onMounted } from 'vue'
-import { StatusStore } from '../../status/store';
-import { CategoryStore } from '../../categories/store';
+import { statusStore } from '../../status/store';
+import { categoryStore } from '../../categories/store';
 import ErrorMessage from '../../../services/error/ErrorMessage.vue';
 import ErrorForm from '../../../services/error/ErrorForm.vue';
 import { TicketForm, Status } from '../types';
@@ -67,10 +67,10 @@ const props = defineProps<{
 }>();
 
 
-const categories = CategoryStore.getters.all;
-const status = StatusStore.getters.all;
-CategoryStore.actions.getAll();
-StatusStore.actions.getAll();
+const categories = categoryStore.getters.all;
+const status = statusStore.getters.all;
+categoryStore.actions.getAll();
+statusStore.actions.getAll();
 const isAdmin = ref(false);
 
 const checkAdminStatus = async () => {
